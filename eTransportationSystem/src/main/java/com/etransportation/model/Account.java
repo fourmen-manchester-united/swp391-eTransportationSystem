@@ -16,8 +16,6 @@ public class Account extends Base {
     private IsAdmin isAdmin;
     private AccountStatus status;
 
-    private String buffer;
-
     // relationship
 
 }
