@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +24,8 @@ public class Feature extends Base {
 
     // relationship
 
-    // private List<Car> cars = new ArrayList<Car>();
+    @ManyToMany(mappedBy = "features")
+    private List<Car> cars = new ArrayList<Car>();
 
     // getter and setter
 

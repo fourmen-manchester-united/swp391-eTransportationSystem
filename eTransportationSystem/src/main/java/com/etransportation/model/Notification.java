@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -27,8 +29,9 @@ public class Notification extends Base {
     private Date createdDate;
 
     // relationship
-
-    // private Account accountId;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     // getter and setter
 

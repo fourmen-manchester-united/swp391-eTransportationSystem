@@ -3,6 +3,8 @@ package com.etransportation.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.etransportation.enums.BookStatus;
@@ -29,9 +31,17 @@ public class Book extends Base {
 
     // relationship
 
-    // private Account accountUserId;
-    // private Car carId;
-    // private Voucher voucherId;
+    @ManyToOne
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     // getter and setter
 

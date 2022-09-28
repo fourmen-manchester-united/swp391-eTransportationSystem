@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +30,8 @@ public class Voucher extends Base {
 
     // relationship
 
-    // private List<Book> books = new ArrayList<Book>();
+    @OneToMany(mappedBy = "voucher")
+    private List<Book> books = new ArrayList<Book>();
 
     // getter and setter
 

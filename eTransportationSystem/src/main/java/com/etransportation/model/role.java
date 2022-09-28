@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.etransportation.enums.RoleAccount;
@@ -25,7 +26,8 @@ public class role extends Base {
 
     // relationship
 
-    // private List<Account> accounts = new ArrayList<>();
+    @ManyToMany(mappedBy = "roles")
+    private List<Account> accounts = new ArrayList<>();
 
     // getter and setter
 

@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.etransportation.enums.CarStatus;
@@ -37,17 +44,35 @@ public class Car extends Base {
     private double longitude;
     private double latitude;
     private Date modifiedDate;
+    private Date registerDate;
     private CarStatus status;
 
     // relationship
 
-    // private Register registerId;
-    // private CarModel modelId;
-    // private Address addressId;
-    // private List<Book> books = new ArrayList<Book>();
-    // private List<Review> reviews = new ArrayList<Review>();
-    // private List<CarImage> carImages = new ArrayList<CarImage>();
-    // private List<Feature> features = new ArrayList<Feature>();
+    @ManyToOne
+    @JoinColumn(name = "account_supplier_id")
+    private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "model_id")
+    private CarModel model;
+
+    @OneToOne(mappedBy = "car")
+    // @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+    @OneToMany(mappedBy = "car")
+    private List<Book> books = new ArrayList<Book>();
+
+    @OneToMany(mappedBy = "car")
+    private List<Review> reviews = new ArrayList<Review>();
+
+    @OneToMany(mappedBy = "car")
+    private List<CarImage> carImages = new ArrayList<CarImage>();
+
+    @ManyToMany
+    @JoinTable(name = "car_feature", joinColumns = @JoinColumn(name = "car_id"), inverseJoinColumns = @JoinColumn(name = "feature_id"))
+    private List<Feature> features = new ArrayList<Feature>();
 
     // getter and setter
 

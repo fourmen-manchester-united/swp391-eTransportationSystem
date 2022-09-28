@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +26,12 @@ public class Ward extends Base {
 
     // relationship
 
-    // private District districtId;
-    // private List<Address> addresss = new ArrayList<Address>();
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district;
+
+    @OneToMany(mappedBy = "ward")
+    private List<Address> addresss = new ArrayList<Address>();
 
     // getter and setter
 

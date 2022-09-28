@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.etransportation.enums.AccountStatus;
@@ -35,11 +39,21 @@ public class Account extends Base {
 
     // relationship
 
-    // private Set<role> roles = new HashSet<>();
-    // private List<Book> books = new ArrayList<>();
-    // private List<Register> registers = new ArrayList<>();
-    // private List<Notification> notifications = new ArrayList<>();
-    // private List<Review> reviews = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "account_role", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<Book> books = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<Car> cars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<Notification> notifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<Review> reviews = new ArrayList<>();
 
     // getter and setter
 }

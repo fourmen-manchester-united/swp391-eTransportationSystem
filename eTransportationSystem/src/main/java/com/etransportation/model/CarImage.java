@@ -1,6 +1,8 @@
 package com.etransportation.model;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +22,9 @@ public class CarImage extends Base {
 
     // relationship
 
-    // private Car carId;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     // getter and setter
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +24,8 @@ public class CarBrand extends Base {
 
     // relationship
 
-    // private List<CarModel> carModels = new ArrayList<CarModel>();
+    @OneToMany(mappedBy = "brand")
+    private List<CarModel> carModels = new ArrayList<CarModel>();
 
     // getter and setter
 
