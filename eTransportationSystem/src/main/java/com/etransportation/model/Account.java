@@ -16,15 +16,19 @@ import javax.persistence.Table;
 
 import com.etransportation.enums.AccountStatus;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "account")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account extends Base {
 
     private String name;

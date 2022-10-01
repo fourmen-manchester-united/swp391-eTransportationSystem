@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.RegisterRequest;
+import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.service.AccountService;
 
 @RestController("/api/auth")
@@ -19,14 +20,16 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody LoginRequest loginRequest) {
-
-        return null;
+        LoginResponse loginResponse = accountService.login(loginRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody RegisterRequest registerRequest) {
         accountService.register(registerRequest);
-        return ResponseEntity.ok().body("Register successfully");
+        // return ResponseEntity.ok().body("Register successfully");
+        return ResponseEntity.ok("Register successfully");
+        // return new ResponseEntity<>("Register successfully", HttpStatus.OK);
     }
 
 }
