@@ -8,4 +8,6 @@ import com.etransportation.model.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
+    Boolean existsByUsername(String username);
+
 }

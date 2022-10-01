@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.etransportation.enums.AccountStatus;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,6 +24,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "account")
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Builder
 public class Account extends Base {
 
     private String name;
