@@ -4,29 +4,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.etransportation.enums.CarStatus;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "car")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Car extends Base {
 
     private int seats;
@@ -45,6 +43,8 @@ public class Car extends Base {
     private double latitude;
     private Date modifiedDate;
     private Date registerDate;
+
+    @Enumerated(EnumType.STRING)
     private CarStatus status;
 
     // relationship
@@ -58,7 +58,7 @@ public class Car extends Base {
     private CarModel model;
 
     @OneToOne(mappedBy = "car")
-    // @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @PrimaryKeyJoinColumn
     private Address address;
 
     @OneToMany(mappedBy = "car")

@@ -3,23 +3,21 @@ package com.etransportation.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.etransportation.enums.BookStatus;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "book")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Book extends Base {
 
     private double price;
@@ -27,6 +25,8 @@ public class Book extends Base {
     private Date startDate;
     private Date endDate;
     private Date bookDate;
+
+    @Enumerated(EnumType.STRING)
     private BookStatus status;
 
     // relationship

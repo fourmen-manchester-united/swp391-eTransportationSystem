@@ -2,26 +2,24 @@ package com.etransportation.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.etransportation.enums.RoleAccount;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "role")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class role extends Base {
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class Role extends Base {
 
+    @Enumerated(EnumType.STRING)
     private RoleAccount name;
 
     // relationship
@@ -30,5 +28,4 @@ public class role extends Base {
     private List<Account> accounts = new ArrayList<>();
 
     // getter and setter
-
 }
