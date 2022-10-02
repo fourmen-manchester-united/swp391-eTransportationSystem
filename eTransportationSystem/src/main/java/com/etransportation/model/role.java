@@ -10,13 +10,19 @@ import javax.persistence.Table;
 
 import com.etransportation.enums.RoleAccount;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "role")
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role extends Base {
 
     @Enumerated(EnumType.STRING)

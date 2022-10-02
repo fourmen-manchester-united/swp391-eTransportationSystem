@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class City extends Base {
 
+    private String code;
     private String name;
     private String image;
 
