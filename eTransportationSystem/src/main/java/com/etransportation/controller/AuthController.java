@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.RegisterRequest;
 import com.etransportation.payload.response.LoginResponse;
@@ -32,6 +34,12 @@ public class AuthController {
         // return ResponseEntity.ok().body("Register successfully");
         return ResponseEntity.ok("Register successfully");
         // return new ResponseEntity<>("Register successfully", HttpStatus.OK);
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
+        accountService.changePassword(changePasswordRequest);
+        return ResponseEntity.ok("Change Password successfully");
     }
 
 }

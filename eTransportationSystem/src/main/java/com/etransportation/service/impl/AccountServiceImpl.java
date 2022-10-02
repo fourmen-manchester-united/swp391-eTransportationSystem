@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
 import com.etransportation.model.Role;
+import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.RegisterRequest;
 import com.etransportation.payload.response.LoginResponse;
@@ -78,6 +79,18 @@ public class AccountServiceImpl implements AccountService {
 
         // cach 2 model map gon va hay hon
         return modelMapper.map(account, LoginResponse.class);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        String oldPassword = changePasswordRequest.getOldPassword();
+        String newPassword = changePasswordRequest.getNewPassword();
+        String newPasswordValidate = changePasswordRequest.getNewPassword();
+
+        if (!newPassword.equals(newPasswordValidate)) {
+            throw new IllegalArgumentException("Error: Password is not match!");
+        }
+
     }
 
 }

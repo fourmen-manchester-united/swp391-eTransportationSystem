@@ -20,6 +20,7 @@ public class Voucher extends Base {
     private String code;
     private int percentage;
     private int maxDiscount;
+    private String image;
     private String discription;
     private Date startDate;
     private Date endDate;
