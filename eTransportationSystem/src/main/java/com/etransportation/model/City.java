@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -14,8 +15,10 @@ import lombok.EqualsAndHashCode;
 @Table(name = "city")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class City extends Base {
+public class City {
 
+    @Id
+    private Long id;
     private String code;
     private String name;
     private String image;

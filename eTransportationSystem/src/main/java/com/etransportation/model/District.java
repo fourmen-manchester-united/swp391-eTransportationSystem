@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,8 +17,11 @@ import lombok.EqualsAndHashCode;
 @Table(name = "district")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class District extends Base {
+public class District {
 
+    @Id
+    private Long id;
+    private String code;
     private String name;
 
     // relationship
