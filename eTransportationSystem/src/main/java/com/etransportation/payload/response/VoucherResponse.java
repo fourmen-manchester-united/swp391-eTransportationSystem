@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class VoucherResponse {
 
+    private Long id;
     private String code;
     private int percentage;
     private int maxDiscount;
