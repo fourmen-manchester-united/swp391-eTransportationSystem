@@ -2,6 +2,7 @@ package com.etransportation.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,9 +17,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Notification extends Base {
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String discription;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String shortDiscription;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String title;
+
     private boolean isRead;
     private Date createdDate;
 

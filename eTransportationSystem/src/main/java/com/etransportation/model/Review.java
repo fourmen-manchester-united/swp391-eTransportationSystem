@@ -2,6 +2,7 @@ package com.etransportation.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +21,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Review extends Base {
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String content;
+
     private int starReview;
     private Date reviewDate;
 

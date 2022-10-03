@@ -3,6 +3,7 @@ package com.etransportation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,6 +23,8 @@ public class Ward {
     @Id
     private Long id;
     private String code;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String name;
 
     // relationship

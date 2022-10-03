@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,13 +30,26 @@ public class Car extends Base {
 
     private int seats;
     private double price;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String fuel;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String color;
+
     private String licensePlates;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String description;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String fuelConsumption;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String transmission;
     private String yearOfManufacture;
+
+    @Column(columnDefinition = "nvarchar(255)")
     private String carRentalTerms;
     private int saleWeek;
     private int saleMonth;

@@ -1,5 +1,6 @@
 package com.etransportation.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Address extends Base {
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String street;
 
     // relationship
