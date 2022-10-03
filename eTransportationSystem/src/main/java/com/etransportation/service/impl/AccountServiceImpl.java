@@ -14,6 +14,7 @@ import com.etransportation.model.Role;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.RegisterRequest;
+import com.etransportation.payload.response.AccountResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.RoleRepository;
@@ -87,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
         Long id = changePasswordRequest.getId();
         String oldPassword = changePasswordRequest.getOldPassword();
         String newPassword = changePasswordRequest.getNewPassword();
-        String newPasswordValidate = changePasswordRequest.getNewPasswordValidate();
+        String newPasswordValidate = changePasswordRequest.getConfirmPassword();
 
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Error: Account is not found!"));
@@ -108,6 +109,13 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(newPassword);
         accountRepository.save(account);
 
+    }
+
+    @Override
+    public AccountResponse findAccountById(Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Error: Account is not found!"));
+        return modelMapper.map(account, AccountResponse.class);
     }
 
 }

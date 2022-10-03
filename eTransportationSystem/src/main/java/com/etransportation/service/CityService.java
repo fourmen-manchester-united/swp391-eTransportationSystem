@@ -6,5 +6,5 @@ import com.etransportation.payload.response.CityResponse;
 
 public interface CityService {
 
-    public List<CityResponse> getListCity();
+    public List<CityResponse> findAllCity();
 }

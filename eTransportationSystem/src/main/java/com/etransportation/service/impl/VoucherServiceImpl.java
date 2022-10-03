@@ -22,7 +22,7 @@ public class VoucherServiceImpl implements VoucherService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<VoucherResponse> getListVoucher() {
+    public List<VoucherResponse> findAllVoucher() {
         List<Voucher> voucher = voucherRepository.findAll();
         List<VoucherResponse> listVoucherResponse = modelMapper.map(voucher, new TypeToken<List<VoucherResponse>>() {
         }.getType());

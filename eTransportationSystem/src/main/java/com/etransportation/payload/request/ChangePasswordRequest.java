@@ -8,5 +8,5 @@ public class ChangePasswordRequest {
     private Long id;
     private String oldPassword;
     private String newPassword;
-    private String newPasswordValidate;
+    private String confirmPassword;
 }

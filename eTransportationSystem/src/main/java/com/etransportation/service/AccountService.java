@@ -3,6 +3,7 @@ package com.etransportation.service;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.RegisterRequest;
+import com.etransportation.payload.response.AccountResponse;
 import com.etransportation.payload.response.LoginResponse;
 
 public interface AccountService {
@@ -12,5 +13,7 @@ public interface AccountService {
     public LoginResponse login(LoginRequest loginRequest);
 
     public void changePassword(ChangePasswordRequest changePasswordRequest);
+
+    public AccountResponse findAccountById(Long id);
 
 }

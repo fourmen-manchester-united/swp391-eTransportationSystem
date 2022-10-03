@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,10 +24,12 @@ public class CarModel extends Base {
 
     // relationship
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private CarBrand brand;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "model")
     private List<Car> cars = new ArrayList<Car>();
 

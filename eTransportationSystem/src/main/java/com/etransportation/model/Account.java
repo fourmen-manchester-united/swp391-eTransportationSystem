@@ -1,6 +1,7 @@
 package com.etransportation.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.etransportation.enums.AccountGender;
 import com.etransportation.enums.AccountStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +37,8 @@ public class Account extends Base {
     private String name;
     private String username;
     private String password;
+    private AccountGender gender;
+    private Date birthDate;
     private String glpx;
     private String email;
     private String phone;

@@ -9,6 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.etransportation.enums.RoleAccount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class Role extends Base {
 
     // relationship
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<Account> accounts = new ArrayList<>();
 

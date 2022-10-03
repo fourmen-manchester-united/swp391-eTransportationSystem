@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 public class Feature extends Base {
 
     private String name;
+    private String icon;
 
     // relationship
 

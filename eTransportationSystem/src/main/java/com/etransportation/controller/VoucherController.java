@@ -21,7 +21,7 @@ public class VoucherController {
 
     @GetMapping
     public ResponseEntity<?> getAllVouchers() {
-        List<VoucherResponse> listVoucherResponse = voucherService.getListVoucher();
+        List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucher();
         return new ResponseEntity<>(listVoucherResponse, HttpStatus.OK);
     }
 

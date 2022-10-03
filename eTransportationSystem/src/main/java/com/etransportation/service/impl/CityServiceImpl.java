@@ -22,7 +22,7 @@ public class CityServiceImpl implements CityService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<CityResponse> getListCity() {
+    public List<CityResponse> findAllCity() {
         List<City> city = cityRepository.findAll();
         List<CityResponse> listCityResponse = modelMapper.map(city, new TypeToken<List<CityResponse>>() {
         }.getType());

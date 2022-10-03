@@ -6,5 +6,5 @@ import com.etransportation.payload.response.VoucherResponse;
 
 public interface VoucherService {
 
-    public List<VoucherResponse> getListVoucher();
+    public List<VoucherResponse> findAllVoucher();
 }
