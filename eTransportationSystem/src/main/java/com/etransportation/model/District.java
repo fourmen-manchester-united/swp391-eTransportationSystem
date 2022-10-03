@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,6 +31,7 @@ public class District {
 
     // relationship
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
@@ -36,6 +39,7 @@ public class District {
     @OneToMany(mappedBy = "district")
     private List<Ward> wards = new ArrayList<Ward>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "district")
     private List<Address> addresss = new ArrayList<Address>();
 

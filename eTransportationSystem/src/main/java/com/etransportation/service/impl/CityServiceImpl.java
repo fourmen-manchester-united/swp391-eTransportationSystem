@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etransportation.model.City;
+import com.etransportation.payload.response.CityDetailResponse;
 import com.etransportation.payload.response.CityResponse;
 import com.etransportation.repository.CityRepository;
 import com.etransportation.service.CityService;
@@ -28,6 +29,15 @@ public class CityServiceImpl implements CityService {
         }.getType());
         return listCityResponse;
 
+    }
+
+    @Override
+    public List<CityDetailResponse> findAllCityDetail() {
+        List<City> city = cityRepository.findAll();
+        List<CityDetailResponse> listCityDetailResponse = modelMapper.map(city,
+                new TypeToken<List<CityDetailResponse>>() {
+                }.getType());
+        return listCityDetailResponse;
     }
 
 }
