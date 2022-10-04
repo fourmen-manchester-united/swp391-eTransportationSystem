@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.enums.CarStatus;
+import com.etransportation.model.Account;
+import com.etransportation.model.Car;
 import com.etransportation.model.City;
 import com.etransportation.model.District;
 import com.etransportation.model.Ward;
+import com.etransportation.repository.CarRepository;
 import com.etransportation.repository.CityRepository;
 import com.etransportation.repository.DistrictRepository;
 import com.etransportation.repository.WardRepository;
@@ -17,6 +21,9 @@ import com.etransportation.repository.WardRepository;
 @RestController
 @RequestMapping("/api/test")
 public class test {
+
+    @Autowired
+    private CarRepository carRepository;
 
     @Autowired
     private CityRepository cityRepository;
@@ -52,6 +59,17 @@ public class test {
             ci.setCode(ci.getCode().replaceAll(" ", ""));
             wardRepository.save(ci);
         }
+    }
+
+    @GetMapping("/caradd")
+    public void caradd() {
+        Car car = new Car();
+        car.setFuel("fuuuuuuuu");
+        car.setStatus(CarStatus.ACTIVE);
+
+        car.setAccount(new Account(null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null));
+
     }
 
 }

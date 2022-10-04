@@ -13,7 +13,7 @@ import com.etransportation.model.Account;
 import com.etransportation.model.Role;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
-import com.etransportation.payload.request.RegisterRequest;
+import com.etransportation.payload.request.RegisterAccountRequest;
 import com.etransportation.payload.response.AccountResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.repository.AccountRepository;
@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     private RoleRepository roleRepository;
 
     @Override
-    public void register(RegisterRequest registerRequest) {
+    public void register(RegisterAccountRequest registerRequest) {
         if (accountRepository.existsByUsername(registerRequest.getUsername())) {
             // ResponseEntity<?> response = ResponseEntity.badRequest().body("Error:
             // Username is already taken!");
