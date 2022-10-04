@@ -47,6 +47,7 @@ public class AccountServiceImpl implements AccountService {
                 .builder()
                 .name(RoleAccount.US)
                 .build());
+        roleRepository.save(role);
 
         Set<Role> roles = new HashSet<>();
         roles.add(role);

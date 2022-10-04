@@ -1,0 +1,124 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@keyframes ldio-gw2gg1659v {
+  0% {
+    top: 45px;
+    left: 45px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+
+  100% {
+    top: 7.5px;
+    left: 7.5px;
+    width: 75px;
+    height: 75px;
+    opacity: 0;
+  }
+}
+
+.ldio-gw2gg1659v div {
+  position: absolute;
+  border-width: 5px;
+  border-style: solid;
+  opacity: 1;
+  border-radius: 50%;
+  animation: ldio-gw2gg1659v 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.ldio-gw2gg1659v div:nth-child(1) {
+  border-color: #e90c59;
+  animation-delay: 0s;
+}
+
+.ldio-gw2gg1659v div:nth-child(2) {
+  border-color: #46dff0;
+  animation-delay: -0.5s;
+}
+
+.loadingio-spinner-ripple-ormwzc5m72e {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  overflow: hidden;
+  background: rgba(NaN, NaN, NaN, 0);
+}
+
+.ldio-gw2gg1659v {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(0.5);
+  backface-visibility: hidden;
+  transform-origin: 0 0;
+  /* see note above */
+}
+
+@keyframes ldio-a43e4tfg33 {
+  0% {
+    top: 67.5px;
+    left: 67.5px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+
+  100% {
+    top: 11.25px;
+    left: 11.25px;
+    width: 112.5px;
+    height: 112.5px;
+    opacity: 0;
+  }
+}
+
+.ldio-a43e4tfg33 div {
+  position: absolute;
+  border-width: 7.5px;
+  border-style: solid;
+  opacity: 1;
+  border-radius: 50%;
+  animation: ldio-a43e4tfg33 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.ldio-a43e4tfg33 div:nth-child(1) {
+  border-color: #e90c59;
+  animation-delay: 0s;
+}
+
+.ldio-a43e4tfg33 div:nth-child(2) {
+  border-color: #46dff0;
+  animation-delay: -0.5s;
+}
+
+.loadingio-spinner-ripple-p4t4leicp3h {
+  width: 150px;
+  height: 150px;
+  margin: 100px 0 250px 0;
+  display: inline-block;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0);
+}
+
+.ldio-a43e4tfg33 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0;
+  /* see note above */
+}
