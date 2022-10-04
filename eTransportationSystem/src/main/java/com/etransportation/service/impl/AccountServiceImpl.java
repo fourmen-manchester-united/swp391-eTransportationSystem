@@ -89,19 +89,9 @@ public class AccountServiceImpl implements AccountService {
         Long id = changePasswordRequest.getId();
         String oldPassword = changePasswordRequest.getOldPassword();
         String newPassword = changePasswordRequest.getNewPassword();
-        String newPasswordValidate = changePasswordRequest.getConfirmPassword();
 
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Error: Account is not found!"));
-
-        if (newPassword == null || newPasswordValidate == null || newPassword.trim().isEmpty()
-                || newPasswordValidate.trim().isEmpty()) {
-            throw new IllegalArgumentException("Error: new Password is required!");
-        }
-
-        if (!newPassword.equals(newPasswordValidate)) {
-            throw new IllegalArgumentException("Error: New Password is not match!");
-        }
 
         if (!account.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("Error: Old password is incorrect!");

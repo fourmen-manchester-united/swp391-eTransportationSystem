@@ -61,15 +61,16 @@ public class test {
         }
     }
 
-    @GetMapping("/caradd")
-    public void caradd() {
-        Car car = new Car();
-        car.setFuel("fuuuuuuuu");
-        car.setStatus(CarStatus.ACTIVE);
+    // @GetMapping("/caradd")
+    // public void caradd() {
+    // Car car = new Car();
+    // car.setFuel("fuuuuuuuu");
+    // car.setStatus(CarStatus.ACTIVE);
 
-        car.setAccount(new Account(null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                null, null));
+    // car.setAccount(new Account(null, null, null, null, null, null, null, null,
+    // null, null, null, null, null, null,
+    // null, null));
 
-    }
+    // }
 
 }

@@ -44,7 +44,8 @@ public class Account extends Base {
     private String glpx;
     private String email;
     private String phone;
-    private String image;
+    private String avatar;
+    private String thumnail;
     private Double balance;
 
     @Enumerated(EnumType.STRING)

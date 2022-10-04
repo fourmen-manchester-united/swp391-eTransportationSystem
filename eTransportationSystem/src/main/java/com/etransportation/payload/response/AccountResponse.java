@@ -19,7 +19,8 @@ public class AccountResponse {
     private String glpx;
     private String email;
     private String phone;
-    private String image;
+    private String avatar;
+    private String thumnail;
     private Double balance;
     private Set<Role> roles;
 
