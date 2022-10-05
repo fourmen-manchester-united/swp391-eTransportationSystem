@@ -1,7 +1,5 @@
 package com.etransportation.payload.response;
 
-import java.util.ArrayList;
-
 import lombok.Data;
 
 @Data

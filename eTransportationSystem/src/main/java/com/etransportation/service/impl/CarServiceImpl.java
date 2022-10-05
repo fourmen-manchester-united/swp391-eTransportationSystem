@@ -7,7 +7,10 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
+import com.etransportation.model.Feature;
+import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.repository.CarBrandRepository;
 import com.etransportation.service.CarService;
@@ -27,6 +30,12 @@ public class CarServiceImpl implements CarService {
         List<CarBrandResponse> carBrandResponse = modelMapper.map(carBrand, new TypeToken<List<CarBrandResponse>>() {
         }.getType());
         return carBrandResponse;
+    }
+
+    @Override
+    public void save(CarRegisterRequest carRegisterRequest) {
+        Car car = modelMapper.map(carRegisterRequest, Car.class);
+
     }
 
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
-import com.etransportation.payload.request.RegisterAccountRequest;
+import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.service.AccountService;
@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody RegisterAccountRequest registerRequest) {
+    public ResponseEntity<?> signup(@RequestBody AccountRegisterRequest registerRequest) {
         accountService.register(registerRequest);
         // return ResponseEntity.ok().body("Register successfully");
         return ResponseEntity.ok("Register successfully");

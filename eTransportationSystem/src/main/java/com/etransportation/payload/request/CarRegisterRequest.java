@@ -19,28 +19,30 @@ import com.etransportation.model.Review;
 import lombok.Data;
 
 @Data
-public class RegisterCarRequest {
+public class CarRegisterRequest {
 
-    private String licensePlates;
-    private CarModel model;
     private int seats;
-    private String yearOfManufacture;
-    private String fuelConsumption;
-    private String fuel;
-    private String transmission;
-    private String color;
     private double price;
+    private String fuel;
+    private String color;
+    private String licensePlates;
     private String description;
-    private List<Feature> features;
+    private String fuelConsumption;
+    private String transmission;
+    private String yearOfManufacture;
+    private String carRentalTerms;
     private int saleWeek;
     private int saleMonth;
-    private String carRentalTerms;
     private double longitude;
     private double latitude;
     private Date modifiedDate;
     private Date registerDate;
-    private Account account;
-    private Address address;
-    private List<CarImage> carImages;
+
+    private Long account;
+    private Long model;
+    private Long ward;
+    private String street;
+    private List<String> carImages;
+    private List<Long> features;
 
 }
