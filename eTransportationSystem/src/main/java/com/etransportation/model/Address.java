@@ -6,8 +6,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "address")
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Builder
 public class Address extends Base {
 
     @Column(columnDefinition = "nvarchar(255)")
@@ -34,9 +37,8 @@ public class Address extends Base {
     @JoinColumn(name = "ward_id")
     private Ward ward;
 
-    @OneToOne
-    @JoinColumn(name = "car_id", referencedColumnName = "id")
-    @MapsId
+    @OneToOne(mappedBy = "address")
+    @PrimaryKeyJoinColumn
     private Car car;
 
     // getter and setter

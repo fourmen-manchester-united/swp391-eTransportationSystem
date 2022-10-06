@@ -35,14 +35,13 @@ public class CarRegisterRequest {
     private int saleMonth;
     private double longitude;
     private double latitude;
-    private Date modifiedDate;
     private Date registerDate;
 
-    private Long account;
-    private Long model;
-    private Long ward;
+    private Long accountId;
+    private Long modelId;
+    private Long wardId;
     private String street;
-    private List<String> carImages;
-    private List<Long> features;
+    private List<String> listCarImages;
+    private List<Long> featuresId;
 
 }

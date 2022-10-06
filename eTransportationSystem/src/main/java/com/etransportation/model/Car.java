@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -71,8 +72,9 @@ public class Car extends Base {
     @JoinColumn(name = "model_id")
     private CarModel model;
 
-    @OneToOne(mappedBy = "car")
-    @PrimaryKeyJoinColumn
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    @MapsId
     private Address address;
 
     @OneToMany(mappedBy = "car")
