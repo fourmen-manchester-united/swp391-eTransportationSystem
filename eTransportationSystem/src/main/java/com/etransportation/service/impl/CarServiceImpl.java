@@ -94,33 +94,37 @@ public class CarServiceImpl implements CarService {
                 .city(ward.getDistrict().getCity())
                 .street(carRegisterRequest.getStreet())
                 .build();
+
         car.setAddress(address);
 
         // set id feature register to car
         List<Feature> listFeature = new ArrayList<Feature>();
         Feature feature = new Feature();
-        for (Long idFeature : carRegisterRequest.getFeaturesId()) {
-            feature = featureRepository.findById(idFeature)
-                    .orElseThrow(() -> new IllegalArgumentException("Feature not found"));
-            listFeature.add(feature);
+        if (carRegisterRequest.getFeaturesId() != null && !carRegisterRequest.getFeaturesId().isEmpty()) {
+            for (Long idFeature : carRegisterRequest.getFeaturesId()) {
+                feature = featureRepository.findById(idFeature)
+                        .orElseThrow(() -> new IllegalArgumentException("Feature not found"));
+                listFeature.add(feature);
+            }
         }
 
         car.setFeatures(listFeature);
 
+        carRepository.save(car);
+
         // set image register to car
         List<CarImage> listCarImage = new ArrayList<CarImage>();
         CarImage carImage;
-        for (String image : carRegisterRequest.getListCarImages()) {
-            carImage = new CarImage();
-            carImage.setImage(image);
-            // carImage.setCar(car);
-            listCarImage.add(carImage);
+        if (carRegisterRequest.getListCarImages() != null && !carRegisterRequest.getListCarImages().isEmpty()) {
+            for (String image : carRegisterRequest.getListCarImages()) {
+                carImage = new CarImage();
+                carImage.setImage(image);
+                carImage.setCar(car);
+                listCarImage.add(carImage);
 
+            }
         }
-        car.setCarImages(listCarImage);
-
-        carRepository.save(car);
-
+        carImageRepository.saveAll(listCarImage);
     }
 
 }
