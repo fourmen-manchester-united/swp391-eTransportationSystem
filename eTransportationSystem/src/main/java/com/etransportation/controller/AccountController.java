@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
+import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
-import com.etransportation.payload.response.AccountResponse;
+import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.service.AccountService;
 
@@ -54,8 +55,17 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getInfoAccountById(@PathVariable Long id) {
-        AccountResponse accountResponse = accountService.findAccountById(id);
+        AccountInfoResponse accountResponse = accountService.findAccountById(id);
         return ResponseEntity.ok(accountResponse);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateAccount(@RequestBody AccountInfoRequest accountInfoRequest) {
+        if (accountInfoRequest.getId() == null) {
+            throw new IllegalArgumentException("Id is null!");
+        }
+        accountService.updateInfoAccount(accountInfoRequest);
+        return ResponseEntity.ok("Update Account successfully");
     }
 
 }

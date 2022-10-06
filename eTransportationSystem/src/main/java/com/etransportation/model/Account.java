@@ -39,7 +39,10 @@ public class Account extends Base {
     private String name;
     private String username;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private AccountGender gender;
+
     private Date birthDate;
     private String glpx;
     private String email;
@@ -47,6 +50,7 @@ public class Account extends Base {
     private String avatar;
     private String thumnail;
     private Double balance;
+    private Date joinDate;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus status;

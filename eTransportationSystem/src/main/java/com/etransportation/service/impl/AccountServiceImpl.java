@@ -13,8 +13,9 @@ import com.etransportation.model.Account;
 import com.etransportation.model.Role;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.LoginRequest;
+import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
-import com.etransportation.payload.response.AccountResponse;
+import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.RoleRepository;
@@ -104,10 +105,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse findAccountById(Long id) {
+    public AccountInfoResponse findAccountById(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Error: Account is not found!"));
-        return modelMapper.map(account, AccountResponse.class);
+        return modelMapper.map(account, AccountInfoResponse.class);
+    }
+
+    @Override
+    public void updateInfoAccount(AccountInfoRequest accountInfoRequest) {
+        Account account = accountRepository.findById(accountInfoRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Error: Account is not found!"));
+        account.setName(accountInfoRequest.getName());
+        account.setGender(accountInfoRequest.getGender());
+        account.setBirthDate(accountInfoRequest.getBirthDate());
+        account.setGlpx(accountInfoRequest.getGlpx());
+        account.setEmail(accountInfoRequest.getEmail());
+        account.setPhone(accountInfoRequest.getPhone());
+        account.setAvatar(accountInfoRequest.getAvatar());
+        account.setThumnail(accountInfoRequest.getThumnail());
+
+        accountRepository.save(account);
     }
 
 }
