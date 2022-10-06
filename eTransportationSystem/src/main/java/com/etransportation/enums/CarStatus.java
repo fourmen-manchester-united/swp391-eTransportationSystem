@@ -1,6 +1,6 @@
 package com.etransportation.enums;
 
 public enum CarStatus {
-    ACTIVE, WAIL, NO;
+    ACTIVE, PENDING_APPROVAL, DENIED, PAUSE;
 
 }

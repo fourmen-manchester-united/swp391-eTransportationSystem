@@ -8,6 +8,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Account;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
@@ -109,6 +110,8 @@ public class CarServiceImpl implements CarService {
         }
 
         car.setFeatures(listFeature);
+
+        car.setStatus(CarStatus.PENDING_APPROVAL);
 
         carRepository.save(car);
 
