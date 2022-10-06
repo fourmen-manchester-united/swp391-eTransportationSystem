@@ -9,15 +9,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "address")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address extends Base {
 
     @Column(columnDefinition = "nvarchar(255)")

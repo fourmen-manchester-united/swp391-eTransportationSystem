@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,6 +26,7 @@ public class Feature extends Base {
 
     // relationship
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "features")
     private List<Car> cars = new ArrayList<Car>();
 

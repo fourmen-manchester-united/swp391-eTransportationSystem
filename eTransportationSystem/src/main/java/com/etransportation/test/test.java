@@ -3,7 +3,9 @@ package com.etransportation.test;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,16 +63,10 @@ public class test {
         }
     }
 
-    // @GetMapping("/caradd")
-    // public void caradd() {
-    // Car car = new Car();
-    // car.setFuel("fuuuuuuuu");
-    // car.setStatus(CarStatus.ACTIVE);
-
-    // car.setAccount(new Account(null, null, null, null, null, null, null, null,
-    // null, null, null, null, null, null,
-    // null, null));
-
-    // }
+    @GetMapping("/city/car/{code}")
+    public ResponseEntity<?> car(@PathVariable String code) {
+        City city = cityRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("City not found"));
+        return ResponseEntity.ok(city);
+    }
 
 }

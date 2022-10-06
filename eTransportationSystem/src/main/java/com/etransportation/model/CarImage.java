@@ -20,6 +20,7 @@ public class CarImage extends Base {
 
     // relationship
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
