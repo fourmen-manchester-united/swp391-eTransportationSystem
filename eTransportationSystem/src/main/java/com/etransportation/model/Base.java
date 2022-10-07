@@ -17,7 +17,6 @@ public abstract class Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
     // getter and setter

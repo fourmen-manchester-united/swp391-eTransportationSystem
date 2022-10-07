@@ -18,10 +18,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "city")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class City {
-
-    @Id
-    private Long id;
+public class City extends Base {
 
     @Column(columnDefinition = "varchar(50)")
     private String code;

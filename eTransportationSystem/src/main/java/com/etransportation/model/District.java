@@ -20,10 +20,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "district")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class District {
-
-    @Id
-    private Long id;
+public class District extends Base {
 
     @Column(columnDefinition = "varchar(50)")
     private String code;
