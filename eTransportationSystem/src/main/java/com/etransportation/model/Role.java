@@ -2,6 +2,8 @@ package com.etransportation.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Role extends Base {
 
+    @Column(columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)
     private RoleAccount name;
 

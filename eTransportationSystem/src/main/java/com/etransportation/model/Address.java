@@ -30,15 +30,15 @@ public class Address extends Base {
     // relationship
 
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
     @ManyToOne
-    @JoinColumn(name = "district_id")
+    @JoinColumn(name = "district_id", nullable = false)
     private District district;
 
     @ManyToOne
-    @JoinColumn(name = "ward_id")
+    @JoinColumn(name = "ward_id", nullable = false)
     private Ward ward;
 
     @OneToOne(mappedBy = "address")

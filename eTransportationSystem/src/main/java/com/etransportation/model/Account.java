@@ -35,17 +35,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Account extends Base {
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(50)")
     private String name;
+
+    @Column(columnDefinition = "varchar(100)", unique = true, nullable = false)
     private String username;
+
+    @Column(columnDefinition = "varchar(100)", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(15)")
     private AccountGender gender;
 
     private Date birthDate;
     private String glpx;
+
+    @Column(columnDefinition = "varchar(30)")
     private String email;
+
+    @Column(columnDefinition = "varchar(20)")
     private String phone;
     private String avatar;
     private String thumnail;
@@ -53,6 +62,7 @@ public class Account extends Base {
     private Date joinDate;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(15)")
     private AccountStatus status;
 
     // relationship

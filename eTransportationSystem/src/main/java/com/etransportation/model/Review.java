@@ -27,6 +27,7 @@ public class Review extends Base {
     private int starReview;
     private Date reviewDate;
 
+    @Column(columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)
     private ReviewStatus status;
 

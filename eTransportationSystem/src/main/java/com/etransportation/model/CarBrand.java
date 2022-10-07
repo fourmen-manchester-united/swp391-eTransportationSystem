@@ -3,6 +3,7 @@ package com.etransportation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class CarBrand extends Base {
 
+    @Column(columnDefinition = "nvarchar(20)")
     private String name;
 
     // relationship

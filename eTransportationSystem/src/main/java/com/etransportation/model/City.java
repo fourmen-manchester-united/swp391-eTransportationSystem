@@ -22,9 +22,11 @@ public class City {
 
     @Id
     private Long id;
+
+    @Column(columnDefinition = "varchar(50)")
     private String code;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(100)")
     private String name;
 
     private String image;

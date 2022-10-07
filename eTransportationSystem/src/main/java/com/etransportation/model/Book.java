@@ -2,6 +2,7 @@ package com.etransportation.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,6 +27,7 @@ public class Book extends Base {
     private Date endDate;
     private Date bookDate;
 
+    @Column(columnDefinition = "varchar(15)")
     @Enumerated(EnumType.STRING)
     private BookStatus status;
 
@@ -36,11 +38,11 @@ public class Book extends Base {
     private Voucher voucher;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "car_id")
+    @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
     // getter and setter

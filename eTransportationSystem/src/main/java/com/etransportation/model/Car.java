@@ -32,26 +32,30 @@ public class Car extends Base {
     private int seats;
     private double price;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(30)")
     private String fuel;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(30)")
     private String color;
 
+    @Column(columnDefinition = "varchar(15)")
     private String licensePlates;
 
     @Column(columnDefinition = "nvarchar(255)")
     private String description;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(20)")
     private String fuelConsumption;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(50)")
     private String transmission;
+
+    @Column(columnDefinition = "nvarchar(10)")
     private String yearOfManufacture;
 
     @Column(columnDefinition = "nvarchar(255)")
     private String carRentalTerms;
+
     private int saleWeek;
     private int saleMonth;
     private double longitude;
@@ -59,17 +63,18 @@ public class Car extends Base {
     private Date modifiedDate;
     private Date registerDate;
 
+    @Column(columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     private CarStatus status;
 
     // relationship
 
     @ManyToOne
-    @JoinColumn(name = "account_supplier_id")
+    @JoinColumn(name = "account_supplier_id", nullable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "model_id")
+    @JoinColumn(name = "model_id", nullable = false)
     private CarModel model;
 
     @OneToOne

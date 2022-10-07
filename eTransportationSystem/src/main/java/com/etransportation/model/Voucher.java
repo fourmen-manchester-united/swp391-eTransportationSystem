@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Voucher extends Base {
 
+    @Column(columnDefinition = "varchar(50)")
     private String code;
     private int percentage;
     private int maxDiscount;

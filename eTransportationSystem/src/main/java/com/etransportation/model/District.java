@@ -24,16 +24,18 @@ public class District {
 
     @Id
     private Long id;
+
+    @Column(columnDefinition = "varchar(50)")
     private String code;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(100)")
     private String name;
 
     // relationship
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
     @OneToMany(mappedBy = "district")

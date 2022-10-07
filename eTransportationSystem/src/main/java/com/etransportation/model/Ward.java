@@ -24,6 +24,8 @@ public class Ward {
 
     @Id
     private Long id;
+
+    @Column(columnDefinition = "varchar(50)")
     private String code;
 
     @Column(columnDefinition = "nvarchar(255)")
