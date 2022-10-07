@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [ETransportationSystem]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Database [ETransportationSystem]    Script Date: 07/10/2022 6:31:59 PM ******/
 CREATE DATABASE [ETransportationSystem]
 GO
 ALTER DATABASE [ETransportationSystem] SET COMPATIBILITY_LEVEL = 150
@@ -76,7 +76,7 @@ ALTER DATABASE [ETransportationSystem] SET QUERY_STORE = OFF
 GO
 USE [ETransportationSystem]
 GO
-/****** Object:  Table [dbo].[account]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[account]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -86,23 +86,23 @@ CREATE TABLE [dbo].[account](
 	[avatar] [varchar](255) NULL,
 	[balance] [float] NULL,
 	[birth_date] [datetime2](7) NULL,
-	[email] [varchar](255) NULL,
-	[gender] [varchar](255) NULL,
+	[email] [varchar](30) NULL,
+	[gender] [varchar](15) NULL,
 	[glpx] [varchar](255) NULL,
 	[join_date] [datetime2](7) NULL,
-	[name] [nvarchar](255) NULL,
-	[password] [varchar](255) NULL,
-	[phone] [varchar](255) NULL,
-	[status] [varchar](255) NULL,
+	[name] [nvarchar](50) NULL,
+	[password] [varchar](100) NOT NULL,
+	[phone] [varchar](20) NULL,
+	[status] [varchar](15) NULL,
 	[thumnail] [varchar](255) NULL,
-	[username] [varchar](255) NULL,
+	[username] [varchar](100) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[account_role]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[account_role]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,7 +117,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[address]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[address]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -125,16 +125,16 @@ GO
 CREATE TABLE [dbo].[address](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[street] [nvarchar](255) NULL,
-	[city_id] [bigint] NULL,
-	[district_id] [bigint] NULL,
-	[ward_id] [bigint] NULL,
+	[city_id] [bigint] NOT NULL,
+	[district_id] [bigint] NOT NULL,
+	[ward_id] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[book]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[book]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -145,10 +145,10 @@ CREATE TABLE [dbo].[book](
 	[end_date] [datetime2](7) NULL,
 	[price] [float] NOT NULL,
 	[start_date] [datetime2](7) NULL,
-	[status] [varchar](255) NULL,
+	[status] [varchar](15) NULL,
 	[total_price] [float] NOT NULL,
-	[account_id] [bigint] NULL,
-	[car_id] [bigint] NULL,
+	[account_id] [bigint] NOT NULL,
+	[car_id] [bigint] NOT NULL,
 	[voucher_id] [bigint] NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -156,21 +156,21 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[brand]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[brand]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[brand](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[name] [varchar](255) NULL,
+	[name] [nvarchar](20) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[car]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[car]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -178,12 +178,12 @@ GO
 CREATE TABLE [dbo].[car](
 	[id] [bigint] NOT NULL,
 	[car_rental_terms] [nvarchar](255) NULL,
-	[color] [nvarchar](255) NULL,
+	[color] [nvarchar](30) NULL,
 	[description] [nvarchar](255) NULL,
-	[fuel] [nvarchar](255) NULL,
-	[fuel_consumption] [nvarchar](255) NULL,
+	[fuel] [nvarchar](30) NULL,
+	[fuel_consumption] [nvarchar](20) NULL,
 	[latitude] [float] NOT NULL,
-	[license_plates] [varchar](255) NULL,
+	[license_plates] [varchar](15) NULL,
 	[longitude] [float] NOT NULL,
 	[modified_date] [datetime2](7) NULL,
 	[price] [float] NOT NULL,
@@ -191,18 +191,18 @@ CREATE TABLE [dbo].[car](
 	[sale_month] [int] NOT NULL,
 	[sale_week] [int] NOT NULL,
 	[seats] [int] NOT NULL,
-	[status] [varchar](255) NULL,
-	[transmission] [nvarchar](255) NULL,
-	[year_of_manufacture] [varchar](255) NULL,
-	[account_supplier_id] [bigint] NULL,
-	[model_id] [bigint] NULL,
+	[status] [varchar](20) NULL,
+	[transmission] [nvarchar](50) NULL,
+	[year_of_manufacture] [nvarchar](10) NULL,
+	[account_supplier_id] [bigint] NOT NULL,
+	[model_id] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[car_feature]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[car_feature]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -212,7 +212,7 @@ CREATE TABLE [dbo].[car_feature](
 	[feature_id] [bigint] NOT NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[car_image]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[car_image]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -220,46 +220,46 @@ GO
 CREATE TABLE [dbo].[car_image](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[image] [varchar](255) NULL,
-	[car_id] [bigint] NULL,
+	[car_id] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[city]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[city]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[city](
 	[id] [bigint] NOT NULL,
-	[code] [varchar](255) NULL,
+	[code] [varchar](50) NULL,
 	[image] [varchar](255) NULL,
-	[name] [nvarchar](255) NULL,
+	[name] [nvarchar](100) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[district]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[district]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[district](
 	[id] [bigint] NOT NULL,
-	[code] [varchar](255) NULL,
-	[name] [nvarchar](255) NULL,
-	[city_id] [bigint] NULL,
+	[code] [varchar](50) NULL,
+	[name] [nvarchar](100) NULL,
+	[city_id] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[feature]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[feature]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -267,29 +267,29 @@ GO
 CREATE TABLE [dbo].[feature](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[icon] [varchar](255) NULL,
-	[name] [nvarchar](255) NULL,
+	[name] [nvarchar](100) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[model]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[model]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[model](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[name] [varchar](255) NULL,
-	[brand_id] [bigint] NULL,
+	[name] [nvarchar](50) NULL,
+	[brand_id] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[notification]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[notification]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -308,7 +308,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[review]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[review]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -318,7 +318,7 @@ CREATE TABLE [dbo].[review](
 	[content] [nvarchar](255) NULL,
 	[review_date] [datetime2](7) NULL,
 	[star_review] [int] NOT NULL,
-	[status] [varchar](255) NULL,
+	[status] [varchar](50) NULL,
 	[account_id] [bigint] NULL,
 	[car_id] [bigint] NULL,
 PRIMARY KEY CLUSTERED 
@@ -327,29 +327,28 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[role]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[role]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[role](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[name] [varchar](255) NULL,
-	[ida] [varchar](255) NULL,
+	[name] [varchar](50) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[voucher]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[voucher]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[voucher](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[code] [varchar](255) NULL,
+	[code] [varchar](50) NULL,
 	[discription] [nvarchar](255) NULL,
 	[end_date] [datetime2](7) NULL,
 	[image] [varchar](255) NULL,
@@ -362,14 +361,14 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ward]    Script Date: 07/10/2022 11:01:54 AM ******/
+/****** Object:  Table [dbo].[ward]    Script Date: 07/10/2022 6:32:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ward](
 	[id] [bigint] NOT NULL,
-	[code] [varchar](255) NULL,
+	[code] [varchar](50) NULL,
 	[name] [nvarchar](255) NULL,
 	[district_id] [bigint] NULL,
 PRIMARY KEY CLUSTERED 
@@ -378,207 +377,131 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-SET IDENTITY_INSERT [dbo].[account] ON 
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (1, N'Ha Noi', NULL, N'Thành phố Hà Nội')
 GO
-INSERT [dbo].[account] ([id], [avatar], [balance], [birth_date], [email], [gender], [glpx], [join_date], [name], [password], [phone], [status], [thumnail], [username]) VALUES (1, N'string', NULL, CAST(N'2022-10-07T10:59:37.2490000' AS DateTime2), N'string', N'FEMALE', N'string', NULL, N'string', N'zzzzz', N'string', NULL, N'string', N'bbba')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (2, N'Ha Giang', NULL, N'Tỉnh Hà Giang')
 GO
-INSERT [dbo].[account] ([id], [avatar], [balance], [birth_date], [email], [gender], [glpx], [join_date], [name], [password], [phone], [status], [thumnail], [username]) VALUES (2, NULL, NULL, CAST(N'2022-10-06T20:10:36.0110000' AS DateTime2), N'ppppppppppppppp', N'MALE', NULL, NULL, N'nnnnnnnnnnnnnnnn', N'zzzzz', NULL, NULL, NULL, N'bbba1111')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (4, N'Cao Bang', NULL, N'Tỉnh Cao Bằng')
 GO
-SET IDENTITY_INSERT [dbo].[account] OFF
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (6, N'Bac Kan', NULL, N'Tỉnh Bắc Kạn')
 GO
-INSERT [dbo].[account_role] ([account_id], [role_id]) VALUES (1, 9)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (8, N'Tuyen Quang', NULL, N'Tỉnh Tuyên Quang')
 GO
-INSERT [dbo].[account_role] ([account_id], [role_id]) VALUES (2, 9)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (10, N'Lao Cai', NULL, N'Tỉnh Lào Cai')
 GO
-SET IDENTITY_INSERT [dbo].[address] ON 
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (11, N'Dien Bien', NULL, N'Tỉnh Điện Biên')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (35, N'fghnb', 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (12, N'Lai Chau', NULL, N'Tỉnh Lai Châu')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (36, N'fghnb', 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (14, N'Son La', NULL, N'Tỉnh Sơn La')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (37, NULL, 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (15, N'Yen Bai', NULL, N'Tỉnh Yên Bái')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (38, NULL, 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (17, N'Hoa Binh', NULL, N'Tỉnh Hoà Bình')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (39, NULL, 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (19, N'Thai Nguyen', NULL, N'Tỉnh Thái Nguyên')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (40, NULL, 1, 5, 169)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (20, N'Lang Son', NULL, N'Tỉnh Lạng Sơn')
 GO
-INSERT [dbo].[address] ([id], [street], [city_id], [district_id], [ward_id]) VALUES (41, N'string', 1, 1, 1)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (22, N'Quang Ninh', NULL, N'Tỉnh Quảng Ninh')
 GO
-SET IDENTITY_INSERT [dbo].[address] OFF
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (24, N'Bac Giang', NULL, N'Tỉnh Bắc Giang')
 GO
-SET IDENTITY_INSERT [dbo].[brand] ON 
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (25, N'Phu Tho', NULL, N'Tỉnh Phú Thọ')
 GO
-INSERT [dbo].[brand] ([id], [name]) VALUES (1, N'tri')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (26, N'Vinh Phuc', NULL, N'Tỉnh Vĩnh Phúc')
 GO
-INSERT [dbo].[brand] ([id], [name]) VALUES (2, N'triii')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (27, N'Bac Ninh', NULL, N'Tỉnh Bắc Ninh')
 GO
-SET IDENTITY_INSERT [dbo].[brand] OFF
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (30, N'Hai Duong', NULL, N'Tỉnh Hải Dương')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (35, N'qqqq', N'blue', N'qqqq', N'so ma', N'gggg', 1, N'23555', 1, NULL, 123, CAST(N'2022-10-06T17:46:12.6890000' AS DateTime2), 1, 1, 11, N'ACTIVE', N'qqqq', N'wwww', 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (31, N'Hai Phong', NULL, N'Thành phố Hải Phòng')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (36, N'qqqq', N'blue', N'qqqq', N'so ma', N'gggg', 1, N'23555', 1, NULL, 123, CAST(N'2022-10-06T17:46:12.6890000' AS DateTime2), 1, 1, 11, N'ACTIVE', N'qqqq', N'wwww', 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (33, N'Hung Yen', NULL, N'Tỉnh Hưng Yên')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (37, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, 123, NULL, 1, 1, 11, N'PENDING_APPROVAL', NULL, NULL, 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (34, N'Thai Binh', NULL, N'Tỉnh Thái Bình')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (38, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, 123, NULL, 1, 1, 0, N'PENDING_APPROVAL', NULL, NULL, 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (35, N'Ha Nam', NULL, N'Tỉnh Hà Nam')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (39, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, 123, NULL, 1, 1, 0, N'PENDING_APPROVAL', NULL, NULL, 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (36, N'Nam Dinh', NULL, N'Tỉnh Nam Định')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (40, NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, 0, 0, 0, N'PENDING_APPROVAL', NULL, NULL, 1, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (37, N'Ninh Binh', NULL, N'Tỉnh Ninh Bình')
 GO
-INSERT [dbo].[car] ([id], [car_rental_terms], [color], [description], [fuel], [fuel_consumption], [latitude], [license_plates], [longitude], [modified_date], [price], [register_date], [sale_month], [sale_week], [seats], [status], [transmission], [year_of_manufacture], [account_supplier_id], [model_id]) VALUES (41, N'string', N'string', N'string', N'string', N'string', 0, N'string', 0, NULL, 0, CAST(N'2022-10-06T18:04:32.8880000' AS DateTime2), 0, 0, 0, N'PENDING_APPROVAL', N'string', N'string', 1, 1)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (38, N'Thanh Hoa', NULL, N'Tỉnh Thanh Hóa')
 GO
-INSERT [dbo].[car_feature] ([car_id], [feature_id]) VALUES (36, 1)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (40, N'Nghe An', NULL, N'Tỉnh Nghệ An')
 GO
-INSERT [dbo].[car_feature] ([car_id], [feature_id]) VALUES (36, 2)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (42, N'Ha Tinh', NULL, N'Tỉnh Hà Tĩnh')
 GO
-INSERT [dbo].[car_feature] ([car_id], [feature_id]) VALUES (36, 3)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (44, N'Quang Binh', NULL, N'Tỉnh Quảng Bình')
 GO
-INSERT [dbo].[car_feature] ([car_id], [feature_id]) VALUES (36, 4)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (45, N'Quang Tri', NULL, N'Tỉnh Quảng Trị')
 GO
-INSERT [dbo].[car_feature] ([car_id], [feature_id]) VALUES (41, 1)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (46, N'Thua Thien Hue', NULL, N'Tỉnh Thừa Thiên Huế')
 GO
-SET IDENTITY_INSERT [dbo].[car_image] ON 
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (48, N'Da Nang', NULL, N'Thành phố Đà Nẵng')
 GO
-INSERT [dbo].[car_image] ([id], [image], [car_id]) VALUES (52, N'string', 36)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (49, N'Quang Nam', NULL, N'Tỉnh Quảng Nam')
 GO
-INSERT [dbo].[car_image] ([id], [image], [car_id]) VALUES (53, N'sdsd', 36)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (51, N'Quang Ngai', NULL, N'Tỉnh Quảng Ngãi')
 GO
-INSERT [dbo].[car_image] ([id], [image], [car_id]) VALUES (54, N'Sdsaaaa', 36)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (52, N'Binh Dinh', NULL, N'Tỉnh Bình Định')
 GO
-INSERT [dbo].[car_image] ([id], [image], [car_id]) VALUES (55, N'aaaaaa', 36)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (54, N'Phu Yen', NULL, N'Tỉnh Phú Yên')
 GO
-INSERT [dbo].[car_image] ([id], [image], [car_id]) VALUES (56, N'string', 41)
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (56, N'Khanh Hoa', NULL, N'Tỉnh Khánh Hòa')
 GO
-SET IDENTITY_INSERT [dbo].[car_image] OFF
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (58, N'Ninh Thuan', NULL, N'Tỉnh Ninh Thuận')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (1, N'HaNoi', NULL, N'Thành phố Hà Nội')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (60, N'Binh Thuan', NULL, N'Tỉnh Bình Thuận')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (2, N'HaGiang', NULL, N'Tỉnh Hà Giang')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (62, N'Kon Tum', NULL, N'Tỉnh Kon Tum')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (4, N'CaoBang', NULL, N'Tỉnh Cao Bằng')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (64, N'Gia Lai', NULL, N'Tỉnh Gia Lai')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (6, N'BacKan', NULL, N'Tỉnh Bắc Kạn')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (66, N'Dak Lak', NULL, N'Tỉnh Đắk Lắk')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (8, N'TuyenQuang', NULL, N'Tỉnh Tuyên Quang')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (67, N'Dak Nong', NULL, N'Tỉnh Đắk Nông')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (10, N'LaoCai', NULL, N'Tỉnh Lào Cai')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (68, N'Lam Dong', NULL, N'Tỉnh Lâm Đồng')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (11, N'DienBien', NULL, N'Tỉnh Điện Biên')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (70, N'Binh Phuoc', NULL, N'Tỉnh Bình Phước')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (12, N'LaiChau', NULL, N'Tỉnh Lai Châu')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (72, N'Tay Ninh', NULL, N'Tỉnh Tây Ninh')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (14, N'SonLa', NULL, N'Tỉnh Sơn La')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (74, N'Binh Duong', NULL, N'Tỉnh Bình Dương')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (15, N'YenBai', NULL, N'Tỉnh Yên Bái')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (75, N'Dong Nai', NULL, N'Tỉnh Đồng Nai')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (17, N'HoaBinh', NULL, N'Tỉnh Hoà Bình')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (77, N'Ba Ria - Vung Tau', NULL, N'Tỉnh Bà Rịa - Vũng Tàu')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (19, N'ThaiNguyen', NULL, N'Tỉnh Thái Nguyên')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (79, N'Ho Chi Minh', NULL, N'Thành phố Hồ Chí Minh')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (20, N'LangSon', NULL, N'Tỉnh Lạng Sơn')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (80, N'Long An', NULL, N'Tỉnh Long An')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (22, N'QuangNinh', NULL, N'Tỉnh Quảng Ninh')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (82, N'Tien Giang', NULL, N'Tỉnh Tiền Giang')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (24, N'BacGiang', NULL, N'Tỉnh Bắc Giang')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (83, N'Ben Tre', NULL, N'Tỉnh Bến Tre')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (25, N'PhuTho', NULL, N'Tỉnh Phú Thọ')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (84, N'Tra Vinh', NULL, N'Tỉnh Trà Vinh')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (26, N'VinhPhuc', NULL, N'Tỉnh Vĩnh Phúc')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (86, N'Vinh Long', NULL, N'Tỉnh Vĩnh Long')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (27, N'BacNinh', NULL, N'Tỉnh Bắc Ninh')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (87, N'Dong Thap', NULL, N'Tỉnh Đồng Tháp')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (30, N'HaiDuong', NULL, N'Tỉnh Hải Dương')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (89, N'An Giang', NULL, N'Tỉnh An Giang')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (31, N'HaiPhong', NULL, N'Thành phố Hải Phòng')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (91, N'Kien Giang', NULL, N'Tỉnh Kiên Giang')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (33, N'HungYen', NULL, N'Tỉnh Hưng Yên')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (92, N'Can Tho', NULL, N'Thành phố Cần Thơ')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (34, N'ThaiBinh', NULL, N'Tỉnh Thái Bình')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (93, N'Hau Giang', NULL, N'Tỉnh Hậu Giang')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (35, N'HaNam', NULL, N'Tỉnh Hà Nam')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (94, N'Soc Trang', NULL, N'Tỉnh Sóc Trăng')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (36, N'NamDinh', NULL, N'Tỉnh Nam Định')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (95, N'Bac Lieu', NULL, N'Tỉnh Bạc Liêu')
 GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (37, N'NinhBinh', NULL, N'Tỉnh Ninh Bình')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (38, N'ThanhHoa', NULL, N'Tỉnh Thanh Hóa')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (40, N'NgheAn', NULL, N'Tỉnh Nghệ An')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (42, N'HaTinh', NULL, N'Tỉnh Hà Tĩnh')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (44, N'QuangBinh', NULL, N'Tỉnh Quảng Bình')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (45, N'QuangTri', NULL, N'Tỉnh Quảng Trị')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (46, N'ThuaThienHue', NULL, N'Tỉnh Thừa Thiên Huế')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (48, N'DaNang', NULL, N'Thành phố Đà Nẵng')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (49, N'QuangNam', NULL, N'Tỉnh Quảng Nam')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (51, N'QuangNgai', NULL, N'Tỉnh Quảng Ngãi')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (52, N'BinhDinh', NULL, N'Tỉnh Bình Định')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (54, N'PhuYen', NULL, N'Tỉnh Phú Yên')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (56, N'KhanhHoa', NULL, N'Tỉnh Khánh Hòa')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (58, N'NinhThuan', NULL, N'Tỉnh Ninh Thuận')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (60, N'BinhThuan', NULL, N'Tỉnh Bình Thuận')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (62, N'KonTum', NULL, N'Tỉnh Kon Tum')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (64, N'GiaLai', NULL, N'Tỉnh Gia Lai')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (66, N'DakLak', NULL, N'Tỉnh Đắk Lắk')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (67, N'DakNong', NULL, N'Tỉnh Đắk Nông')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (68, N'LamDong', NULL, N'Tỉnh Lâm Đồng')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (70, N'BinhPhuoc', NULL, N'Tỉnh Bình Phước')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (72, N'TayNinh', NULL, N'Tỉnh Tây Ninh')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (74, N'BinhDuong', NULL, N'Tỉnh Bình Dương')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (75, N'DongNai', NULL, N'Tỉnh Đồng Nai')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (77, N'BaRia-VungTau', NULL, N'Tỉnh Bà Rịa - Vũng Tàu')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (79, N'HoChiMinh', NULL, N'Thành phố Hồ Chí Minh')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (80, N'LongAn', NULL, N'Tỉnh Long An')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (82, N'TienGiang', NULL, N'Tỉnh Tiền Giang')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (83, N'BenTre', NULL, N'Tỉnh Bến Tre')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (84, N'TraVinh', NULL, N'Tỉnh Trà Vinh')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (86, N'VinhLong', NULL, N'Tỉnh Vĩnh Long')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (87, N'DongThap', NULL, N'Tỉnh Đồng Tháp')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (89, N'AnGiang', NULL, N'Tỉnh An Giang')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (91, N'KienGiang', NULL, N'Tỉnh Kiên Giang')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (92, N'CanTho', NULL, N'Thành phố Cần Thơ')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (93, N'HauGiang', NULL, N'Tỉnh Hậu Giang')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (94, N'SocTrang', NULL, N'Tỉnh Sóc Trăng')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (95, N'BacLieu', NULL, N'Tỉnh Bạc Liêu')
-GO
-INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (96, N'CaMau', NULL, N'Tỉnh Cà Mau')
+INSERT [dbo].[city] ([id], [code], [image], [name]) VALUES (96, N'Ca Mau', NULL, N'Tỉnh Cà Mau')
 GO
 INSERT [dbo].[district] ([id], [code], [name], [city_id]) VALUES (1, N'Ba Dinh', N'Quận Ba Đình', 1)
 GO
@@ -1989,42 +1912,6 @@ GO
 INSERT [dbo].[district] ([id], [code], [name], [city_id]) VALUES (972, N'Phu Tan', N'Huyện Phú Tân', 96)
 GO
 INSERT [dbo].[district] ([id], [code], [name], [city_id]) VALUES (973, N'Ngoc Hien', N'Huyện Ngọc Hiển', 96)
-GO
-SET IDENTITY_INSERT [dbo].[feature] ON 
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (1, N'3', N'3')
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (2, N'33', N'3')
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (3, N'33', N'3')
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (4, N'33', N'33')
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (5, N'33', NULL)
-GO
-INSERT [dbo].[feature] ([id], [icon], [name]) VALUES (6, N'3', N'33')
-GO
-SET IDENTITY_INSERT [dbo].[feature] OFF
-GO
-SET IDENTITY_INSERT [dbo].[model] ON 
-GO
-INSERT [dbo].[model] ([id], [name], [brand_id]) VALUES (1, N'yyy', 1)
-GO
-INSERT [dbo].[model] ([id], [name], [brand_id]) VALUES (2, N'trtrt', 2)
-GO
-SET IDENTITY_INSERT [dbo].[model] OFF
-GO
-SET IDENTITY_INSERT [dbo].[role] ON 
-GO
-INSERT [dbo].[role] ([id], [name], [ida]) VALUES (9, N'US', NULL)
-GO
-SET IDENTITY_INSERT [dbo].[role] OFF
-GO
-SET IDENTITY_INSERT [dbo].[voucher] ON 
-GO
-INSERT [dbo].[voucher] ([id], [code], [discription], [end_date], [image], [max_discount], [percentage], [start_date]) VALUES (2, N'1', N'1', NULL, NULL, 1, 1, NULL)
-GO
-SET IDENTITY_INSERT [dbo].[voucher] OFF
 GO
 INSERT [dbo].[ward] ([id], [code], [name], [district_id]) VALUES (1, N'Phuc Xa', N'Phường Phúc Xá', 1)
 GO
@@ -23223,6 +23110,14 @@ GO
 INSERT [dbo].[ward] ([id], [code], [name], [district_id]) VALUES (32245, N'Tan An', N'Xã Tân Ân', 973)
 GO
 INSERT [dbo].[ward] ([id], [code], [name], [district_id]) VALUES (32248, N'Dat Mui', N'Xã Đất Mũi', 973)
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UK_gex1lmaqpg0ir5g1f5eftyaa1]    Script Date: 07/10/2022 6:32:00 PM ******/
+ALTER TABLE [dbo].[account] ADD  CONSTRAINT [UK_gex1lmaqpg0ir5g1f5eftyaa1] UNIQUE NONCLUSTERED 
+(
+	[username] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[account_role]  WITH CHECK ADD  CONSTRAINT [FK1f8y4iy71kb1arff79s71j0dh] FOREIGN KEY([account_id])
 REFERENCES [dbo].[account] ([id])
