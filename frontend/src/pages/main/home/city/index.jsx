@@ -12,7 +12,7 @@ function City() {
       })
         .then((res) => {
           console.log("🚀res", res);
-          //   setListCity(res.data);
+          setListCity(res.data);
         })
         .catch((err) => {
           console.error(err);

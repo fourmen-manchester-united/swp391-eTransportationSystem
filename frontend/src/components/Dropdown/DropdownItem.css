@@ -1,0 +1,13 @@
+.menu-item {
+  height: 50px;
+  display: flex;
+  color: #fff;
+  align-items: center;
+  border-radius: var(--border-radius);
+  transition: background 200;
+  padding: 0.5rem;
+}
+
+.menu-item:hover {
+  background-color: #525357;
+}

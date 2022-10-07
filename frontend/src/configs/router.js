@@ -8,6 +8,8 @@ import Login from "../pages/main/login";
 // import SettingProfile from "../pages/main/settingProfile";
 import Dashboard from "../pages/admin/Dashboard";
 import Register from "../pages/main/register";
+import Profile from "../pages/main/home/profile";
+import CarRegisterMode from "../pages/main/carRegisterMode";
 
 export const mainRouter = [
   {
@@ -16,20 +18,15 @@ export const mainRouter = [
     Component: Home,
   },
   {
-    path: "/login",
-    exact: false,
-    Component: Login,
+    path: "/profile/:id",
+    exact: true,
+    Component: Profile,
   },
   {
-    path: "/register",
-    exact: false,
-    Component: Register,
+    path: "/carRegisterMode",
+    exact: true,
+    Component: CarRegisterMode,
   },
-  //   {
-  //     path: "/profile/:username",
-  //     exact: true,
-  //     Component: Profile,
-  //   },
   //   {
   //     path: "/search",
   //     exact: true,
@@ -42,6 +39,23 @@ export const mainRouter = [
   //   },
   {
     Component: Err,
+  },
+];
+export const signRouter = [
+  {
+    path: "/zxc",
+    exact: true,
+    Component: Home,
+  },
+  {
+    path: "/login",
+    exact: false,
+    Component: Login,
+  },
+  {
+    path: "/register",
+    exact: false,
+    Component: Register,
   },
 ];
 export const adminRouter = [
