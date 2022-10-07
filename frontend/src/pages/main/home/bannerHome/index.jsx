@@ -12,7 +12,7 @@ function BannerHome() {
     >
       <div className="container" id="home-box">
         <h1 className="slogan landing-text">
-          OTO - CÙNG BAN TRÊN MỌI HÀNH TRÌNH
+          OTO - CÙNG BẠN TRÊN MỌI HÀNH TRÌNH
         </h1>
         <div className="search-by-service__container  ">
           <div className="search-by-service__wrapper">
