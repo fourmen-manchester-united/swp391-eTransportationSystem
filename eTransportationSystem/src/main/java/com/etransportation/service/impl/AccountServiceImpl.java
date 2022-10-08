@@ -1,5 +1,6 @@
 package com.etransportation.service.impl;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,6 +69,7 @@ public class AccountServiceImpl implements AccountService {
                 .name(registerRequest.getName())
                 .password(registerRequest.getPassword())
                 .roles(roles)
+                .joinDate(new Date())
                 .build();
 
         accountRepository.save(account);

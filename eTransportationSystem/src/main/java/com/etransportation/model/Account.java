@@ -17,10 +17,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.etransportation.enums.AccountGender;
 import com.etransportation.enums.AccountStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,6 +52,8 @@ public class Account extends Base {
     @Column(columnDefinition = "varchar(15)")
     private AccountGender gender;
 
+    @Column(columnDefinition = "date")
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private Date birthDate;
 
     @Column(columnDefinition = "varchar(30)")
@@ -60,6 +64,9 @@ public class Account extends Base {
     private String avatar;
     private String thumnail;
     private Double balance;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @Temporal(TemporalType.DATE)
     private Date joinDate;
 
     @Enumerated(EnumType.STRING)

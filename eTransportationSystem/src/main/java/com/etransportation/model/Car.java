@@ -17,8 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.etransportation.enums.CarStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,13 +38,10 @@ public class Car extends Base {
     @Column(columnDefinition = "nvarchar(30)")
     private String fuel;
 
-    @Column(columnDefinition = "nvarchar(30)")
-    private String color;
-
     @Column(columnDefinition = "varchar(15)")
     private String licensePlates;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(columnDefinition = "nvarchar(MAX)")
     private String description;
 
     @Column(columnDefinition = "nvarchar(20)")
@@ -53,14 +53,17 @@ public class Car extends Base {
     @Column(columnDefinition = "nvarchar(10)")
     private String yearOfManufacture;
 
-    @Column(columnDefinition = "nvarchar(255)")
-    private String carRentalTerms;
-
     private int saleWeek;
     private int saleMonth;
     private double longitude;
     private double latitude;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @Temporal(TemporalType.DATE)
     private Date modifiedDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @Temporal(TemporalType.DATE)
     private Date registerDate;
 
     @Column(columnDefinition = "varchar(20)")

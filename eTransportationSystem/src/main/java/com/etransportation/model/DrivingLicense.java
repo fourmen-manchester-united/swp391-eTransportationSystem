@@ -10,8 +10,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.etransportation.enums.DrivingLicenseStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +30,11 @@ public class DrivingLicense extends Base {
 
     @Column(columnDefinition = "nvarchar(50)")
     private String name;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
+
     private String imageFront;
 
     @Enumerated(EnumType.STRING)
