@@ -2,6 +2,7 @@ package com.etransportation.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Address;
 import com.etransportation.model.City;
-import com.etransportation.payload.response.CarInfoResponse;
+import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.CityDetailResponse;
 import com.etransportation.payload.response.CityResponse;
 import com.etransportation.repository.CityRepository;
@@ -50,9 +51,9 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CarInfoResponse> findAllCarsByCity(String code) {
-        List<CarInfoResponse> listCarInfoResponse = new ArrayList<>();
-        CarInfoResponse carInfoResponse;
+    public List<CarShortInfoResponse> findAllCarsByCity(String code) {
+        List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<>();
+        CarShortInfoResponse carInfoResponse;
         City city = cityRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("City not found"));
         if (city.getAddresss().isEmpty() || city.getAddresss() == null) {
             throw new IllegalArgumentException("No Car in this city");
@@ -60,13 +61,26 @@ public class CityServiceImpl implements CityService {
 
         for (Address address : city.getAddresss()) {
             if (address.getCar().getStatus().equals(CarStatus.ACTIVE)) {
-                carInfoResponse = new CarInfoResponse();
-                carInfoResponse = modelMapper.map(address.getCar(), CarInfoResponse.class);
+                carInfoResponse = new CarShortInfoResponse();
+                carInfoResponse = modelMapper.map(address.getCar(), CarShortInfoResponse.class);
                 carInfoResponse.setName(address.getCar().getModel().getName());
                 carInfoResponse.setAddressInfo(address.getDistrict().getName() + ", " + address.getCity().getName());
-                carInfoResponse.setAccountInfo(accountService.findAccountById(address.getCar().getAccount().getId()));
+                carInfoResponse
+                        .setCarImage(
+                                address
+                                        .getCar()
+                                        .getCarImages()
+                                        .get(new Random()
+                                                .nextInt(address
+                                                        .getCar().getCarImages()
+                                                        .size()))
+                                        .getImage());
                 listCarInfoResponse.add(carInfoResponse);
             }
+        }
+
+        if (listCarInfoResponse.isEmpty()) {
+            throw new IllegalArgumentException("No Car in this city or car is not active");
         }
 
         return listCarInfoResponse;

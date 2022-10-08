@@ -8,7 +8,7 @@ import com.etransportation.model.Feature;
 import lombok.Data;
 
 @Data
-public class CarInfoResponse {
+public class CarDetailInfoResponse {
 
     private Long id;
     private String name;
@@ -27,7 +27,7 @@ public class CarInfoResponse {
     private double longitude;
     private double latitude;
 
-    private AccountInfoResponse accountInfo;
+    private Long accountId;
 
     private String addressInfo;
     // private List<Book> books;

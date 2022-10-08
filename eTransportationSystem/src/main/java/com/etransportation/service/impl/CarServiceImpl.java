@@ -19,6 +19,7 @@ import com.etransportation.model.Feature;
 import com.etransportation.model.Ward;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
+import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.CarBrandRepository;
@@ -128,6 +129,18 @@ public class CarServiceImpl implements CarService {
             }
         }
         carImageRepository.saveAll(listCarImage);
+    }
+
+    @Override
+    public CarDetailInfoResponse findCarDetailInfo(Long carId) {
+        Car car = carRepository.findById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
+        carDetailInfoResponse.setName(car.getModel().getName());
+        carDetailInfoResponse.setAddressInfo(
+                car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
+        carDetailInfoResponse.setAccountId(car.getAccount().getId());
+
+        return carDetailInfoResponse;
     }
 
 }
