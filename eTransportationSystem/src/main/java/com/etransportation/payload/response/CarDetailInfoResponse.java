@@ -15,13 +15,11 @@ public class CarDetailInfoResponse {
     private int seats;
     private double price;
     private String fuel;
-    private String color;
     private String licensePlates;
     private String description;
     private String fuelConsumption;
     private String transmission;
     private String yearOfManufacture;
-    private String carRentalTerms;
     private int saleWeek;
     private int saleMonth;
     private double longitude;

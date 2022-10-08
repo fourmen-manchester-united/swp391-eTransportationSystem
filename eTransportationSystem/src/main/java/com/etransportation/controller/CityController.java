@@ -29,11 +29,12 @@ public class CityController {
         return new ResponseEntity<>(listCityResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/details")
-    public ResponseEntity<?> getAllCitiesWithDetails() {
-        List<CityDetailResponse> listCityDetailResponse = cityService.findAllCityDetail();
-        return new ResponseEntity<>(listCityDetailResponse, HttpStatus.OK);
-    }
+    // @GetMapping("/details")
+    // public ResponseEntity<?> getAllCitiesWithDetails() {
+    // List<CityDetailResponse> listCityDetailResponse =
+    // cityService.findAllCityDetail();
+    // return new ResponseEntity<>(listCityDetailResponse, HttpStatus.OK);
+    // }
 
     @GetMapping("/{code}")
     public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code) {

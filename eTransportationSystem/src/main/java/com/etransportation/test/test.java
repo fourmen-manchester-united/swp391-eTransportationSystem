@@ -36,37 +36,38 @@ public class test {
     @Autowired
     private WardRepository wardRepository;
 
-    @GetMapping("/city")
-    public void city() {
-        List<City> city = cityRepository.findAll();
-        for (City ci : city) {
-            ci.setCode(ci.getCode().replaceAll(" ", ""));
-            cityRepository.save(ci);
-        }
-    }
+    // @GetMapping("/city")
+    // public void city() {
+    // List<City> city = cityRepository.findAll();
+    // for (City ci : city) {
+    // ci.setCode(ci.getCode().replaceAll(" ", ""));
+    // cityRepository.save(ci);
+    // }
+    // }
 
-    @GetMapping("/district")
-    public void district() {
-        List<District> district = districtRepository.findAll();
-        for (District ci : district) {
-            ci.setCode(ci.getCode().replaceAll(" ", ""));
-            districtRepository.save(ci);
-        }
-    }
+    // @GetMapping("/district")
+    // public void district() {
+    // List<District> district = districtRepository.findAll();
+    // for (District ci : district) {
+    // ci.setCode(ci.getCode().replaceAll(" ", ""));
+    // districtRepository.save(ci);
+    // }
+    // }
 
-    @GetMapping("/ward")
-    public void ward() {
-        List<Ward> ward = wardRepository.findAll();
-        for (Ward ci : ward) {
-            ci.setCode(ci.getCode().replaceAll(" ", ""));
-            wardRepository.save(ci);
-        }
-    }
+    // @GetMapping("/ward")
+    // public void ward() {
+    // List<Ward> ward = wardRepository.findAll();
+    // for (Ward ci : ward) {
+    // ci.setCode(ci.getCode().replaceAll(" ", ""));
+    // wardRepository.save(ci);
+    // }
+    // }
 
-    @GetMapping("/city/car/{code}")
-    public ResponseEntity<?> car(@PathVariable String code) {
-        City city = cityRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("City not found"));
-        return ResponseEntity.ok(city);
-    }
+    // @GetMapping("/city/car/{code}")
+    // public ResponseEntity<?> car(@PathVariable String code) {
+    // City city = cityRepository.findByCode(code).orElseThrow(() -> new
+    // IllegalArgumentException("City not found"));
+    // return ResponseEntity.ok(city);
+    // }
 
 }
