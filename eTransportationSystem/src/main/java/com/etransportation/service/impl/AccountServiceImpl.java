@@ -136,8 +136,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
-        // TODO Auto-generated method stub
-        return null;
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+        if (account.getDrivingLicense() == null) {
+            throw new IllegalArgumentException("Account is not have driving license!");
+        }
+        return modelMapper.map(account.getDrivingLicense(), DriverLicenseInfoResponse.class);
     }
 
     @Override
@@ -145,10 +149,13 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findById(driverLicenseInfoRequest.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
         DrivingLicense drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
+        if (account.getDrivingLicense() != null) {
+            drivingLicense.setId(account.getDrivingLicense().getId());
+        }
+
         drivingLicense.setStatus(DrivingLicenseStatus.VERIFICATION_PENDING);
         drivingLicense.setAccount(account);
         drivingLicenseRepository.save(drivingLicense);
-
     }
 
 }
