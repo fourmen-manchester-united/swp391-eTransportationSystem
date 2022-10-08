@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.ChangePasswordRequest;
+import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
+import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.service.AccountService;
 
@@ -66,6 +68,21 @@ public class AccountController {
         }
         accountService.updateInfoAccount(accountInfoRequest);
         return ResponseEntity.ok("Update Account successfully");
+    }
+
+    @GetMapping("/driver/{id}")
+    public ResponseEntity<?> getDriverLicenseInfo(@PathVariable Long id) {
+        DriverLicenseInfoResponse getDriverLicense = accountService.findAccountDriverLicenseInfo(id);
+        return ResponseEntity.ok(getDriverLicense);
+    }
+
+    @PostMapping("/driver")
+    public ResponseEntity<?> updateDriverLicenseInfo(@RequestBody DriverLicenseInfoRequest driverLicenseInfoRequest) {
+        if (driverLicenseInfoRequest.getAccountId() == null) {
+            throw new IllegalArgumentException("account Id is null!");
+        }
+        accountService.updateDriverLicenseInfo(driverLicenseInfoRequest);
+        return ResponseEntity.ok("update driver license info successfully");
     }
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.etransportation.enums.AccountGender;
@@ -49,7 +51,6 @@ public class Account extends Base {
     private AccountGender gender;
 
     private Date birthDate;
-    private String glpx;
 
     @Column(columnDefinition = "varchar(30)")
     private String email;
@@ -82,6 +83,10 @@ public class Account extends Base {
 
     @OneToMany(mappedBy = "account")
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToOne(mappedBy = "account")
+    @PrimaryKeyJoinColumn
+    private DrivingLicense drivingLicense;
 
     // getter and setter
 }

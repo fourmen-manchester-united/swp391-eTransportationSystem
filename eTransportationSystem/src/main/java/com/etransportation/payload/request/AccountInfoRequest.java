@@ -13,7 +13,6 @@ public class AccountInfoRequest {
     private String name;
     private AccountGender gender;
     private Date birthDate;
-    private String glpx;
     private String email;
     private String phone;
     private String avatar;

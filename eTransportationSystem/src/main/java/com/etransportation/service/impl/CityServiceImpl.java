@@ -32,7 +32,8 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<CityResponse> findAllCity() {
-        List<City> city = cityRepository.findAll();
+        // List<City> city = cityRepository.findAll();
+        List<City> city = cityRepository.findTop10ByOrderByIdAsc();
         List<CityResponse> listCityResponse = modelMapper.map(city, new TypeToken<List<CityResponse>>() {
         }.getType());
         return listCityResponse;
