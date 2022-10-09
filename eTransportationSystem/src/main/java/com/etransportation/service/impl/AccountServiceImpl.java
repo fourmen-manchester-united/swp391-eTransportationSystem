@@ -56,9 +56,9 @@ public class AccountServiceImpl implements AccountService {
         }
 
         // Create new user's account
-        Role role = roleRepository.findByName(RoleAccount.US).orElseGet(() -> Role
+        Role role = roleRepository.findByName(RoleAccount.USER).orElseGet(() -> Role
                 .builder()
-                .name(RoleAccount.US)
+                .name(RoleAccount.USER)
                 .build());
 
         roleRepository.save(role);
