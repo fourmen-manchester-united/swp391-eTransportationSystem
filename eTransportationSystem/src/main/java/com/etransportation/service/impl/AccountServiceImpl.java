@@ -7,6 +7,7 @@ import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private DrivingLicenseRepository drivingLicenseRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     @Transactional
     public void register(AccountRegisterRequest registerRequest) {
@@ -66,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
                 .builder()
                 .username(registerRequest.getUsername())
                 .name(registerRequest.getName())
-                .password(registerRequest.getPassword())
+                .password(bCryptPasswordEncoder.encode(registerRequest.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.ACTIVE)
                 .build();
@@ -79,8 +83,13 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
         Account account = accountRepository
-                .findOneByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword())
-                .orElseThrow(() -> new IllegalArgumentException("Username or password is incorrect!"));
+                .findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Username is incorrect!"));
+
+        if (!bCryptPasswordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
+            throw new IllegalArgumentException("Password is incorrect!");
+        }
+
         return modelMapper.map(account, LoginResponse.class);
     }
 
@@ -88,16 +97,12 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
 
-        Long id = changePasswordRequest.getId();
-        String oldPassword = changePasswordRequest.getOldPassword();
-        String newPassword = changePasswordRequest.getNewPassword();
-
-        Account account = accountRepository.findById(id)
+        Account account = accountRepository.findById(changePasswordRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        if (!account.getPassword().equals(oldPassword)) {
+        if (!bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect!");
         }
-        account.setPassword(newPassword);
+        account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
         accountRepository.save(account);
     }
 
