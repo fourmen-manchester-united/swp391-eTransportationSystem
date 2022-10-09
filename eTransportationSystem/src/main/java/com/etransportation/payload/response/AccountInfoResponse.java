@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import com.etransportation.enums.AccountGender;
-import com.etransportation.model.Role;
+import com.etransportation.payload.dto.RoleDTO;
 
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class AccountInfoResponse {
     private String avatar;
     private String thumnail;
     private Double balance;
-    private Set<Role> roles;
+    private Set<RoleDTO> roles;
     private Date joinDate;
 
 }

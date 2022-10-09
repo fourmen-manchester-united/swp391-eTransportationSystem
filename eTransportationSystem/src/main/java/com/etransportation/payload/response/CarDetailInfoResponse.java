@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.etransportation.model.CarImage;
 import com.etransportation.model.Feature;
+import com.etransportation.payload.dto.AccountDTO;
+import com.etransportation.payload.dto.CarImageDTO;
+import com.etransportation.payload.dto.FeatureDTO;
 
 import lombok.Data;
 
@@ -25,11 +28,11 @@ public class CarDetailInfoResponse {
     private double longitude;
     private double latitude;
 
-    private Long accountId;
+    private AccountDTO account;
 
     private String addressInfo;
     // private List<Book> books;
     // private List<Review> reviews;
-    private List<CarImage> carImages;
-    private List<Feature> features;
+    private List<CarImageDTO> carImages;
+    private List<FeatureDTO> features;
 }

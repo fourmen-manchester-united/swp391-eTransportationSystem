@@ -2,7 +2,7 @@ package com.etransportation.payload.response;
 
 import java.util.List;
 
-import com.etransportation.model.CarModel;
+import com.etransportation.payload.dto.CarModelDTO;
 
 import lombok.Data;
 
@@ -11,6 +11,6 @@ public class CarBrandResponse {
 
     private Long id;
     private String name;
-    private List<CarModel> carModels;
+    private List<CarModelDTO> carModels;
 
 }

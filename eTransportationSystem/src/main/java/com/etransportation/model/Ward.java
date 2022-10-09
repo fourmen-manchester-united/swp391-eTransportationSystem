@@ -30,12 +30,10 @@ public class Ward extends Base {
 
     // relationship
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "district_id")
     private District district;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "ward")
     private List<Address> addresss = new ArrayList<Address>();
 

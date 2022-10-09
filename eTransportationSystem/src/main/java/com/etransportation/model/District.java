@@ -29,7 +29,6 @@ public class District extends Base {
 
     // relationship
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
@@ -37,7 +36,6 @@ public class District extends Base {
     @OneToMany(mappedBy = "district")
     private List<Ward> wards = new ArrayList<Ward>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "district")
     private List<Address> addresss = new ArrayList<Address>();
 

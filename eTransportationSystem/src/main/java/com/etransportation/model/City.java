@@ -30,7 +30,6 @@ public class City extends Base {
 
     // relationship
 
-    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<District> districts = new ArrayList<District>();
 

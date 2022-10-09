@@ -2,7 +2,7 @@ package com.etransportation.payload.response;
 
 import java.util.List;
 
-import com.etransportation.model.District;
+import com.etransportation.payload.dto.DistrictDTO;
 
 import lombok.Data;
 
@@ -12,5 +12,5 @@ public class CityDetailResponse {
     private Long id;
     private String code;
     private String name;
-    private List<District> districts;
+    private List<DistrictDTO> districts;
 }

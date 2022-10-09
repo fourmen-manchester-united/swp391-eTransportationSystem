@@ -26,7 +26,6 @@ public class Feature extends Base {
 
     // relationship
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "features")
     private List<Car> cars = new ArrayList<Car>();
 

@@ -34,7 +34,6 @@ public class Role extends Base {
 
     // relationship
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<Account> accounts = new ArrayList<>();
 

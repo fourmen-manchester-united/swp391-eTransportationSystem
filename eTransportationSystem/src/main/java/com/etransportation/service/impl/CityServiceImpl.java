@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Address;
@@ -32,6 +33,7 @@ public class CityServiceImpl implements CityService {
     private AccountService accountService;
 
     @Override
+    @Transactional
     public List<CityResponse> findAllCity() {
         // List<City> city = cityRepository.findAll();
         List<City> city = cityRepository.findTop10ByOrderByIdAsc();
@@ -42,6 +44,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public List<CityDetailResponse> findAllCityDetail() {
         List<City> city = cityRepository.findAll();
         List<CityDetailResponse> listCityDetailResponse = modelMapper.map(city,
@@ -51,6 +54,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public List<CarShortInfoResponse> findAllCarsByCity(String code) {
         List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<>();
         CarShortInfoResponse carInfoResponse;

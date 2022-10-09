@@ -1,20 +1,10 @@
 package com.etransportation.payload.request;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import com.etransportation.enums.CarStatus;
-import com.etransportation.model.Account;
-import com.etransportation.model.Address;
-import com.etransportation.model.Book;
-import com.etransportation.model.CarImage;
-import com.etransportation.model.CarModel;
-import com.etransportation.model.Feature;
-import com.etransportation.model.Review;
+import com.etransportation.payload.dto.CarImageDTO;
+import com.etransportation.payload.dto.IdDTO;
 
 import lombok.Data;
 
@@ -33,13 +23,14 @@ public class CarRegisterRequest {
     private int saleMonth;
     private double longitude;
     private double latitude;
-    private Date registerDate;
 
-    private Long accountId;
-    private Long modelId;
-    private Long wardId;
+    private IdDTO account;
+    private IdDTO model;
+    private IdDTO ward;
     private String street;
-    private List<String> listCarImages;
-    private List<Long> featuresId;
+    private List<CarImageDTO> carImages;
+    private List<IdDTO> features;
+
+    // features carImages
 
 }

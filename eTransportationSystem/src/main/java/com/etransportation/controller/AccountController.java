@@ -78,7 +78,7 @@ public class AccountController {
 
     @PostMapping("/driver")
     public ResponseEntity<?> updateDriverLicenseInfo(@RequestBody DriverLicenseInfoRequest driverLicenseInfoRequest) {
-        if (driverLicenseInfoRequest.getAccountId() == null) {
+        if (driverLicenseInfoRequest.getAccount_Id() == null) {
             throw new IllegalArgumentException("account Id is null!");
         }
         accountService.updateDriverLicenseInfo(driverLicenseInfoRequest);

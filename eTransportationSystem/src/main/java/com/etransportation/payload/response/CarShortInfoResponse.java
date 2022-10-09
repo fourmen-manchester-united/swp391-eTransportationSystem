@@ -1,10 +1,5 @@
 package com.etransportation.payload.response;
 
-import java.util.List;
-
-import com.etransportation.model.CarImage;
-import com.etransportation.model.Feature;
-
 import lombok.Data;
 
 @Data

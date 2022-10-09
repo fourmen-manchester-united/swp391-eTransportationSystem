@@ -25,13 +25,10 @@ public class CarModel extends Base {
     private String name;
 
     // relationship
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private CarBrand brand;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "model")
     private List<Car> cars = new ArrayList<Car>();
 

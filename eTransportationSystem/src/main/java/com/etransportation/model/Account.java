@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
@@ -19,6 +20,12 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.etransportation.enums.AccountGender;
 import com.etransportation.enums.AccountStatus;
@@ -37,6 +44,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Account extends Base {
 
     @Column(columnDefinition = "nvarchar(50)")
@@ -65,9 +73,26 @@ public class Account extends Base {
     private String thumnail;
     private Double balance;
 
+    // jpa listing auditing
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     @Temporal(TemporalType.DATE)
+    @CreatedDate
     private Date joinDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    @Column(columnDefinition = "datetime2(0)")
+    @LastModifiedDate
+    private Date modifiedDate;
+
+    @Column(columnDefinition = "nvarchar(50)")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(columnDefinition = "nvarchar(50)")
+    @LastModifiedBy
+    private String modifiedBy;
+
+    // ------------------------------------------------------
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(15)")

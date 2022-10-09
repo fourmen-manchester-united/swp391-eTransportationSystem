@@ -8,7 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.etransportation.enums.AccountStatus;
 import com.etransportation.enums.DrivingLicenseStatus;
 import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
@@ -43,16 +45,13 @@ public class AccountServiceImpl implements AccountService {
     private DrivingLicenseRepository drivingLicenseRepository;
 
     @Override
+    @Transactional
     public void register(AccountRegisterRequest registerRequest) {
         if (accountRepository.existsByUsername(registerRequest.getUsername())) {
-            // ResponseEntity<?> response = ResponseEntity.badRequest().body("Error:
-            // Username is already taken!");
             throw new IllegalArgumentException("Username is already taken!");
         }
 
         // Create new user's account
-        // Account account = modelMapper.map(registerRequest, Account.class);
-
         Role role = roleRepository.findByName(RoleAccount.US).orElseGet(() -> Role
                 .builder()
                 .name(RoleAccount.US)
@@ -69,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
                 .name(registerRequest.getName())
                 .password(registerRequest.getPassword())
                 .roles(roles)
-                .joinDate(new Date())
+                .status(AccountStatus.ACTIVE)
                 .build();
 
         accountRepository.save(account);
@@ -77,25 +76,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
         Account account = accountRepository
                 .findOneByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("Username or password is incorrect!"));
-
-        // khong hay lam
-
-        // LoginResponse loginResponse = LoginResponse
-        // .builder()
-        // .username(account.getUsername())
-        // .email(account.getEmail())
-        // .name(account.getName())
-        // .build();
-
-        // cach 2 model map gon va hay hon
         return modelMapper.map(account, LoginResponse.class);
     }
 
     @Override
+    @Transactional
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
 
         Long id = changePasswordRequest.getId();
@@ -104,17 +94,15 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-
         if (!account.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("Old password is incorrect!");
         }
-
         account.setPassword(newPassword);
         accountRepository.save(account);
-
     }
 
     @Override
+    @Transactional
     public AccountInfoResponse findAccountById(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
@@ -122,21 +110,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void updateInfoAccount(AccountInfoRequest accountInfoRequest) {
         Account account = accountRepository.findById(accountInfoRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        account.setName(accountInfoRequest.getName());
-        account.setGender(accountInfoRequest.getGender());
-        account.setBirthDate(accountInfoRequest.getBirthDate());
-        account.setEmail(accountInfoRequest.getEmail());
-        account.setPhone(accountInfoRequest.getPhone());
-        account.setAvatar(accountInfoRequest.getAvatar());
-        account.setThumnail(accountInfoRequest.getThumnail());
-
+        modelMapper.map(accountInfoRequest, account);
         accountRepository.save(account);
     }
 
     @Override
+    @Transactional
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
@@ -146,13 +129,17 @@ public class AccountServiceImpl implements AccountService {
         return modelMapper.map(account.getDrivingLicense(), DriverLicenseInfoResponse.class);
     }
 
+    // test
     @Override
+    @Transactional
     public void updateDriverLicenseInfo(DriverLicenseInfoRequest driverLicenseInfoRequest) {
-        Account account = accountRepository.findById(driverLicenseInfoRequest.getAccountId())
+        Account account = accountRepository.findById(driverLicenseInfoRequest.getAccount_Id())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        DrivingLicense drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
+        DrivingLicense drivingLicense = account.getDrivingLicense();
         if (account.getDrivingLicense() != null) {
-            drivingLicense.setId(account.getDrivingLicense().getId());
+            modelMapper.map(driverLicenseInfoRequest, drivingLicense);
+        } else {
+            drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
         }
 
         drivingLicense.setStatus(DrivingLicenseStatus.VERIFICATION_PENDING);

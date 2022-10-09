@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.model.Voucher;
 import com.etransportation.payload.response.VoucherResponse;
@@ -22,6 +23,7 @@ public class VoucherServiceImpl implements VoucherService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public List<VoucherResponse> findAllVoucher() {
         List<Voucher> voucher = voucherRepository.findAll();
         List<VoucherResponse> listVoucherResponse = modelMapper.map(voucher, new TypeToken<List<VoucherResponse>>() {

@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Account;
@@ -33,114 +34,81 @@ import com.etransportation.service.CarService;
 @Service
 public class CarServiceImpl implements CarService {
 
-    @Autowired
-    private CarBrandRepository carBrandRepository;
+        @Autowired
+        private CarBrandRepository carBrandRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        private ModelMapper modelMapper;
 
-    @Autowired
-    private AccountRepository accountRepository;
+        @Autowired
+        private AccountRepository accountRepository;
 
-    @Autowired
-    private CarModelRepository carModelRepository;
+        @Autowired
+        private CarModelRepository carModelRepository;
 
-    @Autowired
-    private WardRepository wardRepository;
+        @Autowired
+        private WardRepository wardRepository;
 
-    @Autowired
-    private FeatureRepository featureRepository;
+        @Autowired
+        private FeatureRepository featureRepository;
 
-    @Autowired
-    private CarRepository carRepository;
+        @Autowired
+        private CarRepository carRepository;
 
-    @Autowired
-    private CarImageRepository carImageRepository;
+        @Autowired
+        private CarImageRepository carImageRepository;
 
-    @Autowired
-    private AddressRepository addressRepository;
+        @Autowired
+        private AddressRepository addressRepository;
 
-    @Override
-    public List<CarBrandResponse> findAllCarBrands() {
-        List<CarBrand> carBrand = carBrandRepository.findAll();
-        List<CarBrandResponse> carBrandResponse = modelMapper.map(carBrand, new TypeToken<List<CarBrandResponse>>() {
-        }.getType());
-        return carBrandResponse;
-    }
-
-    @Override
-    public void save(CarRegisterRequest carRegisterRequest) {
-        Car car = modelMapper.map(carRegisterRequest, Car.class);
-
-        // set id accout register to car
-        Account account = accountRepository.findById(carRegisterRequest.getAccountId())
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
-
-        car.setAccount(account);
-
-        // set id model register to car
-        CarModel carModel = carModelRepository.findById(carRegisterRequest.getModelId())
-                .orElseThrow(() -> new IllegalArgumentException("Car model not found"));
-
-        car.setModel(carModel);
-
-        // set address register to car
-
-        Ward ward = wardRepository.findById(carRegisterRequest.getWardId())
-                .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
-
-        Address address = Address
-                .builder()
-                .ward(ward)
-                .district(ward.getDistrict())
-                .city(ward.getDistrict().getCity())
-                .street(carRegisterRequest.getStreet())
-                .build();
-
-        car.setAddress(address);
-
-        // set id feature register to car
-        List<Feature> listFeature = new ArrayList<Feature>();
-        Feature feature = new Feature();
-        if (carRegisterRequest.getFeaturesId() != null && !carRegisterRequest.getFeaturesId().isEmpty()) {
-            for (Long idFeature : carRegisterRequest.getFeaturesId()) {
-                feature = featureRepository.findById(idFeature)
-                        .orElseThrow(() -> new IllegalArgumentException("Feature not found"));
-                listFeature.add(feature);
-            }
+        @Override
+        @Transactional
+        public List<CarBrandResponse> findAllCarBrands() {
+                List<CarBrand> carBrand = carBrandRepository.findAll();
+                List<CarBrandResponse> carBrandResponse = modelMapper.map(carBrand,
+                                new TypeToken<List<CarBrandResponse>>() {
+                                }.getType());
+                return carBrandResponse;
         }
 
-        car.setFeatures(listFeature);
-
-        car.setStatus(CarStatus.PENDING_APPROVAL);
-
-        carRepository.save(car);
-
-        // set image register to car
-        List<CarImage> listCarImage = new ArrayList<CarImage>();
-        CarImage carImage;
-        if (carRegisterRequest.getListCarImages() != null && !carRegisterRequest.getListCarImages().isEmpty()) {
-            for (String image : carRegisterRequest.getListCarImages()) {
-                carImage = new CarImage();
-                carImage.setImage(image);
-                carImage.setCar(car);
-                listCarImage.add(carImage);
-
-            }
+        @Override
+        @Transactional
+        public void save(CarRegisterRequest carRegisterRequest) {
+                Car car = modelMapper.map(carRegisterRequest, Car.class);
+                // set address register to car
+                Ward ward = wardRepository.findById(carRegisterRequest.getWard().getId())
+                                .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
+                Address address = Address
+                                .builder()
+                                .ward(ward)
+                                .district(ward.getDistrict())
+                                .city(ward.getDistrict().getCity())
+                                .street(carRegisterRequest.getStreet())
+                                .build();
+                car.setAddress(address);
+                car.setStatus(CarStatus.PENDING_APPROVAL);
+                carRepository.save(car);
+                // set image register to car
+                List<CarImage> listCarImage = new ArrayList<CarImage>();
+                if (carRegisterRequest.getCarImages() != null && !carRegisterRequest.getCarImages().isEmpty()) {
+                        for (CarImage image : car.getCarImages()) {
+                                image.setCar(car);
+                                listCarImage.add(image);
+                        }
+                }
+                carImageRepository.saveAll(listCarImage);
         }
-        carImageRepository.saveAll(listCarImage);
-    }
 
-    @Override
-    public CarDetailInfoResponse findCarDetailInfo(Long carId) {
-        Car car = carRepository.findById(carId).orElseThrow(() -> new IllegalArgumentException("Car not found"));
-        CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
-        carDetailInfoResponse.setName(car.getModel().getName());
-        carDetailInfoResponse.setAddressInfo(
-                car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
-        carDetailInfoResponse.setAccountId(car.getAccount().getId());
-
-        return carDetailInfoResponse;
-    }
+        @Override
+        @Transactional
+        public CarDetailInfoResponse findCarDetailInfo(Long carId) {
+                Car car = carRepository.findById(carId)
+                                .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+                CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
+                carDetailInfoResponse.setName(car.getModel().getName());
+                carDetailInfoResponse.setAddressInfo(
+                                car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
+                return carDetailInfoResponse;
+        }
 
 }
