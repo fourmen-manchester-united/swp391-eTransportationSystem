@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
+import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.service.CarService;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
+import com.etransportation.service.CityService;
 
 @RestController
 @RequestMapping("/api/car")
@@ -23,6 +23,9 @@ public class CarController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private CityService cityService;
 
     @GetMapping("/brand")
     public ResponseEntity<?> getAllCarBrand() {
@@ -40,6 +43,18 @@ public class CarController {
     @GetMapping("details/{id}")
     public ResponseEntity<?> getCarDetails(@PathVariable Long id) {
         return ResponseEntity.ok(carService.findCarDetailInfo(id));
+    }
+
+    @GetMapping("/city/{code}")
+    public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code) {
+        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(code);
+        return ResponseEntity.ok(carInfoResponse);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getAllCarByUserId(@PathVariable String id) {
+        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(id);
+        return ResponseEntity.ok(carInfoResponse);
     }
 
 }

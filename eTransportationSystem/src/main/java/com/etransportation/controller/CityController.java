@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etransportation.payload.response.CarShortInfoResponse;
-import com.etransportation.payload.response.CityDetailResponse;
 import com.etransportation.payload.response.CityResponse;
 import com.etransportation.service.CityService;
 
@@ -35,11 +32,5 @@ public class CityController {
     // cityService.findAllCityDetail();
     // return new ResponseEntity<>(listCityDetailResponse, HttpStatus.OK);
     // }
-
-    @GetMapping("/{code}")
-    public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code) {
-        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(code);
-        return ResponseEntity.ok(carInfoResponse);
-    }
 
 }
