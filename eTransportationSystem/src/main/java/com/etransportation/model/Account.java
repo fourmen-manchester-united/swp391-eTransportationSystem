@@ -20,6 +20,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,7 +42,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "account")
+@Table(name = "account", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "username" }),
+        @UniqueConstraint(columnNames = { "email" }) })
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
@@ -50,9 +56,12 @@ public class Account extends Base {
     @Column(columnDefinition = "nvarchar(50)")
     private String name;
 
-    @Column(columnDefinition = "varchar(100)", unique = true, nullable = false)
+    @NotBlank
+    @Column(columnDefinition = "varchar(100)", nullable = false)
     private String username;
 
+    @NotBlank
+    @Size(max = 100)
     @Column(columnDefinition = "varchar(100)", nullable = false)
     private String password;
 
@@ -64,6 +73,9 @@ public class Account extends Base {
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private Date birthDate;
 
+    @NotBlank
+    @Size(max = 30)
+    @Email
     @Column(columnDefinition = "varchar(30)")
     private String email;
 

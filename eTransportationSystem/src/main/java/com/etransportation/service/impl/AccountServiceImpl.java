@@ -1,13 +1,11 @@
 package com.etransportation.service.impl;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +15,11 @@ import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
 import com.etransportation.model.DrivingLicense;
 import com.etransportation.model.Role;
+import com.etransportation.payload.request.AccountInfoRequest;
+import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
-import com.etransportation.payload.request.AccountInfoRequest;
-import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
@@ -46,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     private DrivingLicenseRepository drivingLicenseRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     @Transactional
