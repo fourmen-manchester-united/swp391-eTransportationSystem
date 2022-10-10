@@ -58,9 +58,10 @@ public class CityServiceImpl implements CityService {
     public List<CarShortInfoResponse> findAllCarsByCity(String code) {
         List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<>();
         CarShortInfoResponse carInfoResponse;
-        City city = cityRepository.findByCode(code).orElseThrow(() -> new IllegalArgumentException("City not found"));
+        City city = cityRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("City \"" + code + "\" not found"));
         if (city.getAddresss().isEmpty() || city.getAddresss() == null) {
-            throw new IllegalArgumentException("No Car in this city");
+            throw new IllegalArgumentException("No Car in this city " + city.getName());
         }
 
         for (Address address : city.getAddresss()) {

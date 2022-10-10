@@ -2,8 +2,7 @@ package com.etransportation.payload.response;
 
 import java.util.List;
 
-import com.etransportation.model.CarImage;
-import com.etransportation.model.Feature;
+import com.etransportation.enums.CarStatus;
 import com.etransportation.payload.dto.AccountDTO;
 import com.etransportation.payload.dto.CarImageDTO;
 import com.etransportation.payload.dto.FeatureDTO;
@@ -27,10 +26,10 @@ public class CarDetailInfoResponse {
     private int saleMonth;
     private double longitude;
     private double latitude;
-
+    private String addressInfo;
+    private CarStatus status;
     private AccountDTO account;
 
-    private String addressInfo;
     // private List<Book> books;
     // private List<Review> reviews;
     private List<CarImageDTO> carImages;
