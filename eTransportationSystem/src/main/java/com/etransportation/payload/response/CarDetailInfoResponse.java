@@ -19,7 +19,6 @@ public class CarDetailInfoResponse {
     private String fuel;
     private String licensePlates;
     private String description;
-    private String fuelConsumption;
     private String transmission;
     private String yearOfManufacture;
     private int saleWeek;

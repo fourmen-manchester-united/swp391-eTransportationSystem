@@ -52,9 +52,6 @@ public class Car extends Base {
     @Column(columnDefinition = "nvarchar(MAX)")
     private String description;
 
-    @Column(columnDefinition = "nvarchar(20)")
-    private String fuelConsumption;
-
     @Column(columnDefinition = "nvarchar(50)")
     private String transmission;
 
