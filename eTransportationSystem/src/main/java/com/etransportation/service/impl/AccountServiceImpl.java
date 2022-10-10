@@ -73,6 +73,7 @@ public class AccountServiceImpl implements AccountService {
                 .password(bCryptPasswordEncoder.encode(registerRequest.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.ACTIVE)
+                .email(String.valueOf(accountRepository.count()))
                 .build();
 
         accountRepository.save(account);
