@@ -1,9 +1,10 @@
 package com.etransportation.controller;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,14 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.payload.request.AccountInfoRequest;
+import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
-import com.etransportation.payload.request.AccountInfoRequest;
-import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
@@ -62,7 +62,11 @@ public class AccountController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAccount(@RequestBody AccountInfoRequest accountInfoRequest) {
+    public ResponseEntity<?> updateAccount(@Valid @RequestBody AccountInfoRequest accountInfoRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            throw new IllegalArgumentException(errors.getFieldError().getDefaultMessage());
+        }
+
         if (accountInfoRequest.getId() == null) {
             throw new IllegalArgumentException("Id is null!");
         }
