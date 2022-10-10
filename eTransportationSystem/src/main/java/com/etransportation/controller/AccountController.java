@@ -1,10 +1,14 @@
 package com.etransportation.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +37,12 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> signin(@Valid @RequestBody LoginRequest loginRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            List<String> errorList = errors.getAllErrors().stream().map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errorList);
+        }
         LoginResponse loginResponse = accountService.login(loginRequest);
         return ResponseEntity.ok(loginResponse);
     }

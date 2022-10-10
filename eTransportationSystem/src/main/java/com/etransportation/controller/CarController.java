@@ -2,8 +2,11 @@ package com.etransportation.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +38,11 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerCar(@RequestBody CarRegisterRequest registerCarRequest) {
+    public ResponseEntity<?> registerCar(@Valid @RequestBody CarRegisterRequest registerCarRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            throw new RuntimeException("feature " + errors.getFieldError().getDefaultMessage());
+        }
+
         carService.save(registerCarRequest);
         return ResponseEntity.ok("Register car successfully");
     }

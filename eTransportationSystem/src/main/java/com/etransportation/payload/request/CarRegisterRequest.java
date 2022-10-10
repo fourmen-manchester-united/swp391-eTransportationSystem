@@ -3,6 +3,13 @@ package com.etransportation.payload.request;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.etransportation.payload.dto.CarImageDTO;
 import com.etransportation.payload.dto.IdDTO;
 
@@ -27,9 +34,11 @@ public class CarRegisterRequest {
     private IdDTO model;
     private IdDTO ward;
     private String street;
-    private List<CarImageDTO> carImages;
-    private List<IdDTO> features;
 
-    // features carImages
+    @Size(min = 1, max = 5, message = "Car must have at least 1 image and at most 5 images")
+    @NotEmpty(message = "Car must have at least one image")
+    private List<CarImageDTO> carImages;
+
+    private List<@Valid IdDTO> features;
 
 }
