@@ -5,6 +5,7 @@ import java.util.List;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
+import com.etransportation.payload.response.CarShortInfoResponse;
 
 public interface CarService {
 
@@ -13,4 +14,6 @@ public interface CarService {
     public void save(CarRegisterRequest carRegisterRequest);
 
     public CarDetailInfoResponse findCarDetailInfo(Long carId);
+
+    public List<CarShortInfoResponse> findAllCarByUserId(Long id);
 }

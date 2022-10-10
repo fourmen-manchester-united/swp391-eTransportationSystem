@@ -52,8 +52,8 @@ public class CarController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getAllCarByUserId(@PathVariable String id) {
-        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(id);
+    public ResponseEntity<?> getAllCarByUserId(@PathVariable Long id) {
+        List<CarShortInfoResponse> carInfoResponse = carService.findAllCarByUserId(id);
         return ResponseEntity.ok(carInfoResponse);
     }
 

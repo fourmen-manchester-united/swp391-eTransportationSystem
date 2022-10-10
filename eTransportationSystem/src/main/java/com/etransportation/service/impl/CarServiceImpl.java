@@ -2,6 +2,7 @@ package com.etransportation.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -21,6 +22,7 @@ import com.etransportation.model.Ward;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
+import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.CarBrandRepository;
@@ -44,22 +46,13 @@ public class CarServiceImpl implements CarService {
         private AccountRepository accountRepository;
 
         @Autowired
-        private CarModelRepository carModelRepository;
-
-        @Autowired
         private WardRepository wardRepository;
-
-        @Autowired
-        private FeatureRepository featureRepository;
 
         @Autowired
         private CarRepository carRepository;
 
         @Autowired
         private CarImageRepository carImageRepository;
-
-        @Autowired
-        private AddressRepository addressRepository;
 
         @Override
         @Transactional
@@ -109,6 +102,31 @@ public class CarServiceImpl implements CarService {
                 carDetailInfoResponse.setAddressInfo(
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
                 return carDetailInfoResponse;
+        }
+
+        @Override
+        public List<CarShortInfoResponse> findAllCarByUserId(Long id) {
+                Account account = accountRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+                if (account.getCars() == null || account.getCars().size() == 0) {
+                        throw new IllegalArgumentException("Không tìm thấy xe nào.");
+                }
+                List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
+                CarShortInfoResponse carInfoResponse;
+
+                for (Car car : account.getCars()) {
+                        carInfoResponse = new CarShortInfoResponse();
+                        carInfoResponse = modelMapper.map(car, CarShortInfoResponse.class);
+                        carInfoResponse.setAddressInfo(car.getAddress().getDistrict().getName() + ", "
+                                        + car.getAddress().getCity().getName());
+                        carInfoResponse.setName(car.getModel().getName());
+                        carInfoResponse.setCarImage(car.getCarImages()
+                                        .get(new Random().nextInt(car.getCarImages().size()))
+                                        .getImage());
+                        listCarInfoResponse.add(carInfoResponse);
+                }
+                return listCarInfoResponse;
         }
 
 }
