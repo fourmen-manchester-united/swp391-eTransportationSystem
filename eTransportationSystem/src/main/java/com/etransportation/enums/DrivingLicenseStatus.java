@@ -1,5 +1,5 @@
 package com.etransportation.enums;
 
 public enum DrivingLicenseStatus {
-    PENDING, VERIFIED, FAILED;
+    PENDING, VERIFIED, FAILED, NOTYET;
 }
