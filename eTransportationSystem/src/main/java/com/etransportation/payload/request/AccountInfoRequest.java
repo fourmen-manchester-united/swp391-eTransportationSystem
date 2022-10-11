@@ -19,7 +19,7 @@ public class AccountInfoRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
-    @Email(message = "Email not valid")
+    // @Email(message = "Email not valid")
     private String email;
 
     private String phone;
