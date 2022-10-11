@@ -86,6 +86,7 @@ public class SecurityConfig {
                 .antMatchers("/api/car/**").permitAll()
                 .antMatchers("/api/city/**").permitAll()
                 .antMatchers("/api/book/**").permitAll()
+                .antMatchers("/api/check/**").permitAll()
                 .antMatchers("/api/admin/**").permitAll()
                 // .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/voucher/**").permitAll()

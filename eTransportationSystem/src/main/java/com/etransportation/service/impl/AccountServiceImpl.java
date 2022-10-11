@@ -151,7 +151,7 @@ public class AccountServiceImpl implements AccountService {
             drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
         }
 
-        drivingLicense.setStatus(DrivingLicenseStatus.VERIFICATION_PENDING);
+        drivingLicense.setStatus(DrivingLicenseStatus.PENDING);
         drivingLicense.setAccount(account);
         drivingLicenseRepository.save(drivingLicense);
     }

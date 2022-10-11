@@ -18,17 +18,9 @@ public class VoucherCheck {
     private Date startDate;
     private Date endDate;
 
-    // relationship
-
-    private List<BookCheck> books = new ArrayList<BookCheck>();
-    // getter and setter
-
     private Date createdDate;
-
     private Date modifiedDate;
-
     private String createdBy;
-
     private String modifiedBy;
 
 }

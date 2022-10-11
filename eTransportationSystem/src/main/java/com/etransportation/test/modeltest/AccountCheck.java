@@ -30,9 +30,7 @@ public class AccountCheck {
     private String createdBy;
     private String modifiedBy;
     private AccountStatus status;
-
     private Set<RoleCheck> roles;
-
     private IdCheck drivingLicense;
 
 }

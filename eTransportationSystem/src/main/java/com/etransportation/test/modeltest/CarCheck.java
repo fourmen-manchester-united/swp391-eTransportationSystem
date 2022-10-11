@@ -30,16 +30,14 @@ public class CarCheck {
   private CarStatus status;
 
   private IdCheck account;
-
   private IdCheck model;
-
   private IdCheck address;
 
   // private List<BookCheck> books;
 
   // private List<ReviewCheck> reviews;
 
-  private List<CarImageCheck> carImages;
+  private List<image> carImages;
 
   private List<FeatureCheck> features;
 

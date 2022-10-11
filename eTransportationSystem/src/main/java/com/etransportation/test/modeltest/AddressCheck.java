@@ -8,14 +8,13 @@ import lombok.Data;
 public class AddressCheck {
 
     private Long id;
-
     private String street;
 
     // relationship
 
-    private CityCheck city;
-    private DistrictCheck district;
-    private WardCheck ward;
+    private IdCheck city;
+    private IdCheck district;
+    private IdCheck ward;
     private IdCheck car;
 
     private Date createdDate;

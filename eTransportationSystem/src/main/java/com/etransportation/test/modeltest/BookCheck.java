@@ -19,11 +19,8 @@ public class BookCheck {
     private String createdBy;
 
     // relationship
-
     private IdCheck voucher;
-
     private IdCheck account;
-
     private IdCheck car;
 
 }

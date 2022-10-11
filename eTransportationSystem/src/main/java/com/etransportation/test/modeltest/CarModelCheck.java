@@ -10,7 +10,6 @@ public class CarModelCheck {
 
     private Long id;
     private String name;
-
     private IdCheck brand;
 
 }

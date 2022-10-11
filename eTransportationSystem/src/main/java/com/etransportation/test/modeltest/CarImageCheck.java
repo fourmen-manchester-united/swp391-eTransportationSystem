@@ -9,9 +9,7 @@ public class CarImageCheck {
 
     private Long id;
     private String image;
-
     private IdCheck car;
-
     private Date createdDate;
     private Date modifiedDate;
     private String createdBy;
