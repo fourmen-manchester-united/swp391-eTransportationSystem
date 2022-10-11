@@ -16,4 +16,6 @@ public interface CarService {
     public CarDetailInfoResponse findCarDetailInfo(Long carId);
 
     public List<CarShortInfoResponse> findAllCarByUserId(Long id);
+
+    public List<CarShortInfoResponse> findAllCar();
 }

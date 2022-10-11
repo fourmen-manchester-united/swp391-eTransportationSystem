@@ -1,20 +1,9 @@
 package com.etransportation.test;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etransportation.enums.CarStatus;
-import com.etransportation.model.Account;
-import com.etransportation.model.Car;
-import com.etransportation.model.City;
-import com.etransportation.model.District;
-import com.etransportation.model.Ward;
 import com.etransportation.repository.CarRepository;
 import com.etransportation.repository.CityRepository;
 import com.etransportation.repository.DistrictRepository;
@@ -22,7 +11,7 @@ import com.etransportation.repository.WardRepository;
 
 @RestController
 @RequestMapping("/api/test")
-public class test {
+public class TestController {
 
     @Autowired
     private CarRepository carRepository;

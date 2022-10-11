@@ -129,4 +129,11 @@ public class CarServiceImpl implements CarService {
                 return listCarInfoResponse;
         }
 
+        @Override
+        public List<CarShortInfoResponse> findAllCar() {
+                List<Car> listCar = carRepository.findAll();
+                return modelMapper.map(listCar, new TypeToken<List<CarShortInfoResponse>>() {
+                }.getType());
+        }
+
 }

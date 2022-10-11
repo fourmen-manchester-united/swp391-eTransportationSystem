@@ -1,11 +1,14 @@
 package com.etransportation.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -151,6 +154,13 @@ public class AccountServiceImpl implements AccountService {
         drivingLicense.setStatus(DrivingLicenseStatus.VERIFICATION_PENDING);
         drivingLicense.setAccount(account);
         drivingLicenseRepository.save(drivingLicense);
+    }
+
+    @Override
+    public List<AccountInfoRequest> findAllAccount() {
+        List<Account> accounts = accountRepository.findAll();
+        return modelMapper.map(accounts, new TypeToken<List<AccountInfoRequest>>() {
+        }.getType());
     }
 
 }

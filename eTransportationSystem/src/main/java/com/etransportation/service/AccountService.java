@@ -3,6 +3,9 @@ package com.etransportation.service;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
+
+import java.util.List;
+
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
@@ -24,5 +27,7 @@ public interface AccountService {
     public void updateDriverLicenseInfo(DriverLicenseInfoRequest driverLicenseInfoRequest);
 
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId);
+
+    public List<AccountInfoRequest> findAllAccount();
 
 }
