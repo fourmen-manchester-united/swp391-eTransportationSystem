@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.payload.request.VoucherRequest;
 import com.etransportation.payload.response.VoucherResponse;
 import com.etransportation.service.VoucherService;
 
@@ -23,6 +25,12 @@ public class VoucherController {
     public ResponseEntity<?> getAllVouchers() {
         List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucher();
         return new ResponseEntity<>(listVoucherResponse, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> saveVoucher(VoucherRequest voucherRequest) {
+        voucherService.save(voucherRequest);
+        return ResponseEntity.ok("update successfully");
     }
 
 }

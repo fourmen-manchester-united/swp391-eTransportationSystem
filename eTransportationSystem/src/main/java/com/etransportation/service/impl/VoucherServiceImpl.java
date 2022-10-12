@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.VoucherStatus;
 import com.etransportation.model.Voucher;
+import com.etransportation.payload.request.VoucherRequest;
 import com.etransportation.payload.response.VoucherResponse;
 import com.etransportation.repository.VoucherRepository;
 import com.etransportation.service.VoucherService;
@@ -35,6 +36,15 @@ public class VoucherServiceImpl implements VoucherService {
         }.getType());
 
         return listVoucherResponse;
+    }
+
+    @Override
+    @Transactional
+    public void save(VoucherRequest voucherRequest) {
+        Voucher voucher = modelMapper.map(voucherRequest, Voucher.class);
+        voucher.setImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+        voucher.setStatus(VoucherStatus.ACTIVE);
+        voucherRepository.save(voucher);
     }
 
 }
