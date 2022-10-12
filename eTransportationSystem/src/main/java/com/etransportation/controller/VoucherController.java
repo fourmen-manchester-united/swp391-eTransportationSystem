@@ -27,10 +27,4 @@ public class VoucherController {
         return new ResponseEntity<>(listVoucherResponse, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> saveVoucher(VoucherRequest voucherRequest) {
-        voucherService.save(voucherRequest);
-        return ResponseEntity.ok("update successfully");
-    }
-
 }
