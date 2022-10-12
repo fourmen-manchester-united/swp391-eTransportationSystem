@@ -132,6 +132,19 @@ public class CarServiceImpl implements CarService {
         @Override
         public List<CarShortInfoResponse> findAllCar() {
                 List<Car> listCar = carRepository.findAll();
+                List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
+                CarShortInfoResponse carInfoResponse;
+                for (Car car : listCar) {
+                        carInfoResponse = new CarShortInfoResponse();
+                        carInfoResponse = modelMapper.map(car, CarShortInfoResponse.class);
+                        carInfoResponse.setAddressInfo(car.getAddress().getDistrict().getName() + ", "
+                                        + car.getAddress().getCity().getName());
+                        carInfoResponse.setName(car.getModel().getName());
+                        carInfoResponse.setCarImage(car.getCarImages()
+                                        .get(new Random().nextInt(car.getCarImages().size()))
+                                        .getImage());
+                        listCarInfoResponse.add(carInfoResponse);
+                }
                 return modelMapper.map(listCar, new TypeToken<List<CarShortInfoResponse>>() {
                 }.getType());
         }

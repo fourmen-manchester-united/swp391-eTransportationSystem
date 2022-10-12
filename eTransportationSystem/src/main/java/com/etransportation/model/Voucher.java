@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,6 +20,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.etransportation.enums.VoucherStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
@@ -47,6 +50,10 @@ public class Voucher extends Base {
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     @Temporal(TemporalType.DATE)
     private Date endDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(15)")
+    private VoucherStatus status;
 
     // relationship
 
