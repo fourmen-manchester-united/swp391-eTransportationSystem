@@ -28,6 +28,6 @@ public interface AccountService {
 
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId);
 
-    public List<AccountInfoRequest> findAllAccount();
+    public List<AccountInfoResponse> findAllAccount();
 
 }

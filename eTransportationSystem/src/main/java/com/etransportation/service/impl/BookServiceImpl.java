@@ -1,5 +1,8 @@
 package com.etransportation.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,11 +38,23 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void bookCar(BookRequest bookRequest) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
         accountRepository.findById(bookRequest.getAccount().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
         carRepository.findById(bookRequest.getCar().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+
+        if (!bookRequest.getStartDate().after(new Date()) || !bookRequest.getEndDate().after(new Date())) {
+            throw new IllegalArgumentException("book date is not before today");
+        }
+
+        if (!bookRequest.getStartDate().equals(bookRequest.getEndDate())) {
+            if (bookRequest.getStartDate().after(bookRequest.getEndDate())) {
+                throw new IllegalArgumentException("book end date is not before start date");
+            }
+        }
 
         Book book = modelMapper.map(bookRequest, Book.class);
 

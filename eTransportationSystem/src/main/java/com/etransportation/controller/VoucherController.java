@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etransportation.payload.request.VoucherRequest;
 import com.etransportation.payload.response.VoucherResponse;
 import com.etransportation.service.VoucherService;
 
@@ -23,7 +21,7 @@ public class VoucherController {
 
     @GetMapping
     public ResponseEntity<?> getAllVouchers() {
-        List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucher();
+        List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucherActive();
         return new ResponseEntity<>(listVoucherResponse, HttpStatus.OK);
     }
 

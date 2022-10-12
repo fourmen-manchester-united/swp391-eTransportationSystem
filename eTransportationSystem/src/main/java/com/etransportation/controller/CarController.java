@@ -54,7 +54,7 @@ public class CarController {
 
     @GetMapping("/city/{code}")
     public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code) {
-        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(code);
+        List<CarShortInfoResponse> carInfoResponse = carService.findAllCarsActiveByCity(code);
         return ResponseEntity.ok(carInfoResponse);
     }
 

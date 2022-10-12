@@ -16,20 +16,15 @@ import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.CarImage;
-import com.etransportation.model.CarModel;
-import com.etransportation.model.Feature;
 import com.etransportation.model.Ward;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.repository.AccountRepository;
-import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.CarBrandRepository;
 import com.etransportation.repository.CarImageRepository;
-import com.etransportation.repository.CarModelRepository;
 import com.etransportation.repository.CarRepository;
-import com.etransportation.repository.FeatureRepository;
 import com.etransportation.repository.WardRepository;
 import com.etransportation.service.CarService;
 
@@ -106,16 +101,10 @@ public class CarServiceImpl implements CarService {
 
         @Override
         public List<CarShortInfoResponse> findAllCarByUserId(Long id) {
-                Account account = accountRepository.findById(id)
-                                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
-
-                if (account.getCars() == null || account.getCars().size() == 0) {
-                        throw new IllegalArgumentException("Không tìm thấy xe nào.");
-                }
+                List<Car> cars = carRepository.findAllByAccount_Id(id);
                 List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
                 CarShortInfoResponse carInfoResponse;
-
-                for (Car car : account.getCars()) {
+                for (Car car : cars) {
                         carInfoResponse = new CarShortInfoResponse();
                         carInfoResponse = modelMapper.map(car, CarShortInfoResponse.class);
                         carInfoResponse.setAddressInfo(car.getAddress().getDistrict().getName() + ", "
@@ -131,6 +120,7 @@ public class CarServiceImpl implements CarService {
 
         @Override
         public List<CarShortInfoResponse> findAllCar() {
+
                 List<Car> listCar = carRepository.findAll();
                 List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
                 CarShortInfoResponse carInfoResponse;
@@ -145,8 +135,27 @@ public class CarServiceImpl implements CarService {
                                         .getImage());
                         listCarInfoResponse.add(carInfoResponse);
                 }
-                return modelMapper.map(listCar, new TypeToken<List<CarShortInfoResponse>>() {
-                }.getType());
+                return listCarInfoResponse;
+        }
+
+        @Override
+        @Transactional
+        public List<CarShortInfoResponse> findAllCarsActiveByCity(String code) {
+
+                List<Car> listCar = carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code);
+                List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
+                CarShortInfoResponse carInfoResponse;
+                for (Car car : listCar) {
+                        carInfoResponse = new CarShortInfoResponse();
+                        carInfoResponse = modelMapper.map(car, CarShortInfoResponse.class);
+                        carInfoResponse.setName(car.getModel().getName());
+                        carInfoResponse.setAddressInfo(car.getAddress().getDistrict().getName() + ", "
+                                        + car.getAddress().getCity().getName());
+                        carInfoResponse.setCarImage(car.getCarImages()
+                                        .get(new Random().nextInt(car.getCarImages().size())).getImage());
+                        listCarInfoResponse.add(carInfoResponse);
+                }
+                return listCarInfoResponse;
         }
 
 }

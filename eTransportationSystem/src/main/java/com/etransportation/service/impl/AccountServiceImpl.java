@@ -1,11 +1,8 @@
 package com.etransportation.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -86,6 +83,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
+
         Account account = accountRepository
                 .findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Username is incorrect!"));
@@ -112,6 +110,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountInfoResponse findAccountById(Long id) {
+
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
 
@@ -134,12 +133,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        if (account.getDrivingLicense() == null) {
-            account.setDrivingLicense(new DrivingLicense());
+        // not test
+        DrivingLicense drivingLicense = drivingLicenseRepository.findByAccount_Id(accountId)
+                .orElseGet(() -> null);
+
+        if (drivingLicense == null) {
+            drivingLicense = new DrivingLicense();
+            drivingLicense.setStatus(DrivingLicenseStatus.NOTYET);
+
         }
-        return modelMapper.map(account.getDrivingLicense(), DriverLicenseInfoResponse.class);
+        return modelMapper.map(drivingLicense, DriverLicenseInfoResponse.class);
     }
 
     // test
@@ -161,9 +164,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountInfoRequest> findAllAccount() {
+    public List<AccountInfoResponse> findAllAccount() {
         List<Account> accounts = accountRepository.findAll();
-        return modelMapper.map(accounts, new TypeToken<List<AccountInfoRequest>>() {
+        return modelMapper.map(accounts, new TypeToken<List<AccountInfoResponse>>() {
         }.getType());
     }
 
