@@ -31,21 +31,8 @@ public class VoucherServiceImpl implements VoucherService {
 
         List<Voucher> voucher = voucherRepository.findAllByStatusAndEndDateGreaterThan(VoucherStatus.ACTIVE,
                 new Date());
-        List<VoucherResponse> listVoucherResponse = new ArrayList<>();
-        for (Voucher voucher2 : voucher) {
-            if (voucher2.getStartDate() == null || voucher2.getEndDate() == null) {
-                voucher2.setStatus(VoucherStatus.EXPIRED);
-                voucherRepository.save(voucher2);
-            } else {
-                if (voucher2.getEndDate().after(new Date()) || voucher2.getEndDate().equals(new Date())) {
-                    listVoucherResponse.add(modelMapper.map(voucher2, VoucherResponse.class));
-                } else {
-                    voucher2.setStatus(VoucherStatus.EXPIRED);
-                    voucherRepository.save(voucher2);
-                }
-            }
-
-        }
+        List<VoucherResponse> listVoucherResponse = modelMapper.map(voucher, new TypeToken<List<VoucherResponse>>() {
+        }.getType());
 
         return listVoucherResponse;
     }
