@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -59,7 +60,7 @@ public class Voucher extends Base {
 
     // relationship
 
-    @OneToMany(mappedBy = "voucher")
+    @OneToMany(mappedBy = "voucher", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<Book>();
 
     // getter and setter
