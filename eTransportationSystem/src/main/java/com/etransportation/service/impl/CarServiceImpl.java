@@ -1,6 +1,7 @@
 package com.etransportation.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -11,12 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.CarStatus;
-import com.etransportation.model.Account;
 import com.etransportation.model.Address;
+import com.etransportation.model.Book;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.CarImage;
 import com.etransportation.model.Ward;
+import com.etransportation.payload.dto.BookDto;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
@@ -90,12 +92,16 @@ public class CarServiceImpl implements CarService {
         @Override
         @Transactional
         public CarDetailInfoResponse findCarDetailInfo(Long carId) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
                 Car car = carRepository.findById(carId)
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
                 CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
                 carDetailInfoResponse.setName(car.getModel().getName());
                 carDetailInfoResponse.setAddressInfo(
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
+                carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime()));
+
                 return carDetailInfoResponse;
         }
 

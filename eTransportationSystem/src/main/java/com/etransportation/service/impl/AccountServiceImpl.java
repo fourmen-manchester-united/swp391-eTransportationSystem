@@ -133,7 +133,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
-        // not test
+
         DrivingLicense drivingLicense = drivingLicenseRepository.findByAccount_Id(accountId)
                 .orElseGet(() -> null);
 

@@ -40,13 +40,14 @@ public class BookServiceImpl implements BookService {
     public void bookCar(BookRequest bookRequest) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
+
         accountRepository.findById(bookRequest.getAccount().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
         carRepository.findById(bookRequest.getCar().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
 
-        if (!bookRequest.getStartDate().after(new Date()) || !bookRequest.getEndDate().after(new Date())) {
+        if (!bookRequest.getStartDate().after(cal.getTime()) || !bookRequest.getEndDate().after(cal.getTime())) {
             throw new IllegalArgumentException("book date is not before today");
         }
 

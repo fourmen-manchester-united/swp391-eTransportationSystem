@@ -3,7 +3,9 @@ package com.etransportation.payload.response;
 import java.util.List;
 
 import com.etransportation.enums.CarStatus;
+import com.etransportation.model.Book;
 import com.etransportation.payload.dto.AccountDTO;
+import com.etransportation.payload.dto.BookDto;
 import com.etransportation.payload.dto.CarImageDTO;
 import com.etransportation.payload.dto.FeatureDTO;
 
@@ -29,8 +31,9 @@ public class CarDetailInfoResponse {
     private CarStatus status;
     private AccountDTO account;
 
-    // private List<Book> books;
     // private List<Review> reviews;
     private List<CarImageDTO> carImages;
     private List<FeatureDTO> features;
+    private List<BookDto> books;
+
 }
