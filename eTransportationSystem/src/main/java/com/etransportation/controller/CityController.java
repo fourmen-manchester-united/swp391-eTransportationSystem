@@ -22,7 +22,7 @@ public class CityController {
     @GetMapping
     public ResponseEntity<?> getAllCities() {
 
-        List<CityResponse> listCityResponse = cityService.findAllCity();
+        List<CityResponse> listCityResponse = cityService.findAllCityExistCar();
         return new ResponseEntity<>(listCityResponse, HttpStatus.OK);
     }
 

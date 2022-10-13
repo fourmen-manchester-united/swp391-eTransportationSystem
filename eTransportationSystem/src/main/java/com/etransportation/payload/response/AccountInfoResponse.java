@@ -4,10 +4,9 @@ import java.util.Date;
 import java.util.Set;
 
 import com.etransportation.enums.AccountGender;
-import com.etransportation.payload.dto.RoleDTO;
 import com.etransportation.payload.dto.DriverLicenseDTO;
+import com.etransportation.payload.dto.RoleDTO;
 
-import ch.qos.logback.core.status.Status;
 import lombok.Data;
 
 @Data
