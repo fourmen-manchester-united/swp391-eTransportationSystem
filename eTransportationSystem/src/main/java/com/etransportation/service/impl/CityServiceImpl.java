@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.etransportation.enums.CarStatus;
 import com.etransportation.model.City;
+import com.etransportation.mybean.CityBean;
 import com.etransportation.payload.response.CityDetailResponse;
 import com.etransportation.payload.response.CityResponse;
 import com.etransportation.repository.AddressRepository;
@@ -37,12 +39,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Transactional
+    @SuppressWarnings("unchecked")
     public List<CityResponse> findAllCity() {
-        // List<City> city = cityRepository.findAll();
-        List<City> city = cityRepository.findTop10ByOrderByIdAsc();
-        List<CityResponse> listCityResponse = modelMapper.map(city, new TypeToken<List<CityResponse>>() {
-        }.getType());
-        return listCityResponse;
+
+        List<CityResponse> findAllByCarStatustest = (List<CityResponse>) cityRepository
+                .findAllByCarStatus(CarStatus.ACTIVE);
+        return findAllByCarStatustest;
 
     }
 
