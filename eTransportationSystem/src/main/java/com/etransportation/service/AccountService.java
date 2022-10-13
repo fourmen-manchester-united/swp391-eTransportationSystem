@@ -3,6 +3,7 @@ package com.etransportation.service;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
+import com.etransportation.payload.request.PagingRequest;
 
 import java.util.List;
 
@@ -28,6 +29,6 @@ public interface AccountService {
 
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId);
 
-    public List<AccountInfoResponse> findAllAccount();
+    public Object findAllAccount(PagingRequest pagingRequest);
 
 }

@@ -4,25 +4,32 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.etransportation.enums.BookStatus;
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Address;
-import com.etransportation.model.Book;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.CarImage;
 import com.etransportation.model.Ward;
-import com.etransportation.payload.dto.BookDto;
+import com.etransportation.payload.dto.CarImageDTO;
+import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.request.CarRegisterRequest;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.CarBrandRepository;
 import com.etransportation.repository.CarImageRepository;
@@ -55,9 +62,22 @@ public class CarServiceImpl implements CarService {
         @Transactional
         public List<CarBrandResponse> findAllCarBrands() {
                 List<CarBrand> carBrand = carBrandRepository.findAll();
-                List<CarBrandResponse> carBrandResponse = modelMapper.map(carBrand,
-                                new TypeToken<List<CarBrandResponse>>() {
-                                }.getType());
+                // List<CarBrandResponse> carBrandResponse = modelMapper.map(carBrand,
+                // new TypeToken<List<CarBrandResponse>>() {
+                // }.getType());
+
+                List<CarBrandResponse> carBrandResponse = carBrand.stream().map(cb -> {
+                        CarBrandResponse response = new CarBrandResponse();
+                        response.setId(cb.getId());
+                        response.setName(cb.getName());
+                        response.setCarModels(cb.getCarModels().stream().map(cm -> {
+                                CarModelDTO carModelDTO = new CarModelDTO();
+                                carModelDTO.setId(cm.getId());
+                                carModelDTO.setName(cm.getName());
+                                return carModelDTO;
+                        }).collect(Collectors.toList()));
+                        return response;
+                }).collect(Collectors.toList());
                 return carBrandResponse;
         }
 
@@ -79,14 +99,15 @@ public class CarServiceImpl implements CarService {
                 car.setStatus(CarStatus.PENDING_APPROVAL);
                 carRepository.save(car);
                 // set image register to car
-                List<CarImage> listCarImage = new ArrayList<CarImage>();
-                if (carRegisterRequest.getCarImages() != null && !carRegisterRequest.getCarImages().isEmpty()) {
-                        for (CarImage image : car.getCarImages()) {
-                                image.setCar(car);
-                                listCarImage.add(image);
-                        }
-                }
-                carImageRepository.saveAll(listCarImage);
+
+                carImageRepository.saveAll(
+                                car.getCarImages()
+                                                .stream()
+                                                .map(c -> {
+                                                        c.setCar(car);
+                                                        return c;
+                                                })
+                                                .collect(Collectors.toList()));
         }
 
         @Override
@@ -97,11 +118,12 @@ public class CarServiceImpl implements CarService {
                 Car car = carRepository.findById(carId)
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
                 CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
+
                 carDetailInfoResponse.setName(car.getModel().getName());
                 carDetailInfoResponse.setAddressInfo(
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
-                carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime()));
-
+                carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime())
+                                || book.getStatus().equals(BookStatus.CANCEL));
                 return carDetailInfoResponse;
         }
 
@@ -125,23 +147,33 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
-        public List<CarShortInfoResponse> findAllCar() {
+        public Object findAllCar(PagingRequest pagingRequest) {
 
-                List<Car> listCar = carRepository.findAll();
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+                Page<Car> car = carRepository.findAll(pageable);
+
                 List<CarShortInfoResponse> listCarInfoResponse = new ArrayList<CarShortInfoResponse>();
-                CarShortInfoResponse carInfoResponse;
-                for (Car car : listCar) {
-                        carInfoResponse = new CarShortInfoResponse();
-                        carInfoResponse = modelMapper.map(car, CarShortInfoResponse.class);
-                        carInfoResponse.setAddressInfo(car.getAddress().getDistrict().getName() + ", "
-                                        + car.getAddress().getCity().getName());
-                        carInfoResponse.setName(car.getModel().getName());
-                        carInfoResponse.setCarImage(car.getCarImages()
-                                        .get(new Random().nextInt(car.getCarImages().size()))
+                car.getContent().forEach((c) -> {
+                        CarShortInfoResponse carInfoResponse = new CarShortInfoResponse();
+                        carInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
+                        carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
+                                        + c.getAddress().getCity().getName());
+                        carInfoResponse.setName(c.getModel().getName());
+                        carInfoResponse.setCarImage(c.getCarImages()
+                                        .get(new Random().nextInt(c.getCarImages().size()))
                                         .getImage());
                         listCarInfoResponse.add(carInfoResponse);
-                }
-                return listCarInfoResponse;
+                });
+
+                PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
+                                .<CarShortInfoResponse>builder()
+                                .page(car.getPageable().getPageNumber() + 1)
+                                .size(car.getSize())
+                                .totalPage(car.getTotalPages())
+                                .totalItem(car.getTotalElements())
+                                .contends(listCarInfoResponse)
+                                .build();
+                return pagingResponse;
         }
 
         @Override

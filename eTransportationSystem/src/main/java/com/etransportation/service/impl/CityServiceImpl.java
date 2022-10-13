@@ -40,7 +40,7 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional
     @SuppressWarnings("unchecked")
-    public List<CityResponse> findAllCity() {
+    public List<CityResponse> findAllCityExistCar() {
 
         List<CityResponse> findAllByCarStatustest = (List<CityResponse>) cityRepository
                 .findAllByCarStatus(CarStatus.ACTIVE);

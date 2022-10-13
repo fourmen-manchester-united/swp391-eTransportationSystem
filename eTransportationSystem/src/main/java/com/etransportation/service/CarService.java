@@ -3,6 +3,7 @@ package com.etransportation.service;
 import java.util.List;
 
 import com.etransportation.payload.request.CarRegisterRequest;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
@@ -17,7 +18,8 @@ public interface CarService {
 
     public List<CarShortInfoResponse> findAllCarByUserId(Long id);
 
-    public List<CarShortInfoResponse> findAllCar();
+    public Object findAllCar(PagingRequest pagingRequest);
 
     public List<CarShortInfoResponse> findAllCarsActiveByCity(String code);
+
 }

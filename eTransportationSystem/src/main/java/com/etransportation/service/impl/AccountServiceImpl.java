@@ -3,10 +3,14 @@ package com.etransportation.service.impl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +26,12 @@ import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
+import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.DrivingLicenseRepository;
 import com.etransportation.repository.RoleRepository;
@@ -164,10 +171,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountInfoResponse> findAllAccount() {
-        List<Account> accounts = accountRepository.findAll();
-        return modelMapper.map(accounts, new TypeToken<List<AccountInfoResponse>>() {
-        }.getType());
+    public Object findAllAccount(PagingRequest pagingRequest) {
+        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+        Page<Account> accounts = accountRepository.findAll(pageable);
+        PagingResponse<AccountInfoResponse> pagingResponse = PagingResponse
+                .<AccountInfoResponse>builder()
+                .page(accounts.getPageable().getPageNumber() + 1)
+                .size(accounts.getSize())
+                .totalPage(accounts.getTotalPages())
+                .totalItem(accounts.getTotalElements())
+                .contends(modelMapper.map(accounts.getContent(), new TypeToken<List<AccountInfoResponse>>() {
+                }.getType()))
+                .build();
+        return pagingResponse;
     }
 
 }

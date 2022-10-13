@@ -5,18 +5,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.VoucherStatus;
 import com.etransportation.model.Voucher;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.VoucherRequest;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.payload.response.VoucherResponse;
 import com.etransportation.repository.VoucherRepository;
 import com.etransportation.service.VoucherService;
@@ -71,19 +78,32 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public List<VoucherResponse> findAllVoucher() {
-
+    public PagingResponse<VoucherResponse> findAllVoucher(PagingRequest pagingRequest) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
-        List<Voucher> voucher = voucherRepository.findAll();
-        for (Voucher vc : voucher) {
-            if (vc.getEndDate().before(cal.getTime())) {
-                vc.setStatus(VoucherStatus.EXPIRED);
-            }
-        }
-        voucherRepository.saveAll(voucher);
-        return modelMapper.map(voucher, new TypeToken<List<VoucherResponse>>() {
-        }.getType());
+        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+
+        Page<Voucher> voucher = voucherRepository.findAll(pageable);
+
+        // chuyen qua cho khac
+        // ==========================================================================
+        voucher.getContent().stream().filter(v -> v.getEndDate().before(cal.getTime()))
+                .forEach(v -> {
+                    v.setStatus(VoucherStatus.EXPIRED);
+                    voucherRepository.save(v);
+                });
+        // ================================================================================================
+        PagingResponse<VoucherResponse> pagingResponse = PagingResponse
+                .<VoucherResponse>builder()
+                .page(voucher.getPageable().getPageNumber() + 1)
+                .size(voucher.getSize())
+                .totalPage(voucher.getTotalPages())
+                .totalItem(voucher.getTotalElements())
+                .contends(modelMapper.map(voucher.getContent(), new TypeToken<List<VoucherResponse>>() {
+                }.getType()))
+                .build();
+
+        return pagingResponse;
     }
 
 }

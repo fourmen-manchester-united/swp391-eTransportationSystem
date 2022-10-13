@@ -2,7 +2,9 @@ package com.etransportation.service;
 
 import java.util.List;
 
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.VoucherRequest;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.payload.response.VoucherResponse;
 
 public interface VoucherService {
@@ -11,6 +13,6 @@ public interface VoucherService {
 
     public void save(VoucherRequest voucherRequest);
 
-    public List<VoucherResponse> findAllVoucher();
+    public PagingResponse<VoucherResponse> findAllVoucher(PagingRequest pagingRequest);
 
 }
