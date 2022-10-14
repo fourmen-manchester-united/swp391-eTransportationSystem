@@ -20,6 +20,6 @@ public interface CarService {
 
     public Object findAllCar(PagingRequest pagingRequest);
 
-    public List<CarShortInfoResponse> findAllCarsActiveByCity(String code);
+    public List<CarShortInfoResponse> findAllCarsByCity(String code, PagingRequest pagingRequest);
 
 }

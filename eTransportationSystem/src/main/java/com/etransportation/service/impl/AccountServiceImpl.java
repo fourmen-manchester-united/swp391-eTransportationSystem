@@ -3,7 +3,6 @@ package com.etransportation.service.impl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -28,7 +27,6 @@ import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
-import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
 import com.etransportation.payload.response.PagingResponse;
@@ -152,14 +150,13 @@ public class AccountServiceImpl implements AccountService {
         return modelMapper.map(drivingLicense, DriverLicenseInfoResponse.class);
     }
 
-    // test
     @Override
     @Transactional
     public void updateDriverLicenseInfo(DriverLicenseInfoRequest driverLicenseInfoRequest) {
         Account account = accountRepository.findById(driverLicenseInfoRequest.getAccount_Id())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
         DrivingLicense drivingLicense = account.getDrivingLicense();
-        if (account.getDrivingLicense() != null) {
+        if (drivingLicense != null) {
             modelMapper.map(driverLicenseInfoRequest, drivingLicense);
         } else {
             drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
