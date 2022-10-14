@@ -20,6 +20,7 @@ import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
 import com.etransportation.model.DrivingLicense;
 import com.etransportation.model.Role;
+import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
@@ -181,6 +182,27 @@ public class AccountServiceImpl implements AccountService {
                 }.getType()))
                 .build();
         return pagingResponse;
+    }
+
+    @Override
+    public void accountBrowsing(AccountBrowsingRequest accountBrowsingRequest) {
+        Account account = accountRepository.findById(accountBrowsingRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+
+        switch (accountBrowsingRequest.getStatus()) {
+            case ACTIVE:
+                account.setStatus(AccountStatus.ACTIVE);
+                break;
+            case BLOCKED:
+                account.setStatus(AccountStatus.BLOCKED);
+                break;
+            case INACTIVE:
+                account.setStatus(AccountStatus.INACTIVE);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown status: " + account.getStatus());
+        }
+        accountRepository.save(account);
     }
 
 }

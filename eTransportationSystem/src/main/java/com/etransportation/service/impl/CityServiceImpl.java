@@ -5,16 +5,13 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.City;
-import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.CityDetailResponse;
 import com.etransportation.payload.response.CityResponse;
 import com.etransportation.repository.AddressRepository;

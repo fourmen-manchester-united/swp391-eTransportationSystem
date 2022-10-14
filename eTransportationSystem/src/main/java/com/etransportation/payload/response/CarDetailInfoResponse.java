@@ -3,7 +3,6 @@ package com.etransportation.payload.response;
 import java.util.List;
 
 import com.etransportation.enums.CarStatus;
-import com.etransportation.model.Book;
 import com.etransportation.payload.dto.AccountDTO;
 import com.etransportation.payload.dto.BookDto;
 import com.etransportation.payload.dto.CarImageDTO;

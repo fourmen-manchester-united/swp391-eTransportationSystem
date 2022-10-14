@@ -1,14 +1,12 @@
 package com.etransportation.service;
 
+import com.etransportation.payload.request.AccountBrowsingRequest;
+import com.etransportation.payload.request.AccountInfoRequest;
+import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.PagingRequest;
-
-import java.util.List;
-
-import com.etransportation.payload.request.AccountInfoRequest;
-import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
@@ -30,5 +28,7 @@ public interface AccountService {
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId);
 
     public Object findAllAccount(PagingRequest pagingRequest);
+
+    public void accountBrowsing(AccountBrowsingRequest accountBrowsingRequest);
 
 }

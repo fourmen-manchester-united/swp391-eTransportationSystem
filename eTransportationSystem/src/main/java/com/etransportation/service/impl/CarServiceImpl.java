@@ -20,6 +20,7 @@ import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.Ward;
 import com.etransportation.payload.dto.CarModelDTO;
+import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.CarBrandResponse;
@@ -182,6 +183,34 @@ public class CarServiceImpl implements CarService {
                 }).collect(Collectors.toList());
 
                 return listCarInfoResponse;
+        }
+
+        @Override
+        public void carBrowsing(CarBrowsingRequest carBrowsingRequest) {
+                Car car = carRepository.findById(carBrowsingRequest.getId()).orElseThrow(
+                                () -> new IllegalArgumentException("Car not found"));
+
+                switch (carBrowsingRequest.getStatus()) {
+                        case ACTIVE:
+                                car.setStatus(CarStatus.ACTIVE);
+                                break;
+                        case DENIED:
+                                car.setStatus(CarStatus.DENIED);
+                                break;
+                        case PAUSE:
+                                car.setStatus(CarStatus.PAUSE);
+                                break;
+                        case PENDING_APPROVAL:
+                                car.setStatus(CarStatus.PENDING_APPROVAL);
+                                break;
+
+                        default:
+                                throw new IllegalStateException("Unknown status: " + carBrowsingRequest.getStatus());
+
+                }
+
+                carRepository.save(car);
+
         }
 
 }
