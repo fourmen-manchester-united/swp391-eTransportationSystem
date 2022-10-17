@@ -66,13 +66,13 @@ public class AdminController {
         return ResponseEntity.ok(voucherResponse);
     }
 
-    @PutMapping("/car")
+    @PutMapping("/browsing/car")
     public ResponseEntity<?> carBrowsing(@RequestBody CarBrowsingRequest carBrowsingRequest) {
         carService.carBrowsing(carBrowsingRequest);
         return ResponseEntity.ok("car browsing successful");
     }
 
-    @PutMapping("/account")
+    @PutMapping("/block/account")
     public ResponseEntity<?> accountBrowsing(@RequestBody AccountBrowsingRequest accountBrowsingRequest) {
         accountService.accountBrowsing(accountBrowsingRequest);
         return ResponseEntity.ok("account browsing successful");
