@@ -138,7 +138,7 @@ export function ModalAddCar() {
             style={{ width: "calc(50% - 0.5rem)" }}
             onClick={close}
           >
-            Áp dụng   
+            Áp dụng
           </Link>
         </div>
       </div>
