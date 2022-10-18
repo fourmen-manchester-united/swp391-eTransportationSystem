@@ -1,0 +1,11 @@
+input,
+button,
+a {
+    padding: 0;
+    margin: 0;
+    font-family: "Open Sans", sans-serif;
+    outline: none !important;
+    -webkit-tap-highlight-color: black;
+    color: #202d3d;
+    text-decoration: none;
+}
