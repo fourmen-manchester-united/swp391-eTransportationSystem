@@ -25,7 +25,7 @@ function Header() {
     <section className="header">
       <Navbar>
         <li className="has-magr">
-          <Link to="/carRegisterMode" className="become-owner">
+          <Link to="/carRegisterMode" className="become-owner-main">
             Trở thành chủ xe
           </Link>
         </li>
