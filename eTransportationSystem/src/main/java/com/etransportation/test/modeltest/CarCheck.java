@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.etransportation.enums.CarStatus;
+import com.etransportation.payload.dto.BookDto;
 
 import lombok.Data;
 
@@ -33,7 +34,7 @@ public class CarCheck {
   private IdCheck model;
   private IdCheck address;
 
-  // private List<BookCheck> books;
+  private List<BookDto> books;
 
   // private List<ReviewCheck> reviews;
 

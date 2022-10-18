@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,11 +31,11 @@ public class Ward extends Base {
 
     // relationship
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id")
     private District district;
 
-    @OneToMany(mappedBy = "ward")
+    @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)
     private List<Address> addresss = new ArrayList<Address>();
 
     // getter and setter

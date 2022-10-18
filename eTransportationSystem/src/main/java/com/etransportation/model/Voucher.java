@@ -9,10 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,7 +29,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "voucher")
+@Table(name = "voucher", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "code" }) })
 @Data
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
@@ -47,7 +50,7 @@ public class Voucher extends Base {
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @Temporal(TemporalType.DATE)
     private Date endDate;
 
@@ -57,7 +60,7 @@ public class Voucher extends Base {
 
     // relationship
 
-    @OneToMany(mappedBy = "voucher")
+    @OneToMany(mappedBy = "voucher", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<Book>();
 
     // getter and setter

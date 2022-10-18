@@ -25,7 +25,7 @@ function Header() {
     <section className="header">
       <Navbar>
         <li className="has-magr">
-          <Link to="/carRegisterMode" className="become-owner">
+          <Link to="/carRegisterMode" className="become-owner-main">
             Trở thành chủ xe
           </Link>
         </li>
@@ -51,7 +51,7 @@ function Header() {
                   }}
                 />
               </div>
-              <Link to={`/profile/${user.id}`} className="become-owner">
+              <Link to={`/profile/${user.id}`} className="become-owner-light">
                 {user.username}
               </Link>
             </li>
@@ -70,7 +70,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link className="btn btn-transparent btn--m" title to="/register">
+              <Link className="btn btn-transparent btn--m" title to="/registerPage">
                 Đăng kí
               </Link>
             </li>

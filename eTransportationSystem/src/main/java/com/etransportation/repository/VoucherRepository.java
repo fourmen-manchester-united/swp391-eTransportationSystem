@@ -2,6 +2,7 @@ package com.etransportation.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
     List<Voucher> findAllByStatus(VoucherStatus status);
 
     List<Voucher> findAllByStatusAndEndDateGreaterThan(VoucherStatus status, Date date);
+
+    Optional<Voucher> findByCode(String code);
+
 }

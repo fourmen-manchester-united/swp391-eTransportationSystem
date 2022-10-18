@@ -1,15 +1,15 @@
 package com.etransportation.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +20,17 @@ import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
 import com.etransportation.model.DrivingLicense;
 import com.etransportation.model.Role;
+import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.AccountInfoResponse;
 import com.etransportation.payload.response.DriverLicenseInfoResponse;
 import com.etransportation.payload.response.LoginResponse;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.DrivingLicenseRepository;
 import com.etransportation.repository.RoleRepository;
@@ -86,6 +89,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
+
         Account account = accountRepository
                 .findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Username is incorrect!"));
@@ -112,6 +116,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountInfoResponse findAccountById(Long id) {
+
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
 
@@ -134,22 +139,25 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        if (account.getDrivingLicense() == null) {
-            account.setDrivingLicense(new DrivingLicense());
+
+        DrivingLicense drivingLicense = drivingLicenseRepository.findByAccount_Id(accountId)
+                .orElseGet(() -> null);
+
+        if (drivingLicense == null) {
+            drivingLicense = new DrivingLicense();
+            drivingLicense.setStatus(DrivingLicenseStatus.NOTYET);
+
         }
-        return modelMapper.map(account.getDrivingLicense(), DriverLicenseInfoResponse.class);
+        return modelMapper.map(drivingLicense, DriverLicenseInfoResponse.class);
     }
 
-    // test
     @Override
     @Transactional
     public void updateDriverLicenseInfo(DriverLicenseInfoRequest driverLicenseInfoRequest) {
         Account account = accountRepository.findById(driverLicenseInfoRequest.getAccount_Id())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
         DrivingLicense drivingLicense = account.getDrivingLicense();
-        if (account.getDrivingLicense() != null) {
+        if (drivingLicense != null) {
             modelMapper.map(driverLicenseInfoRequest, drivingLicense);
         } else {
             drivingLicense = modelMapper.map(driverLicenseInfoRequest, DrivingLicense.class);
@@ -161,10 +169,40 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountInfoRequest> findAllAccount() {
-        List<Account> accounts = accountRepository.findAll();
-        return modelMapper.map(accounts, new TypeToken<List<AccountInfoRequest>>() {
-        }.getType());
+    public Object findAllAccount(PagingRequest pagingRequest) {
+        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+        Page<Account> accounts = accountRepository.findAll(pageable);
+        PagingResponse<AccountInfoResponse> pagingResponse = PagingResponse
+                .<AccountInfoResponse>builder()
+                .page(accounts.getPageable().getPageNumber() + 1)
+                .size(accounts.getSize())
+                .totalPage(accounts.getTotalPages())
+                .totalItem(accounts.getTotalElements())
+                .contends(modelMapper.map(accounts.getContent(), new TypeToken<List<AccountInfoResponse>>() {
+                }.getType()))
+                .build();
+        return pagingResponse;
+    }
+
+    @Override
+    public void accountBrowsing(AccountBrowsingRequest accountBrowsingRequest) {
+        Account account = accountRepository.findById(accountBrowsingRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+
+        switch (accountBrowsingRequest.getStatus()) {
+            case ACTIVE:
+                account.setStatus(AccountStatus.ACTIVE);
+                break;
+            case BLOCKED:
+                account.setStatus(AccountStatus.BLOCKED);
+                break;
+            case INACTIVE:
+                account.setStatus(AccountStatus.INACTIVE);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown status: " + account.getStatus());
+        }
+        accountRepository.save(account);
     }
 
 }

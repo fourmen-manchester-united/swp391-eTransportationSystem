@@ -5,12 +5,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,14 +28,14 @@ public class District extends Base {
 
     // relationship
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @OneToMany(mappedBy = "district")
+    @OneToMany(mappedBy = "district", fetch = FetchType.LAZY)
     private List<Ward> wards = new ArrayList<Ward>();
 
-    @OneToMany(mappedBy = "district")
+    @OneToMany(mappedBy = "district", fetch = FetchType.LAZY)
     private List<Address> addresss = new ArrayList<Address>();
 
     // getter and setter

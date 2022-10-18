@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.CarRegisterRequest;
+import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.service.CarService;
@@ -53,8 +54,8 @@ public class CarController {
     }
 
     @GetMapping("/city/{code}")
-    public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code) {
-        List<CarShortInfoResponse> carInfoResponse = cityService.findAllCarsByCity(code);
+    public ResponseEntity<?> getAllCarByCityCode(@PathVariable String code, PagingRequest pagingRequest) {
+        List<CarShortInfoResponse> carInfoResponse = carService.findAllCarsByCity(code, pagingRequest);
         return ResponseEntity.ok(carInfoResponse);
     }
 
