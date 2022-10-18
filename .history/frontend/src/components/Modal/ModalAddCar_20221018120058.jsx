@@ -81,7 +81,7 @@ export function ModalAddCar() {
                   ))}
               </select>
             </div>
-            <label className="sublabel">Quận/Huyện</label>
+            <label className="sublabel">Quận/ Huyện</label>
             <div className="wrap-select">
               <select
                 name="districtId"
