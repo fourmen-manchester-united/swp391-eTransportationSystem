@@ -145,7 +145,7 @@ function HowItWork() {
                     nhận lại giấy tờ để hoàn thành chuyến đi tuyệt vời của bạn.
                   </p>
                   <p>
-                    Đ quên cho điểm rating và nhận xét của bạn đến chủ xe để
+                    Đừng quên cho điểm rating và nhận xét của bạn đến chủ xe để
                     nâng cao chất lượng phục vụ cho những hành trình sắp tới
                     nhé!
                   </p>
