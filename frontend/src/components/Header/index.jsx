@@ -51,7 +51,7 @@ function Header() {
                   }}
                 />
               </div>
-              <Link to={`/profile/${user.id}`} className="become-owner">
+              <Link to={`/profile/${user.id}`} className="become-owner-light">
                 {user.username}
               </Link>
             </li>
