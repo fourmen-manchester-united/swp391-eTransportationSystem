@@ -70,7 +70,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link className="btn btn-transparent btn--m" title to="/register">
+              <Link className="btn btn-transparent btn--m" title to="/registerPage">
                 Đăng kí
               </Link>
             </li>
