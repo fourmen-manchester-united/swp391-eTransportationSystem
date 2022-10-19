@@ -1,0 +1,48 @@
+.MuiTooltipPopper {
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(430px, 6px, 0px);
+}
+
+.validation {
+  opacity: 1;
+  transform: none;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    transform 133ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  color: #fff !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  max-width: 333px !important;
+  padding: 5px 15px !important;
+  line-height: 1.4em;
+  border-radius: 4px;
+  background: #f63b3bc5 !important;
+}
+
+.MuiTooltipArrow {
+  color: rgba(97, 97, 97, 0.9);
+  top: 4px;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  left: 0;
+  width: 0.71em;
+  height: 1em;
+  margin-top: 4px;
+  margin-left: -0.71em;
+  margin-bottom: 4px;
+}
+
+.MuiTooltipArrow::before {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  content: "";
+  display: block;
+  transform: rotate(45deg);
+  background-color: currentColor;
+  transform-origin: 100% 100%;
+}
