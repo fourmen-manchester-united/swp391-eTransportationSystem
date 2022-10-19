@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +78,18 @@ public class AdminController {
     public ResponseEntity<?> accountBrowsing(@RequestBody AccountBrowsingRequest accountBrowsingRequest) {
         accountService.accountBrowsing(accountBrowsingRequest);
         return ResponseEntity.ok("account browsing successful");
+    }
+
+    @DeleteMapping("/account/role/{id}")
+    public ResponseEntity<?> deleteRole(@PathVariable Long id) {
+        accountService.deleteRole(id);
+        return ResponseEntity.ok("delete role admin successful");
+    }
+
+    @PostMapping("/account/role/{id}")
+    public ResponseEntity<?> addRole(@PathVariable Long id) {
+        accountService.addRole(id);
+        return ResponseEntity.ok("add role admin successful");
     }
 
 }

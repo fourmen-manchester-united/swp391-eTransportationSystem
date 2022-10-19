@@ -3,7 +3,6 @@ package com.etransportation.service.impl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.etransportation.enums.AccountStatus;
 import com.etransportation.enums.DrivingLicenseStatus;
 import com.etransportation.enums.RoleAccount;
@@ -202,6 +200,21 @@ public class AccountServiceImpl implements AccountService {
             default:
                 throw new IllegalArgumentException("Unknown status: " + account.getStatus());
         }
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void addRole(Long id) {
+
+    }
+
+    @Override
+    public void deleteRole(Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+        account = accountRepository.findByRoles_Name(RoleAccount.ADMIN)
+                .orElseThrow(() -> new IllegalArgumentException("Account is not have role Admin !"));
+        account.getRoles().removeIf(r -> r.getName().equals(RoleAccount.ADMIN));
         accountRepository.save(account);
     }
 

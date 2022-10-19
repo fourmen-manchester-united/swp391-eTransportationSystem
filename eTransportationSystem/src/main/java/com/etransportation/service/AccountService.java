@@ -31,4 +31,8 @@ public interface AccountService {
 
     public void accountBrowsing(AccountBrowsingRequest accountBrowsingRequest);
 
+    public void deleteRole(Long id);
+
+    public void addRole(Long id);
+
 }
