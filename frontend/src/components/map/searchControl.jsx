@@ -18,7 +18,11 @@ const SearchControl = (props) => {
       resultFormat: ({ result }) => result.label,
       ...props,
     });
+<<<<<<< HEAD
     map.on("geosearch/showlocation", function (e) {
+=======
+    map.on("geosearch/showlocation/loadmap", function (e) {
+>>>>>>> 586fa5afab5cf7dec87222121d59ccc50d506561
       // console.log(e.location);
     });
     map.on("geosearch/marker/dragend", function (e) {
