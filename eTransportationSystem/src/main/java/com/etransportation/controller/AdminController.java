@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.CarBrowsingRequest;
+import com.etransportation.payload.request.DLicenseBrowsingRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.VoucherRequest;
 import com.etransportation.payload.response.PagingResponse;
@@ -47,8 +48,8 @@ public class AdminController {
     }
 
     @GetMapping("/car")
-    public ResponseEntity<?> getAllCar(PagingRequest pagingRequest) {
-        return ResponseEntity.ok(carService.findAllCar(pagingRequest));
+    public ResponseEntity<?> getAllCarByAdmin(PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.findAllCarByAdmin(pagingRequest));
     }
 
     @PostMapping("/voucher")
@@ -76,7 +77,7 @@ public class AdminController {
 
     @PutMapping("/block/account")
     public ResponseEntity<?> accountBrowsing(@RequestBody AccountBrowsingRequest accountBrowsingRequest) {
-        accountService.accountBrowsing(accountBrowsingRequest);
+        accountService.accountBlock(accountBrowsingRequest);
         return ResponseEntity.ok("account browsing successful");
     }
 
@@ -90,6 +91,12 @@ public class AdminController {
     public ResponseEntity<?> addRole(@PathVariable Long id) {
         accountService.addRole(id);
         return ResponseEntity.ok("add role admin successful");
+    }
+
+    @PutMapping("/browsing/driverLincense")
+    public ResponseEntity<?> accountDriverLincense(@RequestBody DLicenseBrowsingRequest dLicenseBrowsingRequest) {
+        accountService.accountDriverLincense(dLicenseBrowsingRequest);
+        return ResponseEntity.ok("account driverLincense browsing successful");
     }
 
 }

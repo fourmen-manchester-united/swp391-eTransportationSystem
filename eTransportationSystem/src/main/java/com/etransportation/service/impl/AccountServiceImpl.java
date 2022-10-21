@@ -22,6 +22,7 @@ import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
 import com.etransportation.payload.request.ChangePasswordRequest;
+import com.etransportation.payload.request.DLicenseBrowsingRequest;
 import com.etransportation.payload.request.DriverLicenseInfoRequest;
 import com.etransportation.payload.request.LoginRequest;
 import com.etransportation.payload.request.PagingRequest;
@@ -77,7 +78,6 @@ public class AccountServiceImpl implements AccountService {
                 .password(bCryptPasswordEncoder.encode(registerRequest.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.ACTIVE)
-                .email(String.valueOf(accountRepository.count()))
                 .build();
 
         accountRepository.save(account);
@@ -137,6 +137,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
 
         DrivingLicense drivingLicense = drivingLicenseRepository.findByAccount_Id(accountId)
                 .orElseGet(() -> null);
@@ -183,7 +185,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void accountBrowsing(AccountBrowsingRequest accountBrowsingRequest) {
+    public void accountBlock(AccountBrowsingRequest accountBrowsingRequest) {
         Account account = accountRepository.findById(accountBrowsingRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
 
@@ -205,7 +207,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addRole(Long id) {
-
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+        Role role = roleRepository.findByName(RoleAccount.ADMIN).orElseGet(() -> Role
+                .builder()
+                .name(RoleAccount.ADMIN)
+                .build());
+        account.getRoles().add(role);
+        accountRepository.save(account);
     }
 
     @Override
@@ -216,6 +225,33 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account is not have role Admin !"));
         account.getRoles().removeIf(r -> r.getName().equals(RoleAccount.ADMIN));
         accountRepository.save(account);
+    }
+
+    @Override
+    public void accountDriverLincense(DLicenseBrowsingRequest dLicenseBrowsingRequest) {
+        Account account = accountRepository.findById(dLicenseBrowsingRequest.getAccount_Id())
+                .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+
+        DrivingLicense drivingLicense = drivingLicenseRepository
+                .findByAccount_Id(dLicenseBrowsingRequest.getAccount_Id())
+                .orElseThrow(() -> new IllegalArgumentException("Account is not have driving license!"));
+
+        switch (dLicenseBrowsingRequest.getStatus()) {
+            case VERIFIED:
+                drivingLicense.setStatus(DrivingLicenseStatus.VERIFIED);
+                break;
+            case FAILED:
+                drivingLicense.setStatus(DrivingLicenseStatus.FAILED);
+                break;
+            case PENDING:
+                drivingLicense.setStatus(DrivingLicenseStatus.PENDING);
+                break;
+            case NOTYET:
+                throw new IllegalArgumentException("Can not setup status: " + dLicenseBrowsingRequest.getStatus());
+            default:
+                throw new IllegalArgumentException("Unknown status: " + dLicenseBrowsingRequest.getStatus());
+        }
+        drivingLicenseRepository.save(drivingLicense);
     }
 
 }
