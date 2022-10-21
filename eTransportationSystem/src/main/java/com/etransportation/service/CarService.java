@@ -19,7 +19,9 @@ public interface CarService {
 
     public List<CarShortInfoResponse> findAllCarByUserId(Long id);
 
-    public Object findAllCar(PagingRequest pagingRequest);
+    public Object findAllCarByAdmin(PagingRequest pagingRequest);
+
+    public Object findAllCarByUser(PagingRequest pagingRequest);
 
     public List<CarShortInfoResponse> findAllCarsByCity(String code, PagingRequest pagingRequest);
 

@@ -145,7 +145,7 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
-        public Object findAllCar(PagingRequest pagingRequest) {
+        public Object findAllCarByAdmin(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
                 Page<Car> car = carRepository.findAll(pageable);
@@ -218,6 +218,35 @@ public class CarServiceImpl implements CarService {
 
                 carRepository.save(car);
 
+        }
+
+        @Override
+        public Object findAllCarByUser(PagingRequest pagingRequest) {
+
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+                Page<Car> car = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
+
+                List<CarShortInfoResponse> listCarInfoResponse = car.getContent().stream().map(c -> {
+                        CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
+                        carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
+                                        + c.getAddress().getCity().getName());
+                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setCarImage(c.getCarImages()
+                                        .get(new Random().nextInt(c.getCarImages().size()))
+                                        .getImage());
+
+                        return carShortInfoResponse;
+                }).collect(Collectors.toList());
+
+                PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
+                                .<CarShortInfoResponse>builder()
+                                .page(car.getPageable().getPageNumber() + 1)
+                                .size(car.getSize())
+                                .totalPage(car.getTotalPages())
+                                .totalItem(car.getTotalElements())
+                                .contends(listCarInfoResponse)
+                                .build();
+                return pagingResponse;
         }
 
 }

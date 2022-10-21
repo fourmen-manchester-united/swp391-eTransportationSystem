@@ -65,4 +65,8 @@ public class CarController {
         return ResponseEntity.ok(carInfoResponse);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllCarByUser(PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.findAllCarByUser(pagingRequest));
+    }
 }
