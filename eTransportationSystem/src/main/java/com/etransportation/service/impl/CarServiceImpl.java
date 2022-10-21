@@ -33,6 +33,7 @@ import com.etransportation.repository.CarImageRepository;
 import com.etransportation.repository.CarRepository;
 import com.etransportation.repository.WardRepository;
 import com.etransportation.service.CarService;
+import com.etransportation.util.DateConverter;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -117,7 +118,13 @@ public class CarServiceImpl implements CarService {
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
                 carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime())
                                 || book.getStatus().equals(BookStatus.CANCEL));
+
+                carDetailInfoResponse.getBooks().forEach(book -> {
+                        book.setDates(DateConverter.getDatesBetween(book.getStartDate(), book.getEndDate()));
+                });
+
                 return carDetailInfoResponse;
+
         }
 
         @Override
