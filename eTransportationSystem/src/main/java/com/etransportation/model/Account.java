@@ -18,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -125,4 +126,9 @@ public class Account extends Base {
     private DrivingLicense drivingLicense;
 
     // getter and setter
+
+    @PreRemove
+    private void preRemove() {
+        reviews.forEach(r -> r.setAccount(null));
+    }
 }

@@ -13,7 +13,7 @@ import com.etransportation.security.oauth2.OAuth2UserInfo;
 @RestController
 public class OAuth2Controller {
 
-    @PostMapping("/oauth2/google")
+    @PostMapping("/api/oauth2")
     public ResponseEntity<?> signInWithGoogle(@RequestBody Map<String, Object> data) {
 
         OAuth2UserInfo userInfo = new GoogleOAuth2UserInfo(data);
