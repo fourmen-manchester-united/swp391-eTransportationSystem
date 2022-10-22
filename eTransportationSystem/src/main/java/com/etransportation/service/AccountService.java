@@ -1,5 +1,7 @@
 package com.etransportation.service;
 
+import java.util.Map;
+
 import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
@@ -37,4 +39,6 @@ public interface AccountService {
     public void addRole(Long id);
 
     public void accountDriverLincense(DLicenseBrowsingRequest dLicenseBrowsingRequest);
+
+    public LoginResponse loginOAuth2(Map<String, Object> data);
 }
