@@ -2,6 +2,7 @@ package com.etransportation.service.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.etransportation.enums.AccountGender;
 import com.etransportation.enums.AccountStatus;
 import com.etransportation.enums.DrivingLicenseStatus;
 import com.etransportation.enums.RoleAccount;
@@ -33,6 +36,8 @@ import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.DrivingLicenseRepository;
 import com.etransportation.repository.RoleRepository;
+import com.etransportation.security.oauth2.GoogleOAuth2UserInfo;
+import com.etransportation.security.oauth2.OAuth2UserInfo;
 import com.etransportation.service.AccountService;
 
 @Service
@@ -59,25 +64,20 @@ public class AccountServiceImpl implements AccountService {
         if (accountRepository.existsByUsername(registerRequest.getUsername())) {
             throw new IllegalArgumentException("Username is already taken!");
         }
-
-        // Create new user's account
-        Role role = roleRepository.findByName(RoleAccount.USER).orElseGet(() -> Role
-                .builder()
-                .name(RoleAccount.USER)
-                .build());
-
-        roleRepository.save(role);
-
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-
         Account account = Account
                 .builder()
                 .username(registerRequest.getUsername())
                 .name(registerRequest.getName())
                 .password(bCryptPasswordEncoder.encode(registerRequest.getPassword()))
-                .roles(roles)
                 .status(AccountStatus.ACTIVE)
+                .roles(new HashSet<Role>() {
+                    {
+                        add(roleRepository.findByName(RoleAccount.USER).orElseGet(() -> Role
+                                .builder()
+                                .name(RoleAccount.USER)
+                                .build()));
+                    }
+                })
                 .build();
 
         accountRepository.save(account);
@@ -221,7 +221,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteRole(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-        account = accountRepository.findByRoles_Name(RoleAccount.ADMIN)
+        account = accountRepository.findByIdAndRoles_Name(id, RoleAccount.ADMIN)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not have role Admin !"));
         account.getRoles().removeIf(r -> r.getName().equals(RoleAccount.ADMIN));
         accountRepository.save(account);
@@ -252,6 +252,36 @@ public class AccountServiceImpl implements AccountService {
                 throw new IllegalArgumentException("Unknown status: " + dLicenseBrowsingRequest.getStatus());
         }
         drivingLicenseRepository.save(drivingLicense);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public LoginResponse loginOAuth2(Map<String, Object> data) {
+        OAuth2UserInfo userInfo = new GoogleOAuth2UserInfo((Map<String, Object>) data.get("profileObj"));
+        Account account = accountRepository.findByEmail(userInfo.getEmail()).orElseGet(() -> null);
+        if (account == null) {
+            String usernameFromEmail = userInfo.getEmail().substring(0, userInfo.getEmail().indexOf("@"));
+            account = Account.builder()
+                    .username(usernameFromEmail)
+                    .email(userInfo.getEmail())
+                    .status(AccountStatus.ACTIVE)
+                    .name(userInfo.getName())
+                    .avatar(userInfo.getImageUrl())
+                    .gender(AccountGender.MALE)
+                    .password(bCryptPasswordEncoder.encode(userInfo.getGoogleId() + userInfo.getProvider()))
+                    .roles(new HashSet<Role>() {
+                        {
+                            add(roleRepository.findByName(RoleAccount.USER).orElseGet(() -> Role
+                                    .builder()
+                                    .name(RoleAccount.USER)
+                                    .build()));
+                        }
+                    })
+                    .build();
+            accountRepository.save(account);
+        }
+
+        return modelMapper.map(account, LoginResponse.class);
     }
 
 }
