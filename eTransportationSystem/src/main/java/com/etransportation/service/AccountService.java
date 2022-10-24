@@ -30,7 +30,7 @@ public interface AccountService {
 
     public DriverLicenseInfoResponse findAccountDriverLicenseInfo(Long accountId);
 
-    public Object findAllAccount(PagingRequest pagingRequest);
+    public Object findAllAccountByContainsUsername(PagingRequest pagingRequest, String username);
 
     public void accountBlock(AccountBrowsingRequest accountBrowsingRequest);
 

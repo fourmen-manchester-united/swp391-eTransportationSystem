@@ -9,7 +9,7 @@ import com.etransportation.payload.response.VoucherResponse;
 
 public interface VoucherService {
 
-    public List<VoucherResponse> findAllVoucherActive();
+    public List<VoucherResponse> findAllVoucherActiveByContainCode(String code);
 
     public void save(VoucherRequest voucherRequest);
 
