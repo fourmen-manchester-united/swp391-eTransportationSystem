@@ -1,11 +1,14 @@
 package com.etransportation.service.impl;
 
+import static com.etransportation.filter.CarSpecification.*;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.BookStatus;
 import com.etransportation.enums.CarStatus;
+import com.etransportation.filter.Car_;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
@@ -23,6 +27,7 @@ import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.request.SearchAllCarByAddressRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
@@ -247,6 +252,16 @@ public class CarServiceImpl implements CarService {
                                 .contends(listCarInfoResponse)
                                 .build();
                 return pagingResponse;
+        }
+
+        @Override
+        public Object searchAllCarByAddress(SearchAllCarByAddressRequest AllCarBy,
+                        PagingRequest pagingRequest) {
+                List<Car> car = carRepository.findAll(getCarByFeature());
+                List<CarShortInfoResponse> CarDetailInfoResponse = modelMapper.map(car,
+                                new TypeToken<List<CarShortInfoResponse>>() {
+                                }.getType());
+                return CarDetailInfoResponse;
         }
 
 }

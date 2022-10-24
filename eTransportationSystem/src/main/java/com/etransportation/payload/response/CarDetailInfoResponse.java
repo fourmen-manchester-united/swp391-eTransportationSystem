@@ -1,5 +1,6 @@
 package com.etransportation.payload.response;
 
+import java.util.Date;
 import java.util.List;
 
 import com.etransportation.enums.CarStatus;
@@ -27,6 +28,7 @@ public class CarDetailInfoResponse {
     private double longitude;
     private double latitude;
     private String addressInfo;
+    private Date registerDate;
     private CarStatus status;
     private AccountDTO account;
 
