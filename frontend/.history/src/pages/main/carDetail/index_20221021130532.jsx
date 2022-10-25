@@ -36,9 +36,5 @@ function CarDetail() {
                 });
         };
         getAccountInfo();
-    }, [carID]);
-    const handleDateChange = (dates) => {
-        setStartDate(dates.startDate);
-        setEndDate(dates.endDate);
-    }
+    })
 }
