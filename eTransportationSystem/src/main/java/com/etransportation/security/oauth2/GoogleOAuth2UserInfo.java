@@ -14,27 +14,7 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
-    public String getId() {
-        return (String) attributes.get("sub");
-    }
-
-    @Override
     public String getImageUrl() {
-        return (String) attributes.get("picture");
-    }
-
-    @Override
-    public String getFirstName() {
-        return (String) attributes.get("givenName");
-    }
-
-    @Override
-    public String getLastName() {
-        return (String) attributes.get("familyName");
-    }
-
-    @Override
-    public String getProfileImageUrl() {
         return (String) attributes.get("imageUrl");
     }
 
@@ -44,23 +24,23 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
-    public String getProviderId() {
-        return (String) attributes.get("googleId");
-    }
-
-    @Override
     public String getName() {
         return (String) attributes.get("name");
     }
 
     @Override
-    public String getGender() {
-        return (String) attributes.get("gender");
+    public String getFamilyName() {
+        return (String) attributes.get("familyName");
     }
 
     @Override
-    public String getVerifiedEmail() {
-        return (String) attributes.get("verified_email");
+    public String getGivenName() {
+        return (String) attributes.get("givenName");
+    }
+
+    @Override
+    public String getGoogleId() {
+        return (String) attributes.get("googleId");
     }
 
 }

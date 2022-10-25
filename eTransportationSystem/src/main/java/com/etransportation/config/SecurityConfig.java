@@ -88,7 +88,7 @@ public class SecurityConfig {
                 .antMatchers("/api/book/**").permitAll()
                 .antMatchers("/api/check/**").permitAll()
                 .antMatchers("/api/admin/**").permitAll()
-                .antMatchers("/oauth2/**").permitAll()
+                .antMatchers("/api/oauth2/**").permitAll()
                 // .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/voucher/**").permitAll()
                 .antMatchers("/api/feature/**").permitAll()

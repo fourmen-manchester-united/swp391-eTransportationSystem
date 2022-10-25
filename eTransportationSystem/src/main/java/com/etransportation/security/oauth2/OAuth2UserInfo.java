@@ -16,23 +16,16 @@ public abstract class OAuth2UserInfo {
 
     public abstract String getName();
 
-    public abstract String getId();
+    public abstract String getGoogleId();
 
     public abstract String getEmail();
 
     public abstract String getImageUrl();
 
-    public abstract String getProviderId();
-
     public abstract String getProvider();
 
-    public abstract String getFirstName();
+    public abstract String getGivenName();
 
-    public abstract String getLastName();
+    public abstract String getFamilyName();
 
-    public abstract String getProfileImageUrl();
-
-    public abstract String getGender();
-
-    public abstract String getVerifiedEmail();
 }
