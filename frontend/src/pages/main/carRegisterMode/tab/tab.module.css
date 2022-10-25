@@ -1,0 +1,20 @@
+.tab-list {
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  color: #2e4765;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 25px 10px;
+}
+
+.tab-list-active,
+.tab-list-item:hover {
+  color: #00a550;
+}

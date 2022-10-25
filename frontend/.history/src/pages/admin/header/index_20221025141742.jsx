@@ -3,27 +3,26 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../../assets/images/logos/logo-black-3.png";
 import styles from "./headerAmin.module.css";
-export default function HeaderAdmin({ user }) {
-  const [state, setState] = useState({});
-  useEffect(
-    () => {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/account/${user.id}`)
-        .then((res) => {
-          const persons = res.data;
-          setState(persons);
-        })
-        .catch((error) => console.log(error));
-    },
-    // eslint-disable-next-line
-    []
-  );
-  const src =
-    state.profileImageUrl == null
+export default function headerAmin({ user }) {
+    const [state, setState] = useState({});
+    useEffect(
+        () => {
+            axios
+                .get(`${process.env.REACT_APP_API_URL}/account/${user.id}`);
+                .then((res) => {
+                    const persons = res.data;
+                    setState(persons);
+                })
+                .catch((error) => console.log(error))
+        },
+        []
+    );
+    const src = 
+        state.profileImageUrl == null
       ? "https://wrld-se-prod.b-cdn.net/images/user-empty.svg"
       : state.profileImageUrl;
-  return (
-    <header>
+    return (
+        <header>
       <div className={styles.header}>
         <div className={styles.headerLogo}>
           <div>
@@ -49,5 +48,5 @@ export default function HeaderAdmin({ user }) {
         </div>
       </div>
     </header>
-  );
+    );
 }
