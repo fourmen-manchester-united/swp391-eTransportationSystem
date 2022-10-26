@@ -257,7 +257,7 @@ public class CarServiceImpl implements CarService {
         @Override
         public Object searchAllCarByAddress(SearchAllCarByAddressRequest AllCarBy,
                         PagingRequest pagingRequest) {
-                List<Car> car = carRepository.findAll(getCarByFeature());
+                List<Car> car = carRepository.findAll(getBeweenPrice123(AllCarBy));
                 List<CarShortInfoResponse> CarDetailInfoResponse = modelMapper.map(car,
                                 new TypeToken<List<CarShortInfoResponse>>() {
                                 }.getType());
