@@ -20,6 +20,7 @@ import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.City;
 import com.etransportation.model.Feature;
+import com.etransportation.payload.request.SearchAllCarByAddressRequest;
 
 public class CarSpecification {
 
@@ -96,6 +97,12 @@ public class CarSpecification {
             Join<Feature, Car> carFeature = root.join("features");
             Query.distinct(true);
             return cb.in(carFeature.get("id")).value(Arrays.asList(new Long[] { 1L, 2L, 3L }));
+        };
+    }
+
+    public static Specification<Car> getBeweenPrice123(SearchAllCarByAddressRequest price) {
+        return (root, Query, cb) -> {
+            return cb.between(root.get(Car_.PRICE), price.getPrice().get(0), price.getPrice().get(1));
         };
     }
 
