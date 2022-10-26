@@ -1,14 +1,13 @@
 package com.etransportation.filter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.DoubleStream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -96,17 +95,9 @@ public class CarSpecification {
     public static Specification<Car> getCarByFeature() {
         return (root, Query, cb) -> {
             Join<Feature, Car> carFeature = root.join("features");
-            // Query.distinct(true);
-
-            List<Predicate> predicates = new ArrayList<>();
-            Long[] ids = { 1L, 2L, 3L };
-            for (Long id : ids) {
-                predicates.add(cb.equal(carFeature.get("id"), id));
-            }
-
-            return predicates.isEmpty() ? cb.conjunction() : cb.or(predicates.toArray(new Predicate[0]));
+            Query.distinct(true);
+            return cb.in(carFeature.get("id")).value(Arrays.asList(new Long[] { 1L, 2L, 3L }));
         };
-
     }
 
     public static Specification<Car> getBeweenPrice123(SearchAllCarByAddressRequest price) {
@@ -114,4 +105,18 @@ public class CarSpecification {
             return cb.between(root.get(Car_.PRICE), price.getPrice().get(0), price.getPrice().get(1));
         };
     }
+
+    public static Specification<Car> getCarByBrand() {
+        return (root, Query, cb) -> {
+            return null;
+        };
+    }
+
+    public static Specification<Car> beweenPrice6(double... seats) {
+        return (root, Query, cb) -> {
+            DoubleSummaryStatistics dt = DoubleStream.of(seats).summaryStatistics();
+            return cb.between(root.get(Car_.PRICE), dt.getMin(), dt.getMax());
+        };
+    }
+
 }

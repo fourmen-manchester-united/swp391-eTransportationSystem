@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.response.VoucherResponse;
@@ -20,8 +21,9 @@ public class VoucherController {
     private VoucherService voucherService;
 
     @GetMapping
-    public ResponseEntity<?> getAllVouchers() {
-        List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucherActive();
+    public ResponseEntity<?> getAllVoucherByContainsCode(
+            @RequestParam(required = false, defaultValue = "") String code) {
+        List<VoucherResponse> listVoucherResponse = voucherService.findAllVoucherActiveByContainCode(code);
         return new ResponseEntity<>(listVoucherResponse, HttpStatus.OK);
     }
 

@@ -169,9 +169,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Object findAllAccount(PagingRequest pagingRequest) {
+    public Object findAllAccountByContainsUsername(PagingRequest pagingRequest, String username) {
         Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-        Page<Account> accounts = accountRepository.findAll(pageable);
+        Page<Account> accounts = accountRepository.findByUsernameContains(username, pageable);
         PagingResponse<AccountInfoResponse> pagingResponse = PagingResponse
                 .<AccountInfoResponse>builder()
                 .page(accounts.getPageable().getPageNumber() + 1)

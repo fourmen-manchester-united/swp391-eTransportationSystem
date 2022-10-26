@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.AccountBrowsingRequest;
@@ -43,8 +44,9 @@ public class AdminController {
     private VoucherService voucherService;
 
     @GetMapping("/account")
-    public ResponseEntity<?> getAllAccount(PagingRequest pagingRequest) {
-        return ResponseEntity.ok(accountService.findAllAccount(pagingRequest));
+    public ResponseEntity<?> getAllAccountByContainsUsername(PagingRequest pagingRequest,
+            @RequestParam(required = false, defaultValue = "") String username) {
+        return ResponseEntity.ok(accountService.findAllAccountByContainsUsername(pagingRequest, username));
     }
 
     @GetMapping("/car")
