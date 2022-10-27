@@ -5,7 +5,7 @@ import java.util.List;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
-import com.etransportation.payload.request.SearchAllCarByAddressRequest;
+import com.etransportation.payload.request.filterSearchCar;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
@@ -28,6 +28,6 @@ public interface CarService {
 
     public void carBrowsing(CarBrowsingRequest carBrowsingRequest);
 
-    public Object searchAllCarByAddress(SearchAllCarByAddressRequest AllCarBy, PagingRequest pagingRequest);
+    public Object filterCar(filterSearchCar filter, PagingRequest pagingRequest);
 
 }

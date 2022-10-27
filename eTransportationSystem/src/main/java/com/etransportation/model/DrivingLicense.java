@@ -34,7 +34,6 @@ import lombok.EqualsAndHashCode;
 @EntityListeners(AuditingEntityListener.class)
 public class DrivingLicense extends Base {
 
-    @Column(nullable = false)
     private Long numberDrivingLicense;
 
     @Column(columnDefinition = "nvarchar(50)")

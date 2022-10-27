@@ -39,8 +39,9 @@ public class Voucher extends Base {
     @Column(columnDefinition = "varchar(50)")
     private String code;
 
-    private int percentage;
-    private int maxDiscount;
+    private Integer percentage;
+
+    private Integer maxDiscount;
     private String image;
 
     @Column(columnDefinition = "nvarchar(MAX)")

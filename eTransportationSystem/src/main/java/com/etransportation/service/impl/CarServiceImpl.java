@@ -2,10 +2,12 @@ package com.etransportation.service.impl;
 
 import static com.etransportation.filter.CarSpecification.*;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -27,7 +29,7 @@ import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
-import com.etransportation.payload.request.SearchAllCarByAddressRequest;
+import com.etransportation.payload.request.filterSearchCar;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
@@ -133,6 +135,7 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
+        @Transactional
         public List<CarShortInfoResponse> findAllCarByUserId(Long id) {
                 List<Car> cars = carRepository.findAllByAccount_Id(id);
                 List<CarShortInfoResponse> listCarInfoResponse = cars.stream().map(c -> {
@@ -150,12 +153,13 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
+        @Transactional
         public Object findAllCarByAdmin(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                Page<Car> car = carRepository.findAll(pageable);
+                Page<Car> cars = carRepository.findAll(pageable);
 
-                List<CarShortInfoResponse> listCarInfoResponse = car.getContent().stream().map(c -> {
+                List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
@@ -169,10 +173,10 @@ public class CarServiceImpl implements CarService {
 
                 PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
                                 .<CarShortInfoResponse>builder()
-                                .page(car.getPageable().getPageNumber() + 1)
-                                .size(car.getSize())
-                                .totalPage(car.getTotalPages())
-                                .totalItem(car.getTotalElements())
+                                .page(cars.getPageable().getPageNumber() + 1)
+                                .size(cars.getSize())
+                                .totalPage(cars.getTotalPages())
+                                .totalItem(cars.getTotalElements())
                                 .contends(listCarInfoResponse)
                                 .build();
                 return pagingResponse;
@@ -198,6 +202,7 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
+        @Transactional
         public void carBrowsing(CarBrowsingRequest carBrowsingRequest) {
                 Car car = carRepository.findById(carBrowsingRequest.getId()).orElseThrow(
                                 () -> new IllegalArgumentException("Car not found"));
@@ -226,12 +231,13 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
+        @Transactional
         public Object findAllCarByUser(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                Page<Car> car = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
+                Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
 
-                List<CarShortInfoResponse> listCarInfoResponse = car.getContent().stream().map(c -> {
+                List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
@@ -245,23 +251,42 @@ public class CarServiceImpl implements CarService {
 
                 PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
                                 .<CarShortInfoResponse>builder()
-                                .page(car.getPageable().getPageNumber() + 1)
-                                .size(car.getSize())
-                                .totalPage(car.getTotalPages())
-                                .totalItem(car.getTotalElements())
+                                .page(cars.getPageable().getPageNumber() + 1)
+                                .size(cars.getSize())
+                                .totalPage(cars.getTotalPages())
+                                .totalItem(cars.getTotalElements())
                                 .contends(listCarInfoResponse)
                                 .build();
                 return pagingResponse;
         }
 
         @Override
-        public Object searchAllCarByAddress(SearchAllCarByAddressRequest AllCarBy,
-                        PagingRequest pagingRequest) {
-                List<Car> car = carRepository.findAll(getBeweenPrice123(AllCarBy));
-                List<CarShortInfoResponse> CarDetailInfoResponse = modelMapper.map(car,
-                                new TypeToken<List<CarShortInfoResponse>>() {
-                                }.getType());
-                return CarDetailInfoResponse;
+        @Transactional
+        public Object filterCar(filterSearchCar filter, PagingRequest pagingRequest) {
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+                Page<Car> cars = carRepository.findAll(filterSearchCar(filter), pageable);
+
+                List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
+                        CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
+                        carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
+                                        + c.getAddress().getCity().getName());
+                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setCarImage(c.getCarImages()
+                                        .get(new Random().nextInt(c.getCarImages().size()))
+                                        .getImage());
+
+                        return carShortInfoResponse;
+                }).collect(Collectors.toList());
+
+                PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
+                                .<CarShortInfoResponse>builder()
+                                .page(cars.getPageable().getPageNumber() + 1)
+                                .size(cars.getSize())
+                                .totalPage(cars.getTotalPages())
+                                .totalItem(cars.getTotalElements())
+                                .contends(listCarInfoResponse)
+                                .build();
+                return pagingResponse;
         }
 
 }

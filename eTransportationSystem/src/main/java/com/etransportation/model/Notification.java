@@ -37,7 +37,7 @@ public class Notification extends Base {
     @Column(columnDefinition = "nvarchar(255)")
     private String title;
 
-    private boolean isRead;
+    private Boolean isRead;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @Column(columnDefinition = "datetime2(0)")

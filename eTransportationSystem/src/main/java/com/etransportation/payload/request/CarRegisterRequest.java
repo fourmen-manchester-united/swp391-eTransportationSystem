@@ -20,7 +20,7 @@ public class CarRegisterRequest {
     private String licensePlates;
     private String description;
     private String transmission;
-    private String yearOfManufacture;
+    private int yearOfManufacture;
     private int saleWeek;
     private int saleMonth;
     private double longitude;

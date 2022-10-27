@@ -42,8 +42,9 @@ import lombok.EqualsAndHashCode;
 @EntityListeners(AuditingEntityListener.class)
 public class Car extends Base {
 
-    private int seats;
-    private double price;
+    private Integer seats;
+
+    private Double price;
 
     @Column(columnDefinition = "nvarchar(30)")
     private String fuel;
@@ -57,13 +58,15 @@ public class Car extends Base {
     @Column(columnDefinition = "nvarchar(50)")
     private String transmission;
 
-    @Column(columnDefinition = "nvarchar(10)")
-    private String yearOfManufacture;
+    private Integer yearOfManufacture;
 
-    private int saleWeek;
-    private int saleMonth;
-    private double longitude;
-    private double latitude;
+    private Integer saleWeek;
+
+    private Integer saleMonth;
+
+    private Double longitude;
+
+    private Double latitude;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @Column(columnDefinition = "datetime2(0)")

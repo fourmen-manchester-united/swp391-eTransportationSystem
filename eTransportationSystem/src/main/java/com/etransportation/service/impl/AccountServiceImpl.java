@@ -21,6 +21,7 @@ import com.etransportation.enums.RoleAccount;
 import com.etransportation.model.Account;
 import com.etransportation.model.DrivingLicense;
 import com.etransportation.model.Role;
+import com.etransportation.payload.dto.DriverLicenseDTO;
 import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.AccountInfoRequest;
 import com.etransportation.payload.request.AccountRegisterRequest;
@@ -112,18 +113,36 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
     }
 
-    @Override
-    public AccountInfoResponse findAccountById(Long id) {
+    // @Override
+    // @Transactional
+    // // lay ra entity 1 rui set entity 2 trong entity 1 thi bi error
+    // // vd: account.setDrivingLicense -> error
+    // // chi loi khi co @Transactional -> xoa @Transactional fixbug
+    // public AccountInfoResponse findAccountById(Long id) {
 
+    // Account account = accountRepository.findById(id)
+    // .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+
+    // if (account.getDrivingLicense() == null) {
+    // DrivingLicense drivingLicense = new DrivingLicense();
+    // drivingLicense.setStatus(DrivingLicenseStatus.NOTYET);
+    // account.setDrivingLicense(drivingLicense);
+    // }
+    // return modelMapper.map(account, AccountInfoResponse.class);
+    // }
+
+    @Override
+    @Transactional
+    public AccountInfoResponse findAccountById(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-
-        if (account.getDrivingLicense() == null) {
-            DrivingLicense drivingLicense = new DrivingLicense();
-            drivingLicense.setStatus(DrivingLicenseStatus.NOTYET);
-            account.setDrivingLicense(drivingLicense);
+        AccountInfoResponse accountResponse = modelMapper.map(account, AccountInfoResponse.class);
+        if (accountResponse.getDrivingLicense() == null) {
+            DriverLicenseDTO driverLicenseDTO = new DriverLicenseDTO();
+            driverLicenseDTO.setStatus(DrivingLicenseStatus.NOTYET);
+            accountResponse.setDrivingLicense(driverLicenseDTO);
         }
-        return modelMapper.map(account, AccountInfoResponse.class);
+        return accountResponse;
     }
 
     @Override

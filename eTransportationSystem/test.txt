@@ -11,3 +11,26 @@
 -validate phone
 -search voucher by code 
 -search usernam 
+- neu la Double , Integer, Long ... thi se co gia tri defaul la null
+- neu int , long , double ... thi se co gia tri default khac null
+
+
+  // @Override
+    // @Transactional
+    // // lay ra entity 1 rui set entity 2 trong entity 1 thi bi error
+    // // vd: account.setDrivingLicense -> error
+    // // chi loi khi co @Transactional -> xoa @Transactional fixbug
+    // public AccountInfoResponse findAccountById(Long id) {
+
+    // Account account = accountRepository.findById(id)
+    // .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
+
+    // if (account.getDrivingLicense() == null) {
+    // DrivingLicense drivingLicense = new DrivingLicense();
+    // drivingLicense.setStatus(DrivingLicenseStatus.NOTYET);
+    // account.setDrivingLicense(drivingLicense);
+    // }
+    // return modelMapper.map(account, AccountInfoResponse.class);
+    // }
+
+
