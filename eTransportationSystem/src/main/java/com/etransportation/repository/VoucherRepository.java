@@ -15,7 +15,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
     List<Voucher> findAllByStatus(VoucherStatus status);
 
-    List<Voucher> findAllByStatusAndEndDateGreaterThan(VoucherStatus status, Date date);
+    List<Voucher> findAllByStatusAndEndDateGreaterThanAndCodeContains(VoucherStatus status, Date date, String code);
 
     Optional<Voucher> findByCode(String code);
 

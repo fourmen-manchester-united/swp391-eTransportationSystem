@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,8 +43,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "account", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "username" }),
-        @UniqueConstraint(columnNames = { "email" }) })
+        @UniqueConstraint(columnNames = { "username" }) })
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
@@ -104,7 +105,7 @@ public class Account extends Base {
 
     // relationship
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "account_role", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
@@ -125,4 +126,9 @@ public class Account extends Base {
     private DrivingLicense drivingLicense;
 
     // getter and setter
+
+    @PreRemove
+    private void preRemove() {
+        reviews.forEach(r -> r.setAccount(null));
+    }
 }

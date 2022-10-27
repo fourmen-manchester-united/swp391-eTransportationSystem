@@ -32,12 +32,13 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     @Transactional
-    public List<VoucherResponse> findAllVoucherActive() {
+    public List<VoucherResponse> findAllVoucherActiveByContainCode(String code) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 1);
 
-        List<Voucher> voucher = voucherRepository.findAllByStatusAndEndDateGreaterThan(VoucherStatus.ACTIVE,
-                cal.getTime());
+        List<Voucher> voucher = voucherRepository.findAllByStatusAndEndDateGreaterThanAndCodeContains(
+                VoucherStatus.ACTIVE,
+                cal.getTime(), code);
         List<VoucherResponse> listVoucherResponse = modelMapper.map(voucher, new TypeToken<List<VoucherResponse>>() {
         }.getType());
 

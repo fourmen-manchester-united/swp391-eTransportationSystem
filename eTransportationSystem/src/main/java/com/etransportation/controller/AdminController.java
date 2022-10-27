@@ -9,15 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.AccountBrowsingRequest;
 import com.etransportation.payload.request.CarBrowsingRequest;
+import com.etransportation.payload.request.DLicenseBrowsingRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.VoucherRequest;
 import com.etransportation.payload.response.PagingResponse;
@@ -40,13 +44,14 @@ public class AdminController {
     private VoucherService voucherService;
 
     @GetMapping("/account")
-    public ResponseEntity<?> getAllAccount(PagingRequest pagingRequest) {
-        return ResponseEntity.ok(accountService.findAllAccount(pagingRequest));
+    public ResponseEntity<?> getAllAccountByContainsUsername(PagingRequest pagingRequest,
+            @RequestParam(required = false, defaultValue = "") String username) {
+        return ResponseEntity.ok(accountService.findAllAccountByContainsUsername(pagingRequest, username));
     }
 
     @GetMapping("/car")
-    public ResponseEntity<?> getAllCar(PagingRequest pagingRequest) {
-        return ResponseEntity.ok(carService.findAllCar(pagingRequest));
+    public ResponseEntity<?> getAllCarByAdmin(PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.findAllCarByAdmin(pagingRequest));
     }
 
     @PostMapping("/voucher")
@@ -74,8 +79,26 @@ public class AdminController {
 
     @PutMapping("/block/account")
     public ResponseEntity<?> accountBrowsing(@RequestBody AccountBrowsingRequest accountBrowsingRequest) {
-        accountService.accountBrowsing(accountBrowsingRequest);
+        accountService.accountBlock(accountBrowsingRequest);
         return ResponseEntity.ok("account browsing successful");
+    }
+
+    @DeleteMapping("/account/role/{id}")
+    public ResponseEntity<?> deleteRole(@PathVariable Long id) {
+        accountService.deleteRole(id);
+        return ResponseEntity.ok("delete role admin successful");
+    }
+
+    @PostMapping("/account/role/{id}")
+    public ResponseEntity<?> addRole(@PathVariable Long id) {
+        accountService.addRole(id);
+        return ResponseEntity.ok("add role admin successful");
+    }
+
+    @PutMapping("/browsing/driverLincense")
+    public ResponseEntity<?> accountDriverLincense(@RequestBody DLicenseBrowsingRequest dLicenseBrowsingRequest) {
+        accountService.accountDriverLincense(dLicenseBrowsingRequest);
+        return ResponseEntity.ok("account driverLincense browsing successful");
     }
 
 }

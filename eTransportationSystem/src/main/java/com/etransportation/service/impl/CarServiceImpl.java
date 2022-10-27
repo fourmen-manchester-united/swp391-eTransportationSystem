@@ -1,11 +1,14 @@
 package com.etransportation.service.impl;
 
+import static com.etransportation.filter.CarSpecification.*;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.BookStatus;
 import com.etransportation.enums.CarStatus;
+import com.etransportation.filter.Car_;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
@@ -23,6 +27,7 @@ import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.request.SearchAllCarByAddressRequest;
 import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
@@ -33,6 +38,7 @@ import com.etransportation.repository.CarImageRepository;
 import com.etransportation.repository.CarRepository;
 import com.etransportation.repository.WardRepository;
 import com.etransportation.service.CarService;
+import com.etransportation.util.DateConverter;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -117,7 +123,13 @@ public class CarServiceImpl implements CarService {
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
                 carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime())
                                 || book.getStatus().equals(BookStatus.CANCEL));
+
+                carDetailInfoResponse.getBooks().forEach(book -> {
+                        book.setDates(DateConverter.getDatesBetween(book.getStartDate(), book.getEndDate()));
+                });
+
                 return carDetailInfoResponse;
+
         }
 
         @Override
@@ -138,7 +150,7 @@ public class CarServiceImpl implements CarService {
         }
 
         @Override
-        public Object findAllCar(PagingRequest pagingRequest) {
+        public Object findAllCarByAdmin(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
                 Page<Car> car = carRepository.findAll(pageable);
@@ -211,6 +223,45 @@ public class CarServiceImpl implements CarService {
 
                 carRepository.save(car);
 
+        }
+
+        @Override
+        public Object findAllCarByUser(PagingRequest pagingRequest) {
+
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+                Page<Car> car = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
+
+                List<CarShortInfoResponse> listCarInfoResponse = car.getContent().stream().map(c -> {
+                        CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
+                        carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
+                                        + c.getAddress().getCity().getName());
+                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setCarImage(c.getCarImages()
+                                        .get(new Random().nextInt(c.getCarImages().size()))
+                                        .getImage());
+
+                        return carShortInfoResponse;
+                }).collect(Collectors.toList());
+
+                PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
+                                .<CarShortInfoResponse>builder()
+                                .page(car.getPageable().getPageNumber() + 1)
+                                .size(car.getSize())
+                                .totalPage(car.getTotalPages())
+                                .totalItem(car.getTotalElements())
+                                .contends(listCarInfoResponse)
+                                .build();
+                return pagingResponse;
+        }
+
+        @Override
+        public Object searchAllCarByAddress(SearchAllCarByAddressRequest AllCarBy,
+                        PagingRequest pagingRequest) {
+                List<Car> car = carRepository.findAll(getBeweenPrice123(AllCarBy));
+                List<CarShortInfoResponse> CarDetailInfoResponse = modelMapper.map(car,
+                                new TypeToken<List<CarShortInfoResponse>>() {
+                                }.getType());
+                return CarDetailInfoResponse;
         }
 
 }

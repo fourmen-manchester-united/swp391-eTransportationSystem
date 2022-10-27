@@ -2,7 +2,9 @@ package com.etransportation.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -111,7 +113,7 @@ public class Car extends Base {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "car_feature", joinColumns = @JoinColumn(name = "car_id"), inverseJoinColumns = @JoinColumn(name = "feature_id"))
-    private List<Feature> features = new ArrayList<Feature>();
+    private Set<Feature> features = new HashSet<>();
 
     // getter and setter
 
