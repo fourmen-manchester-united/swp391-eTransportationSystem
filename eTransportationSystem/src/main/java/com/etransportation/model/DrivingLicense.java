@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "drivingLicense")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class DrivingLicense extends Base {
 
@@ -51,7 +51,7 @@ public class DrivingLicense extends Base {
 
     // relationship
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Account account;

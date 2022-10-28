@@ -38,7 +38,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "car")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Car extends Base {
 
@@ -100,7 +100,7 @@ public class Car extends Base {
     @JoinColumn(name = "model_id", nullable = false)
     private CarModel model;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Address address;

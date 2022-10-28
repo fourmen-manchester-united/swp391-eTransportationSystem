@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -32,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "address")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,7 +58,8 @@ public class Address extends Base {
     @JoinColumn(name = "ward_id", nullable = false)
     private Ward ward;
 
-    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+    // --> onetoone fetch = FetchType.LAZY k co tac dung phai them optional = false
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY, optional = false)
     @PrimaryKeyJoinColumn
     private Car car;
 

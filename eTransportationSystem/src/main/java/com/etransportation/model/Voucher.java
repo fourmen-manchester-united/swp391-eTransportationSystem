@@ -32,7 +32,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "voucher", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "code" }) })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Voucher extends Base {
 

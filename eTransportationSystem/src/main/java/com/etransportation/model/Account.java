@@ -45,7 +45,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "username" }) })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -124,7 +124,7 @@ public class Account extends Base {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, optional = false)
     @PrimaryKeyJoinColumn
     private DrivingLicense drivingLicense;
 
