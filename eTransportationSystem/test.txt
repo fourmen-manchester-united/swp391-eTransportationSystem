@@ -33,4 +33,15 @@
     // return modelMapper.map(account, AccountInfoResponse.class);
     // }
 
+-cv
+- nếu 1 class mà khong kế thừa từ ai thì hashcodeandequal sẽ so sánh tất cả các fiel trong class đó
+-nếu 1 class mà có extend từ 1 class cha thì hashcodeandequal thì mặc định là @EqualsAndHashCode(callSuper = false) 
+->có nghĩa là nó chỉ so sánh tất cả fiel trong class con chứ không so sanh gồm cả fiel class cha
+- nếu muốn so sánh tất cả fiel gồm class cha và con thì set "callSuper = true" vd: @EqualsAndHashCode(callSuper = true)
 
+
+- trong @onetomany one là father và many là child khi save father thì chỉ save father chứ không có save child , kể cả khi set father vào list child thì vẫn chỉ save father
+-nếu muốn save father mà tự động save child thì phải có cascade = CascadeType.ALL trong father
+- nếu đã có cascade = CascadeType.ALL trong father -> có 2 trường hợp đặc biệt
++nếu father có child mà child không có father thì khi save father thì vẫn save child nhưng fiel father_id trong child là null
++nếu father có child mà child có father thì khi save father thì trong db child có fiel father_id là id của father
