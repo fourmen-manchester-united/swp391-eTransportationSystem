@@ -121,14 +121,18 @@ public class CarSpecification {
 
     public static Specification<Car> filterSearchCar(filterSearchCar filter) {
         return (root, Query, cb) -> {
+            // khoi tao List<Predicate>
             List<Predicate> predicates = new ArrayList<>();
+            // get all car STATUS is ACTIVE
             predicates.add(cb.equal(root.get(Car_.STATUS), CarStatus.ACTIVE));
+            // get all car is between price
             if (filter.getPriceBetween() != null && filter.getPriceBetween().length == 2) {
                 DoubleSummaryStatistics dt = DoubleStream
                         .of(ArrayUtils.toPrimitive(filter.getPriceBetween()))
                         .summaryStatistics();
                 predicates.add(cb.between(root.get(Car_.PRICE), dt.getMin(), dt.getMax()));
             }
+            // get option car is sort price
             if (filter.getSortPriceType() != null) {
                 switch (filter.getSortPriceType()) {
                     case ASC:
@@ -141,11 +145,12 @@ public class CarSpecification {
                         break;
                 }
             }
+            // get car is seats in []
             if (filter.getSeatsIn() != null && filter.getSeatsIn().length != 0) {
                 predicates.add(cb.in(root.get(Car_.SEATS)).value(Arrays.asList(filter.getSeatsIn())));
 
             }
-
+            // get car is fuel
             if (filter.getFuel() != null && !filter.getFuel().isEmpty()) {
                 switch (filter.getFuel()) {
                     case "Xăng":
@@ -158,6 +163,7 @@ public class CarSpecification {
                         break;
                 }
             }
+            // get car is between YearOfManufacture
             // min max all
             if (filter.getYearOfManufactureBetween() != null && filter.getYearOfManufactureBetween().length == 2) {
                 int max = Arrays.asList(filter.getYearOfManufactureBetween()).stream().mapToInt(Integer::intValue).max()

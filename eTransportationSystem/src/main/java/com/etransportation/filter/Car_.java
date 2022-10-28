@@ -22,5 +22,6 @@ public abstract class Car_ {
     public static final String YEAR = "yearOfManufacture";
     public static final String STATUS = "status";
     public static final String ADDRESS = "address";
+    public static final String MODEL = "model";
 
 }
