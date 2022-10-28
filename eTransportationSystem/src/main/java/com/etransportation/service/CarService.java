@@ -22,7 +22,7 @@ public interface CarService {
 
     public Object findAllCarByAdmin(PagingRequest pagingRequest);
 
-    public Object findAllCarByUser(PagingRequest pagingRequest);
+    public Object findAllCarByGuest(PagingRequest pagingRequest);
 
     public List<CarShortInfoResponse> findAllCarsByCity(String code, PagingRequest pagingRequest);
 
