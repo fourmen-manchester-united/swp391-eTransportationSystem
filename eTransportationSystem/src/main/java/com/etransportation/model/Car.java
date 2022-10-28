@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -19,6 +20,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -111,7 +119,7 @@ public class Car extends Base {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<Review>();
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CarImage> carImages = new ArrayList<CarImage>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -119,5 +127,43 @@ public class Car extends Base {
     private Set<Feature> features = new HashSet<>();
 
     // getter and setter
+
+    @PrePersist
+    private void prePersist() {
+        this.carImages.forEach(ig -> ig.setCar(this));
+    }
+
+    @PreRemove
+    private void preRemove() {
+
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+
+    }
+
+    @PostPersist
+    private void postPersist() {
+
+    }
+
+    @PostRemove
+    private void postRemove() {
+
+    }
+
+    @PostUpdate
+    private void postUpdate() {
+
+    }
+
+    @PostLoad
+    private void postLoad() {
+        // sau khi get data
+        // fuel = "heheheheheh";
+        // this.description = "hohohohoohoh";
+        // this.licensePlates = "hahahahahah";
+    }
 
 }
