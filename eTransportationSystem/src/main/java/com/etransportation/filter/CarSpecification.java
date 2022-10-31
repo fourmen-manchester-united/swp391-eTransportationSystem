@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
+import com.etransportation.model.CarBrand;
+import com.etransportation.model.CarModel;
 import com.etransportation.model.City;
 import com.etransportation.model.Feature;
 import com.etransportation.payload.request.filterSearchCar;
@@ -94,6 +96,13 @@ public class CarSpecification {
         return (root, Query, cb) -> {
             Join<Address, Car> carAddress = root.join(Car_.ADDRESS).join("city");
             return cb.equal(carAddress.get("code"), "BinhThuan");
+        };
+
+    }
+
+    public static Specification<Car> getCarByAddress3() {
+        return (root, Query, cb) -> {
+            return cb.equal(root.get("address").get("city").get("code"), "BinhThuan");
         };
 
     }
@@ -180,6 +189,45 @@ public class CarSpecification {
                         .summaryStatistics();
 
                 predicates.add(cb.between(root.get(Car_.YEAR), tt.getMin(), tt.getMax()));
+            }
+            // get car is Transmission
+            if (filter.getTransmission() != null && !filter.getTransmission().isEmpty()) {
+                switch (filter.getTransmission()) {
+                    case "Số tự động":
+                        predicates.add(cb.equal(root.get(Car_.TRANSMISSION), filter.getTransmission()));
+                        break;
+                    case "Số sàn":
+                        predicates.add(cb.equal(root.get(Car_.TRANSMISSION), filter.getTransmission()));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            // get car is Brand_Id and Model_Id_In
+            if (filter.getBrand_Id() != null && filter.getBrand_Id() > 0) {
+
+                // cach 1:
+                // Join<CarBrand, Car> carModel = root.join(Car_.MODEL).join(Model_.BRAND);
+                // predicates.add(cb.equal(carModel.get(Brand_.ID), filter.getBrand_Id()));
+
+                // cach 2:
+                predicates.add(cb.equal(root.get(Car_.MODEL).get(Model_.BRAND).get(Brand_.ID), filter.getBrand_Id()));
+
+                // get model in list
+                if (filter.getModel_Id_In() != null && filter.getModel_Id_In().length != 0) {
+                    predicates.add(
+                            cb.in(root.get(Car_.MODEL).get(Model_.ID)).value(Arrays.asList(filter.getModel_Id_In())));
+
+                }
+            }
+
+            if (filter.getFeature_Id_in() != null && filter.getFeature_Id_in().length != 0) {
+                Join<Feature, Car> carFeature = root.join(Car_.FEATURES);
+                predicates.add(
+                        cb.in(carFeature.get(Feature_.ID))
+                                .value(Arrays.asList(filter.getFeature_Id_in())));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

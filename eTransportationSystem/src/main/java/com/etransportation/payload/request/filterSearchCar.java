@@ -27,4 +27,12 @@ public class filterSearchCar {
     private String fuel;
 
     private Integer[] yearOfManufactureBetween;
+
+    private String transmission;
+
+    private Long brand_Id;
+
+    private Long[] model_Id_In;
+
+    private Long[] feature_Id_in;
 }
