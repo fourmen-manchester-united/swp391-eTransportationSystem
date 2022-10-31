@@ -51,7 +51,7 @@ public class DrivingLicense extends Base {
 
     // relationship
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Account account;

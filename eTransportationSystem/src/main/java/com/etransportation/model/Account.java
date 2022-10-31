@@ -124,7 +124,7 @@ public class Account extends Base {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private DrivingLicense drivingLicense;
 

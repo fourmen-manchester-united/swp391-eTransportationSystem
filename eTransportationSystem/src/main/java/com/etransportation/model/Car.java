@@ -108,7 +108,7 @@ public class Car extends Base {
     @JoinColumn(name = "model_id", nullable = false)
     private CarModel model;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Address address;
@@ -160,7 +160,7 @@ public class Car extends Base {
 
     @PostLoad
     private void postLoad() {
-        // sau khi get data
+        // sau khi get data rui luu lai vao db
         // fuel = "heheheheheh";
         // this.description = "hohohohoohoh";
         // this.licensePlates = "hahahahahah";
