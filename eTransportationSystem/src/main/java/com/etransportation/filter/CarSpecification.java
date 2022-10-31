@@ -165,7 +165,7 @@ public class CarSpecification {
                     case "Xăng":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
-                    case "Dầu":
+                    case "Dầu diesel":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
                     default:
