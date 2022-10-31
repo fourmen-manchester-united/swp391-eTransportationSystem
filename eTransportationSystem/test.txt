@@ -45,3 +45,7 @@
 - nếu đã có cascade = CascadeType.ALL trong father -> có 2 trường hợp đặc biệt
 +nếu father có child mà child không có father thì khi save father thì vẫn save child nhưng fiel father_id trong child là null
 +nếu father có child mà child có father thì khi save father thì trong db child có fiel father_id là id của father
+
+  // forenkey(child) onetoone khong can optional = false
+  // primekey(father) onetoone thi can optional = false de fech lazy hieu qua 
+  luu y: fetch = FetchType.LAZY, optional = false  nếu query father xong mà có xử lý gọi child ra thì nếu father có child thì sẽ không báo lỗi còn nếu father mà không có child thì sẽ có error 
