@@ -1,6 +1,7 @@
 package com.etransportation.payload.request;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -20,7 +21,7 @@ public class CarRegisterRequest {
     private String licensePlates;
     private String description;
     private String transmission;
-    private String yearOfManufacture;
+    private int yearOfManufacture;
     private int saleWeek;
     private int saleMonth;
     private double longitude;
@@ -35,6 +36,6 @@ public class CarRegisterRequest {
     @NotEmpty(message = "Car must have at least one image")
     private List<@Valid CarImageDTO> carImages;
 
-    private List<@Valid IdDTO> features;
+    private Set<@Valid IdDTO> features;
 
 }

@@ -45,7 +45,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "username" }) })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -76,6 +76,9 @@ public class Account extends Base {
     private String phone;
     private String avatar;
     private String thumnail;
+
+    // neu la Double , Integer, Long ... thi se co gia tri defaul la null
+    // neu int , long , double ... thi se co gia tri default khac null
     private Double balance;
 
     // jpa listing auditing

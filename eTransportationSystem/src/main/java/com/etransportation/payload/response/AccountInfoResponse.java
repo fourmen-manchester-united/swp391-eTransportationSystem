@@ -7,7 +7,6 @@ import com.etransportation.enums.AccountGender;
 import com.etransportation.enums.AccountStatus;
 import com.etransportation.payload.dto.DriverLicenseDTO;
 import com.etransportation.payload.dto.RoleDTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 

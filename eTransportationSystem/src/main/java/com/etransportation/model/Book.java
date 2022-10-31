@@ -27,12 +27,13 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "book")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Book extends Base {
 
-    private double price;
-    private double totalPrice;
+    private Double price;
+
+    private Double totalPrice;
 
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     @Temporal(TemporalType.DATE)

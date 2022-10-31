@@ -32,15 +32,16 @@ import lombok.EqualsAndHashCode;
 @Table(name = "voucher", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "code" }) })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Voucher extends Base {
 
     @Column(columnDefinition = "varchar(50)")
     private String code;
 
-    private int percentage;
-    private int maxDiscount;
+    private Integer percentage;
+
+    private Integer maxDiscount;
     private String image;
 
     @Column(columnDefinition = "nvarchar(MAX)")

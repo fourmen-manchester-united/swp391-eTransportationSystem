@@ -27,14 +27,14 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "review")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Review extends Base {
 
     @Column(columnDefinition = "nvarchar(MAX)")
     private String content;
 
-    private int starReview;
+    private Integer starReview;
 
     @Column(columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)

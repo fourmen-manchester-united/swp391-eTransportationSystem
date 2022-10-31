@@ -30,11 +30,10 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "drivingLicense")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class DrivingLicense extends Base {
 
-    @Column(nullable = false)
     private Long numberDrivingLicense;
 
     @Column(columnDefinition = "nvarchar(50)")
