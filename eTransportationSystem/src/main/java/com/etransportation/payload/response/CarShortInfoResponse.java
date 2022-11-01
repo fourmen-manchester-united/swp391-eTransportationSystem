@@ -1,10 +1,6 @@
 package com.etransportation.payload.response;
 
-import java.util.List;
-
 import com.etransportation.enums.CarStatus;
-import com.etransportation.payload.dto.CarBrandDTO;
-import com.etransportation.payload.dto.FeatureDTO;
 
 import lombok.Data;
 
@@ -17,4 +13,5 @@ public class CarShortInfoResponse {
     private String addressInfo;
     private String carImage;
     private CarStatus status;
+
 }

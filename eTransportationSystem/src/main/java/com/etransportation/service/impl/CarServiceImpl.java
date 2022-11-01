@@ -4,6 +4,7 @@ import static com.etransportation.filter.CarSpecification.*;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.Feature;
 import com.etransportation.model.Ward;
+import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.dto.IdDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
@@ -278,6 +281,41 @@ public class CarServiceImpl implements CarService {
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
 
+                if (filter.getPriceBetween() == null || filter.getPriceBetween().length != 2) {
+                        filter.setPriceBetween(new Double[] { 0.0, 4000.0 });
+                }
+                DoubleSummaryStatistics dt = DoubleStream
+                                .of(ArrayUtils.toPrimitive(filter.getPriceBetween()))
+                                .summaryStatistics();
+
+                if (filter.getTransmission() != null) {
+                        switch (filter.getTransmission()) {
+                                case "Số tự động":
+                                        break;
+                                case "Số sàn":
+                                        break;
+                                default:
+                                        filter.setTransmission("");
+                                        break;
+                        }
+                } else {
+                        filter.setTransmission("");
+                }
+
+                if (filter.getFuel() != null) {
+                        switch (filter.getFuel()) {
+                                case "Xăng":
+                                        break;
+                                case "Dầu diesel":
+                                        break;
+                                default:
+                                        filter.setFuel("");
+                                        break;
+                        }
+                } else {
+                        filter.setFuel("");
+                }
+
                 PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
                                 .<CarShortInfoResponse>builder()
                                 .page(cars.getPageable().getPageNumber() + 1)
@@ -285,6 +323,16 @@ public class CarServiceImpl implements CarService {
                                 .totalPage(cars.getTotalPages())
                                 .totalItem(cars.getTotalElements())
                                 .contends(listCarInfoResponse)
+                                .carBrands(carRepository
+                                                .findAllBrandByAddressCityIdAndCarStatus(filter
+                                                                .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
+                                                                dt.getMax(), "%" + filter.getTransmission() + "%",
+                                                                "%" + filter.getFuel() + "%"))
+                                .carModels(carRepository
+                                                .findAllModelByAddressCityIdAndCarStatus(filter
+                                                                .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
+                                                                dt.getMax(), "%" + filter.getTransmission() + "%",
+                                                                "%" + filter.getFuel() + "%", filter.getBrand_Id()))
                                 .build();
                 return pagingResponse;
         }
