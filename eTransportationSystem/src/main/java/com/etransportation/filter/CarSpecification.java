@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
+import com.etransportation.model.CarBrand;
+import com.etransportation.model.CarModel;
 import com.etransportation.model.City;
 import com.etransportation.model.Feature;
 import com.etransportation.payload.request.filterSearchCar;
@@ -98,6 +100,13 @@ public class CarSpecification {
 
     }
 
+    public static Specification<Car> getCarByAddress3() {
+        return (root, Query, cb) -> {
+            return cb.equal(root.get("address").get("city").get("code"), "BinhThuan");
+        };
+
+    }
+
     public static Specification<Car> getCarByFeature() {
         return (root, Query, cb) -> {
             Join<Feature, Car> carFeature = root.join("features");
@@ -121,14 +130,18 @@ public class CarSpecification {
 
     public static Specification<Car> filterSearchCar(filterSearchCar filter) {
         return (root, Query, cb) -> {
+            // khoi tao List<Predicate>
             List<Predicate> predicates = new ArrayList<>();
+            // get all car STATUS is ACTIVE
             predicates.add(cb.equal(root.get(Car_.STATUS), CarStatus.ACTIVE));
+            // get all car is between price
             if (filter.getPriceBetween() != null && filter.getPriceBetween().length == 2) {
                 DoubleSummaryStatistics dt = DoubleStream
                         .of(ArrayUtils.toPrimitive(filter.getPriceBetween()))
                         .summaryStatistics();
                 predicates.add(cb.between(root.get(Car_.PRICE), dt.getMin(), dt.getMax()));
             }
+            // get option car is sort price
             if (filter.getSortPriceType() != null) {
                 switch (filter.getSortPriceType()) {
                     case ASC:
@@ -141,23 +154,25 @@ public class CarSpecification {
                         break;
                 }
             }
+            // get car is seats in []
             if (filter.getSeatsIn() != null && filter.getSeatsIn().length != 0) {
                 predicates.add(cb.in(root.get(Car_.SEATS)).value(Arrays.asList(filter.getSeatsIn())));
 
             }
-
+            // get car is fuel
             if (filter.getFuel() != null && !filter.getFuel().isEmpty()) {
                 switch (filter.getFuel()) {
                     case "Xăng":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
-                    case "Dầu":
+                    case "Dầu diesel":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
                     default:
                         break;
                 }
             }
+            // get car is between YearOfManufacture
             // min max all
             if (filter.getYearOfManufactureBetween() != null && filter.getYearOfManufactureBetween().length == 2) {
                 int max = Arrays.asList(filter.getYearOfManufactureBetween()).stream().mapToInt(Integer::intValue).max()
@@ -174,6 +189,50 @@ public class CarSpecification {
                         .summaryStatistics();
 
                 predicates.add(cb.between(root.get(Car_.YEAR), tt.getMin(), tt.getMax()));
+            }
+            // get car is Transmission
+            if (filter.getTransmission() != null && !filter.getTransmission().isEmpty()) {
+                switch (filter.getTransmission()) {
+                    case "Số tự động":
+                        predicates.add(cb.equal(root.get(Car_.TRANSMISSION), filter.getTransmission()));
+                        break;
+                    case "Số sàn":
+                        predicates.add(cb.equal(root.get(Car_.TRANSMISSION), filter.getTransmission()));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            // get car is Brand_Id and Model_Id_In
+            if (filter.getBrand_Id() != null && filter.getBrand_Id() > 0) {
+
+                // cach 1:
+                // Join<CarBrand, Car> carModel = root.join(Car_.MODEL).join(Model_.BRAND);
+                // predicates.add(cb.equal(carModel.get(Brand_.ID), filter.getBrand_Id()));
+
+                // cach 2:
+                predicates.add(cb.equal(root.get(Car_.MODEL).get(Model_.BRAND).get(Brand_.ID), filter.getBrand_Id()));
+
+                // get model in list
+                if (filter.getModel_Id_In() != null && filter.getModel_Id_In().length != 0) {
+                    predicates.add(
+                            cb.in(root.get(Car_.MODEL).get(Model_.ID)).value(Arrays.asList(filter.getModel_Id_In())));
+
+                }
+            }
+
+            if (filter.getFeature_Id_in() != null && filter.getFeature_Id_in().length != 0) {
+                Join<Feature, Car> carFeature = root.join(Car_.FEATURES);
+                predicates.add(
+                        cb.in(carFeature.get(Feature_.ID))
+                                .value(Arrays.asList(filter.getFeature_Id_in())));
+            }
+
+            if (filter.getCity() != null && filter.getCity().getId() != null && filter.getCity().getId() != 0) {
+                predicates.add(
+                        cb.equal(root.get(Car_.ADDRESS).get(Address_.CITY).get(City_.ID), filter.getCity().getId()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

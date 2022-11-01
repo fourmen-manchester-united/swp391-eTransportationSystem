@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.model.Account;
+import com.etransportation.model.Address;
+import com.etransportation.model.Book;
+import com.etransportation.model.Car;
+import com.etransportation.model.CarBrand;
+import com.etransportation.model.CarModel;
+import com.etransportation.model.DrivingLicense;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.BookRepository;
@@ -96,6 +103,14 @@ public class CheckController {
 
     @GetMapping("/Account")
     public ResponseEntity<?> getAllAccounts() {
+
+        Account account = accountRepository.findById(12L).orElseGet(() -> null);
+        Address address = addressRepository.findById(113L).orElseGet(() -> null);
+        Book book = bookRepository.findById(31L).orElseGet(() -> null);
+        Car car = carRepository.findById(113L).orElseGet(() -> null);
+        DrivingLicense dr = drivingLicenseRepository.findById(12L).orElseGet(() -> null);
+        CarBrand drr = carBrandRepository.findById(12L).orElseGet(() -> null);
+        CarModel drrr = carModelRepository.findById(12L).orElseGet(() -> null);
 
         return ResponseEntity.ok(modelMapper.map(accountRepository.findAll(), new TypeToken<List<AccountCheck>>() {
         }.getType()));

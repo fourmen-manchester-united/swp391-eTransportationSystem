@@ -45,7 +45,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "username" }) })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

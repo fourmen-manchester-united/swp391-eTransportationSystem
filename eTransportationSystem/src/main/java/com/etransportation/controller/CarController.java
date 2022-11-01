@@ -67,8 +67,8 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCarByUser(PagingRequest pagingRequest) {
-        return ResponseEntity.ok(carService.findAllCarByUser(pagingRequest));
+    public ResponseEntity<?> getAllCarByGuest(PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.findAllCarByGuest(pagingRequest));
     }
 
     @PostMapping("/search")

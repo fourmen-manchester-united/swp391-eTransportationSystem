@@ -4,11 +4,17 @@ import static com.etransportation.filter.CarSpecification.*;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.DoubleSummaryStatistics;
+import java.util.HashSet;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +30,11 @@ import com.etransportation.filter.Car_;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
+import com.etransportation.model.Feature;
 import com.etransportation.model.Ward;
+import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
+import com.etransportation.payload.dto.IdDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
@@ -35,6 +44,7 @@ import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
+import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.CarBrandRepository;
 import com.etransportation.repository.CarImageRepository;
 import com.etransportation.repository.CarRepository;
@@ -63,6 +73,9 @@ public class CarServiceImpl implements CarService {
         @Autowired
         private CarImageRepository carImageRepository;
 
+        @Autowired
+        private AddressRepository addressRepository;
+
         @Override
         @Transactional
         public List<CarBrandResponse> findAllCarBrands() {
@@ -86,7 +99,6 @@ public class CarServiceImpl implements CarService {
         @Transactional
         public void save(CarRegisterRequest carRegisterRequest) {
                 Car car = modelMapper.map(carRegisterRequest, Car.class);
-                // set address register to car
                 Ward ward = wardRepository.findById(carRegisterRequest.getWard().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
                 Address address = Address
@@ -98,17 +110,9 @@ public class CarServiceImpl implements CarService {
                                 .build();
                 car.setAddress(address);
                 car.setStatus(CarStatus.PENDING_APPROVAL);
+                // nen dung @PrePersist cho ham duoi --> tim hieu trong class car
+                // car.getCarImages().forEach(c -> c.setCar(car));
                 carRepository.save(car);
-                // set image register to car
-
-                carImageRepository.saveAll(
-                                car.getCarImages()
-                                                .stream()
-                                                .map(c -> {
-                                                        c.setCar(car);
-                                                        return c;
-                                                })
-                                                .collect(Collectors.toList()));
         }
 
         @Override
@@ -120,7 +124,7 @@ public class CarServiceImpl implements CarService {
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
                 CarDetailInfoResponse carDetailInfoResponse = modelMapper.map(car, CarDetailInfoResponse.class);
 
-                carDetailInfoResponse.setName(car.getModel().getName());
+                carDetailInfoResponse.setName(car.getModel().getName() + " " + car.getYearOfManufacture());
                 carDetailInfoResponse.setAddressInfo(
                                 car.getAddress().getDistrict().getName() + ", " + car.getAddress().getCity().getName());
                 carDetailInfoResponse.getBooks().removeIf(book -> book.getEndDate().before(cal.getTime())
@@ -142,7 +146,7 @@ public class CarServiceImpl implements CarService {
                         CarShortInfoResponse carInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carInfoResponse.setName(c.getModel().getName());
+                        carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carInfoResponse.setCarImage(c.getCarImages()
                                         .get(new Random().nextInt(c.getCarImages().size()))
                                         .getImage());
@@ -163,7 +167,7 @@ public class CarServiceImpl implements CarService {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carShortInfoResponse.setCarImage(c.getCarImages()
                                         .get(new Random().nextInt(c.getCarImages().size()))
                                         .getImage());
@@ -190,7 +194,7 @@ public class CarServiceImpl implements CarService {
                 List<Car> listCar = carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code, pageable);
                 List<CarShortInfoResponse> listCarInfoResponse = listCar.stream().map(c -> {
                         CarShortInfoResponse carInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
-                        carInfoResponse.setName(c.getModel().getName());
+                        carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carInfoResponse.setCarImage(c.getCarImages()
@@ -232,7 +236,7 @@ public class CarServiceImpl implements CarService {
 
         @Override
         @Transactional
-        public Object findAllCarByUser(PagingRequest pagingRequest) {
+        public Object findAllCarByGuest(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
                 Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
@@ -241,7 +245,7 @@ public class CarServiceImpl implements CarService {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carShortInfoResponse.setCarImage(c.getCarImages()
                                         .get(new Random().nextInt(c.getCarImages().size()))
                                         .getImage());
@@ -263,6 +267,7 @@ public class CarServiceImpl implements CarService {
         @Override
         @Transactional
         public Object filterCar(filterSearchCar filter, PagingRequest pagingRequest) {
+
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
                 Page<Car> cars = carRepository.findAll(filterSearchCar(filter), pageable);
 
@@ -270,13 +275,63 @@ public class CarServiceImpl implements CarService {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carShortInfoResponse.setName(c.getModel().getName());
+                        carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carShortInfoResponse.setCarImage(c.getCarImages()
                                         .get(new Random().nextInt(c.getCarImages().size()))
                                         .getImage());
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
+
+                if (filter.getPriceBetween() == null || filter.getPriceBetween().length != 2) {
+                        filter.setPriceBetween(new Double[] { 0.0, 4000.0 });
+                }
+                DoubleSummaryStatistics dt = DoubleStream
+                                .of(ArrayUtils.toPrimitive(filter.getPriceBetween()))
+                                .summaryStatistics();
+
+                if (filter.getTransmission() != null) {
+                        switch (filter.getTransmission()) {
+                                case "Số tự động":
+                                        break;
+                                case "Số sàn":
+                                        break;
+                                default:
+                                        filter.setTransmission("");
+                                        break;
+                        }
+                } else {
+                        filter.setTransmission("");
+                }
+
+                if (filter.getFuel() != null) {
+                        switch (filter.getFuel()) {
+                                case "Xăng":
+                                        break;
+                                case "Dầu diesel":
+                                        break;
+                                default:
+                                        filter.setFuel("");
+                                        break;
+                        }
+                } else {
+                        filter.setFuel("");
+                }
+
+                if (filter.getSeatsIn() == null || filter.getSeatsIn().length == 0) {
+                        filter.setSeatsIn(new Integer[] { 4, 5, 7 });
+                }
+
+                if (filter.getYearOfManufactureBetween() == null || filter.getYearOfManufactureBetween().length != 2) {
+                        filter.setYearOfManufactureBetween(new Integer[] { 0, 5000 });
+                }
+
+                IntSummaryStatistics tt = IntStream.of(ArrayUtils.toPrimitive(filter.getYearOfManufactureBetween()))
+                                .summaryStatistics();
+                if (filter.getFeature_Id_in() == null || filter.getFeature_Id_in().length == 0) {
+                        filter.setFeature_Id_in(new Long[] { 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L, 11L, 12L, 13L,
+                                        14L, 15L, 16L, 17L, 18L });
+                }
 
                 PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
                                 .<CarShortInfoResponse>builder()
@@ -285,6 +340,19 @@ public class CarServiceImpl implements CarService {
                                 .totalPage(cars.getTotalPages())
                                 .totalItem(cars.getTotalElements())
                                 .contends(listCarInfoResponse)
+                                .carBrands(carRepository
+                                                .findAllBrandByAddressCityIdAndCarStatus(filter
+                                                                .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
+                                                                dt.getMax(), "%" + filter.getTransmission() + "%",
+                                                                "%" + filter.getFuel() + "%", filter.getSeatsIn(),
+                                                                tt.getMin(), tt.getMax(), filter.getFeature_Id_in()))
+                                .carModels(carRepository
+                                                .findAllModelByAddressCityIdAndCarStatus(filter
+                                                                .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
+                                                                dt.getMax(), "%" + filter.getTransmission() + "%",
+                                                                "%" + filter.getFuel() + "%", filter.getSeatsIn(),
+                                                                tt.getMin(), tt.getMax(), filter.getFeature_Id_in(),
+                                                                filter.getBrand_Id()))
                                 .build();
                 return pagingResponse;
         }

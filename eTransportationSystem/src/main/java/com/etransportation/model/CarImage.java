@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "carImage")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class CarImage extends Base {
 

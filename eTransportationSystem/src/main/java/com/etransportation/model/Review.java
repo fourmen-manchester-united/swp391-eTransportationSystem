@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "review")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Review extends Base {
 

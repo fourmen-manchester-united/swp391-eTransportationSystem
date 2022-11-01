@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "model")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class CarModel extends Base {
 
     @Column(columnDefinition = "nvarchar(50)")

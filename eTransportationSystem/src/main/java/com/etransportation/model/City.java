@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "city")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class City extends Base {
 
     @Column(columnDefinition = "varchar(50)")

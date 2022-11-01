@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "ward")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class Ward extends Base {
 
     @Column(columnDefinition = "varchar(50)")

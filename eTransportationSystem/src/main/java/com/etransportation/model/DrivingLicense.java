@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "drivingLicense")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners(AuditingEntityListener.class)
 public class DrivingLicense extends Base {
 
