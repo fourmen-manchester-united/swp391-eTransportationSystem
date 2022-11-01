@@ -24,21 +24,25 @@ public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificatio
     Page<Car> findAllByStatus(CarStatus status, Pageable pageable);
 
     @Query("SELECT new com.etransportation.payload.dto.CarBrandDTO(br.id, br.name, count(br.id))"
-            + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br"
+            + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br JOIN c.features f"
             + " WHERE ci.id = ?1 AND c.status = ?2 AND c.price BETWEEN ?3 AND ?4 AND c.transmission like ?5"
-            + " AND c.fuel like ?6"
-            + " GROUP BY br.id, br.name ORDER BY count(br.id) DESC")
+            + " AND c.fuel like ?6 AND c.seats in ?7 AND c.yearOfManufacture BETWEEN ?8 AND ?9"
+            + " AND f.id in ?10"
+            + " GROUP BY br.id, br.name "
+            + " ORDER BY count(br.id) DESC")
     List<CarBrandDTO> findAllBrandByAddressCityIdAndCarStatus(Long id, CarStatus status, double min, double max,
-            String transmission, String fuel);
+            String transmission, String fuel, Integer[] seats, int minyear, int maxyear, Long[] feature_Id);
 
     @Query("SELECT new com.etransportation.payload.dto.CarModelDTO(mo.id, mo.name, count(mo.id))"
-            + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br"
+            + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br JOIN c.features f"
             + " WHERE ci.id = ?1 AND c.status = ?2 AND c.price BETWEEN ?3 AND ?4 AND c.transmission like ?5"
-            + " AND c.fuel like ?6"
+            + " AND c.fuel like ?6 AND c.seats in ?7 AND c.yearOfManufacture BETWEEN ?8 AND ?9"
+            + " AND f.id in ?10"
             + " GROUP BY mo.id, mo.name, br.id"
-            + " HAVING br.id = ?7"
+            + " HAVING br.id = ?11"
             + " ORDER BY count(mo.id) DESC")
     List<CarModelDTO> findAllModelByAddressCityIdAndCarStatus(Long id, CarStatus status, double min, double max,
-            String transmission, String fuel, Long brand_Id);
+            String transmission, String fuel, Integer[] seats, int minyear, int maxyear, Long[] feature_Id,
+            Long brand_Id);
 
 }

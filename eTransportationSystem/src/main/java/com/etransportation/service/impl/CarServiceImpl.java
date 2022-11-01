@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
@@ -316,6 +318,17 @@ public class CarServiceImpl implements CarService {
                         filter.setFuel("");
                 }
 
+                if (filter.getSeatsIn() == null || filter.getSeatsIn().length == 0) {
+                        filter.setSeatsIn(new Integer[] { 4, 5, 7 });
+                }
+
+                if (filter.getYearOfManufactureBetween() == null || filter.getYearOfManufactureBetween().length != 2) {
+                        filter.setYearOfManufactureBetween(new Integer[] { 0, 5000 });
+                }
+
+                IntSummaryStatistics tt = IntStream.of(ArrayUtils.toPrimitive(filter.getYearOfManufactureBetween()))
+                                .summaryStatistics();
+
                 PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
                                 .<CarShortInfoResponse>builder()
                                 .page(cars.getPageable().getPageNumber() + 1)
@@ -327,12 +340,15 @@ public class CarServiceImpl implements CarService {
                                                 .findAllBrandByAddressCityIdAndCarStatus(filter
                                                                 .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
                                                                 dt.getMax(), "%" + filter.getTransmission() + "%",
-                                                                "%" + filter.getFuel() + "%"))
+                                                                "%" + filter.getFuel() + "%", filter.getSeatsIn(),
+                                                                tt.getMin(), tt.getMax(), filter.getFeature_Id_in()))
                                 .carModels(carRepository
                                                 .findAllModelByAddressCityIdAndCarStatus(filter
                                                                 .getCity().getId(), CarStatus.ACTIVE, dt.getMin(),
                                                                 dt.getMax(), "%" + filter.getTransmission() + "%",
-                                                                "%" + filter.getFuel() + "%", filter.getBrand_Id()))
+                                                                "%" + filter.getFuel() + "%", filter.getSeatsIn(),
+                                                                tt.getMin(), tt.getMax(), filter.getFeature_Id_in(),
+                                                                filter.getBrand_Id()))
                                 .build();
                 return pagingResponse;
         }
