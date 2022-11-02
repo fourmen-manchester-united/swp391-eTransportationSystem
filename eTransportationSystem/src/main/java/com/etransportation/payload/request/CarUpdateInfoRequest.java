@@ -27,10 +27,11 @@ public class CarUpdateInfoRequest {
     private IdDTO ward;
     private String street;
 
-    @Size(min = 1, max = 5, message = "Car must have at least 1 image and at most 5 images")
-    @NotEmpty(message = "Car must have at least one image")
-    private List<@Valid CarImageDTO> carImages;
+    // @Size(min = 1, max = 5, message = "Car must have at least 1 image and at most
+    // 5 images")
+    // @NotEmpty(message = "Car must have at least one image")
+    // private List<@Valid CarImageDTO> carImages;
 
-    private Set<IdDTO> features;
+    // private Set<IdDTO> features;
 
 }

@@ -361,7 +361,7 @@ public class CarServiceImpl implements CarService {
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
                 Ward ward = wardRepository.findById(carInfo.getWard().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
-                // modelMapper.map(carInfo, car);
+                modelMapper.map(carInfo, car);
 
                 car.getAddress().setWard(ward);
                 car.getAddress().setDistrict(ward.getDistrict());
