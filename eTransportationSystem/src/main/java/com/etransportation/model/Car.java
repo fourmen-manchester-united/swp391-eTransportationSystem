@@ -131,6 +131,7 @@ public class Car extends Base {
     @PrePersist
     private void prePersist() {
         this.carImages.forEach(ig -> ig.setCar(this));
+
     }
 
     @PreRemove
@@ -140,7 +141,7 @@ public class Car extends Base {
 
     @PreUpdate
     private void preUpdate() {
-        // this.carImages.forEach(ig -> ig.setCar(this));
+
     }
 
     @PostPersist

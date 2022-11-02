@@ -1,5 +1,6 @@
 package com.etransportation.payload.request;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,6 @@ public class CarUpdateInfoRequest {
     @NotEmpty(message = "Car must have at least one image")
     private List<@Valid CarImageDTO> carImagesUpdate;
 
-    // private Set<IdDTO> features;
+    private Set<IdDTO> featuresUpdate;
 
 }

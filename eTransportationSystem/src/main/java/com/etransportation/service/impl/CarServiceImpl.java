@@ -365,9 +365,13 @@ public class CarServiceImpl implements CarService {
                                 .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
                 modelMapper.map(carInfo, car);
                 car.getCarImages().clear();
-
                 car.getCarImages()
                                 .addAll(modelMapper.map(carInfo.getCarImagesUpdate(), new TypeToken<List<CarImage>>() {
+                                }.getType()));
+
+                car.getFeatures().clear();
+                car.getFeatures()
+                                .addAll(modelMapper.map(carInfo.getFeaturesUpdate(), new TypeToken<Set<Feature>>() {
                                 }.getType()));
 
                 car.getAddress().setWard(ward);
