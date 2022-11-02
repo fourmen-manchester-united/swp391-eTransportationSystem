@@ -382,4 +382,21 @@ public class CarServiceImpl implements CarService {
                 carRepository.save(car);
         }
 
+        @Override
+        public void deleteCar(Long id) {
+                Car car = carRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+                switch (car.getStatus()) {
+                        case PENDING_APPROVAL:
+                                carRepository.delete(car);
+                                break;
+                        case DENIED:
+                                carRepository.delete(car);
+                                break;
+                        default:
+                                throw new IllegalArgumentException("Car deletion is not allowed");
+
+                }
+        }
+
 }

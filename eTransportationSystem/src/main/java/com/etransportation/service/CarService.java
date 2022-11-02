@@ -33,4 +33,6 @@ public interface CarService {
 
     public void updateCar(CarUpdateInfoRequest carInfo);
 
+    public void deleteCar(Long id);
+
 }
