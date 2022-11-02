@@ -10,10 +10,12 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.payload.request.CarUpdateInfoRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.filterSearchCar;
@@ -74,5 +76,11 @@ public class CarController {
     @PostMapping("/search")
     public ResponseEntity<?> filterCar(@RequestBody filterSearchCar filter, PagingRequest pagingRequest) {
         return ResponseEntity.ok(carService.filterCar(filter, pagingRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateCar(@RequestBody CarUpdateInfoRequest carInfoRequest) {
+        carService.updateCar(carInfoRequest);
+        return ResponseEntity.ok("Update car successfully");
     }
 }

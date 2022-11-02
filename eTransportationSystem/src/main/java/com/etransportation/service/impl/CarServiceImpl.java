@@ -37,6 +37,7 @@ import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.dto.IdDTO;
 import com.etransportation.payload.request.CarBrowsingRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
+import com.etransportation.payload.request.CarUpdateInfoRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.filterSearchCar;
 import com.etransportation.payload.response.CarBrandResponse;
@@ -351,6 +352,23 @@ public class CarServiceImpl implements CarService {
                                                                 filter.getBrand_Id()))
                                 .build();
                 return pagingResponse;
+        }
+
+        @Override
+        public void updateCar(CarUpdateInfoRequest carInfo) {
+
+                Car car = carRepository.findById(carInfo.getId())
+                                .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+                Ward ward = wardRepository.findById(carInfo.getWard().getId())
+                                .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
+                // modelMapper.map(carInfo, car);
+
+                car.getAddress().setWard(ward);
+                car.getAddress().setDistrict(ward.getDistrict());
+                car.getAddress().setCity(ward.getDistrict().getCity());
+                car.getAddress().setStreet(carInfo.getStreet());
+
+                carRepository.save(car);
         }
 
 }

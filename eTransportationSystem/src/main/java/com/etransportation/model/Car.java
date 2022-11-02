@@ -108,7 +108,7 @@ public class Car extends Base {
     @JoinColumn(name = "model_id", nullable = false)
     private CarModel model;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Address address;
@@ -122,7 +122,7 @@ public class Car extends Base {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CarImage> carImages = new ArrayList<CarImage>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "car_feature", joinColumns = @JoinColumn(name = "car_id"), inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> features = new HashSet<>();
 
