@@ -119,10 +119,10 @@ public class Car extends Base {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<Review>();
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> carImages = new ArrayList<CarImage>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "car_feature", joinColumns = @JoinColumn(name = "car_id"), inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> features = new HashSet<>();
 
@@ -140,7 +140,7 @@ public class Car extends Base {
 
     @PreUpdate
     private void preUpdate() {
-
+        // this.carImages.forEach(ig -> ig.setCar(this));
     }
 
     @PostPersist

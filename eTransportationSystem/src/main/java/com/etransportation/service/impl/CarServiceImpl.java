@@ -2,6 +2,7 @@ package com.etransportation.service.impl;
 
 import static com.etransportation.filter.CarSpecification.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.DoubleSummaryStatistics;
@@ -30,6 +31,7 @@ import com.etransportation.filter.Car_;
 import com.etransportation.model.Address;
 import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
+import com.etransportation.model.CarImage;
 import com.etransportation.model.Feature;
 import com.etransportation.model.Ward;
 import com.etransportation.payload.dto.CarBrandDTO;
@@ -362,12 +364,17 @@ public class CarServiceImpl implements CarService {
                 Ward ward = wardRepository.findById(carInfo.getWard().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Ward not found"));
                 modelMapper.map(carInfo, car);
+                car.getCarImages().clear();
+
+                car.getCarImages()
+                                .addAll(modelMapper.map(carInfo.getCarImagesUpdate(), new TypeToken<List<CarImage>>() {
+                                }.getType()));
 
                 car.getAddress().setWard(ward);
                 car.getAddress().setDistrict(ward.getDistrict());
                 car.getAddress().setCity(ward.getDistrict().getCity());
                 car.getAddress().setStreet(carInfo.getStreet());
-
+                car.getCarImages().forEach(c -> c.setCar(car));
                 carRepository.save(car);
         }
 
