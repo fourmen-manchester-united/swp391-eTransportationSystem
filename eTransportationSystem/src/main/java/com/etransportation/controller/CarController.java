@@ -79,7 +79,10 @@ public class CarController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateCar(@RequestBody CarUpdateInfoRequest carInfoRequest) {
+    public ResponseEntity<?> updateCar(@Valid @RequestBody CarUpdateInfoRequest carInfoRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            throw new RuntimeException("feature " + errors.getFieldError().getDefaultMessage());
+        }
         carService.updateCar(carInfoRequest);
         return ResponseEntity.ok("Update car successfully");
     }
