@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -97,7 +98,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Object findAllBookCarByAccountId(Long accountId, PagingRequest pagingRequest) {
-        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize(),
+                Sort.by("bookDate").descending());
         Page<Book> books = bookRepository.findAllByAccount_Id(accountId, pageable);
 
         List<BookShortInfoResponse> listBookShortInfoResponse = books.getContent().stream().map(b -> {
@@ -144,6 +146,9 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(reviewCarRequest.getBook().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
+        if (book.getReview() != null) {
+            throw new IllegalArgumentException("Book already review");
+        }
         Review review = modelMapper.map(reviewCarRequest, Review.class);
         review.setStatus(ReviewStatus.ACTIVE);
         review.setBook(book);
