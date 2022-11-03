@@ -93,4 +93,9 @@ public class CarController {
         carService.deleteCar(id);
         return ResponseEntity.ok("delete car successfully");
     }
+
+    @GetMapping("/review/{id}")
+    public ResponseEntity<?> getAllReviewByCarId(@PathVariable Long id, PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.getAllReviewByCarId(id, pagingRequest));
+    }
 }

@@ -2,15 +2,19 @@ package com.etransportation.service.impl;
 
 import static com.etransportation.filter.CarSpecification.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -22,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +38,7 @@ import com.etransportation.model.Car;
 import com.etransportation.model.CarBrand;
 import com.etransportation.model.CarImage;
 import com.etransportation.model.Feature;
+import com.etransportation.model.Review;
 import com.etransportation.model.Ward;
 import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
@@ -46,11 +52,13 @@ import com.etransportation.payload.response.CarBrandResponse;
 import com.etransportation.payload.response.CarDetailInfoResponse;
 import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.PagingResponse;
+import com.etransportation.payload.response.ReviewByCarResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.AddressRepository;
 import com.etransportation.repository.CarBrandRepository;
 import com.etransportation.repository.CarImageRepository;
 import com.etransportation.repository.CarRepository;
+import com.etransportation.repository.ReviewRepository;
 import com.etransportation.repository.WardRepository;
 import com.etransportation.service.CarService;
 import com.etransportation.util.DateConverter;
@@ -78,6 +86,9 @@ public class CarServiceImpl implements CarService {
 
         @Autowired
         private AddressRepository addressRepository;
+
+        @Autowired
+        private ReviewRepository reviewRepository;
 
         @Override
         @Transactional
@@ -397,6 +408,44 @@ public class CarServiceImpl implements CarService {
                                 throw new IllegalArgumentException("Car deletion is not allowed");
 
                 }
+        }
+
+        @Override
+        public Object getAllReviewByCarId(Long id, PagingRequest pagingRequest) {
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize(),
+                                Sort.by("reviewDate").descending());
+                Page<Review> reviews = reviewRepository.findAllByBook_Car_Id(id, pageable);
+
+                List<ReviewByCarResponse> listReviewByCarResponse = reviews.getContent().stream().map(r -> {
+                        ReviewByCarResponse reviewByCarResponse = modelMapper.map(r, ReviewByCarResponse.class);
+
+                        long timeDiff = Math.abs(new Date().getTime() - r.getReviewDate().getTime());
+                        long historyTime = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+                        if (historyTime > 30 && historyTime < 365) {
+                                reviewByCarResponse.setHistoryTime(historyTime / 30 + " tháng trước");
+                        } else if (historyTime <= 30) {
+                                reviewByCarResponse.setHistoryTime(historyTime + " ngày trước");
+                        } else if (historyTime >= 365) {
+                                reviewByCarResponse.setHistoryTime(historyTime / 365 + " năm trước");
+                        }
+
+                        return reviewByCarResponse;
+                }).collect(Collectors.toList());
+
+                PagingResponse<ReviewByCarResponse> pagingResponse = PagingResponse
+                                .<ReviewByCarResponse>builder()
+                                .page(reviews.getPageable().getPageNumber() + 1)
+                                .size(reviews.getSize())
+                                .totalPage(reviews.getTotalPages())
+                                .totalItem(reviews.getTotalElements())
+                                .contends(listReviewByCarResponse)
+                                .totalStarAverage(Double.valueOf(
+                                                new DecimalFormat("#0.0").format(listReviewByCarResponse.stream()
+                                                                .mapToInt(r -> r.getStarReview()).average()
+                                                                .orElse(0.0))))
+                                .build();
+
+                return pagingResponse;
         }
 
 }

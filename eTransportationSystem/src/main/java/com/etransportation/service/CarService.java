@@ -35,4 +35,6 @@ public interface CarService {
 
     public void deleteCar(Long id);
 
+    public Object getAllReviewByCarId(Long id, PagingRequest pagingRequest);
+
 }

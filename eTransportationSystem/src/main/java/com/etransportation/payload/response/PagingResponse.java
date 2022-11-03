@@ -22,7 +22,8 @@ public class PagingResponse<T> {
     public long totalItem;
     public List<T> contends;
 
-    List<CarBrandDTO> carBrands;
-    List<CarModelDTO> carModels;
+    public double totalStarAverage;
+    public List<CarBrandDTO> carBrands;
+    public List<CarModelDTO> carModels;
 
 }
