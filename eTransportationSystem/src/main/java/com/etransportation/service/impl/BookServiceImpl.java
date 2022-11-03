@@ -17,14 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.BookStatus;
+import com.etransportation.enums.ReviewStatus;
 import com.etransportation.model.Book;
+import com.etransportation.model.Review;
 import com.etransportation.payload.request.BookRequest;
 import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.request.ReviewCarRequest;
 import com.etransportation.payload.response.BookShortInfoResponse;
 import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.BookRepository;
 import com.etransportation.repository.CarRepository;
+import com.etransportation.repository.ReviewRepository;
 import com.etransportation.repository.VoucherRepository;
 import com.etransportation.service.BookService;
 
@@ -45,6 +49,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Override
     @Transactional
@@ -87,6 +94,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Object findAllBookCarByAccountId(Long accountId, PagingRequest pagingRequest) {
         Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
         Page<Book> books = bookRepository.findAllByAccount_Id(accountId, pageable);
@@ -122,10 +130,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void cancelBookCar(Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
         book.setStatus(BookStatus.CANCEL);
         bookRepository.save(book);
+    }
+
+    @Override
+    @Transactional
+    public void reviewBookCar(ReviewCarRequest reviewCarRequest) {
+        Book book = bookRepository.findById(reviewCarRequest.getBook().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        Review review = modelMapper.map(reviewCarRequest, Review.class);
+        review.setStatus(ReviewStatus.ACTIVE);
+        review.setAccount(book.getAccount());
+        review.setCar(book.getCar());
+        reviewRepository.save(review);
+
     }
 
 }

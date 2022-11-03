@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.BookRequest;
 import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.request.ReviewCarRequest;
 import com.etransportation.payload.response.BookShortInfoResponse;
 import com.etransportation.service.BookService;
+import com.etransportation.service.CarService;
 
 @RestController
 @RequestMapping("/api/book")
@@ -50,6 +52,12 @@ public class BookController {
     public ResponseEntity<?> cancelBookCar(@PathVariable(name = "book-id") Long bookId) {
         bookService.cancelBookCar(bookId);
         return ResponseEntity.ok("Cancel book car successfully");
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<?> reviewCar(ReviewCarRequest reviewCarRequest) {
+        bookService.reviewBookCar(reviewCarRequest);
+        return ResponseEntity.ok("Review car successfully");
     }
 
 }
