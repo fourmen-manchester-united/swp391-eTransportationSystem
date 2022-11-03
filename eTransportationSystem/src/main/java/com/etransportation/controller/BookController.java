@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.BookRequest;
+import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.response.BookShortInfoResponse;
 import com.etransportation.service.BookService;
 
 @RestController
@@ -33,6 +37,12 @@ public class BookController {
         }
         bookService.bookCar(bookRequest);
         return ResponseEntity.ok("Book car successfully");
+    }
+
+    @GetMapping("/{account-id}")
+    public ResponseEntity<?> findAllBookCarByAccountId(@PathVariable(name = "account-id") Long accountId,
+            PagingRequest pagingRequest) {
+        return ResponseEntity.ok(bookService.findAllBookCarByAccountId(accountId, pagingRequest));
     }
 
 }

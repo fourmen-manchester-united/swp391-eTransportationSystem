@@ -1,16 +1,27 @@
 package com.etransportation.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.etransportation.enums.BookStatus;
 import com.etransportation.model.Book;
 import com.etransportation.payload.request.BookRequest;
+import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.response.BookShortInfoResponse;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.BookRepository;
 import com.etransportation.repository.CarRepository;
@@ -73,6 +84,41 @@ public class BookServiceImpl implements BookService {
 
         book.setStatus(BookStatus.SUCCESS);
         bookRepository.save(book);
+    }
+
+    @Override
+    public Object findAllBookCarByAccountId(Long accountId, PagingRequest pagingRequest) {
+        Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+        Page<Book> books = bookRepository.findAllByAccount_Id(accountId, pageable);
+
+        List<BookShortInfoResponse> listBookShortInfoResponse = books.getContent().stream().map(b -> {
+            BookShortInfoResponse bookShortInfoResponse = modelMapper.map(b, BookShortInfoResponse.class);
+            bookShortInfoResponse.setCarName(b.getCar().getModel().getName() + " " + b.getCar().getYearOfManufacture());
+            bookShortInfoResponse.setCarImage(
+                    b.getCar().getCarImages().get(new Random().nextInt(b.getCar().getCarImages().size())).getImage());
+            long timeDiff = Math.abs(new Date().getTime() - b.getBookDate().getTime());
+            long historyTime = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+            if (historyTime > 30 && historyTime < 365) {
+                bookShortInfoResponse.setHistoryTime(historyTime / 30 + " tháng trước");
+            } else if (historyTime <= 30) {
+                bookShortInfoResponse.setHistoryTime(historyTime + " ngày trước");
+            } else if (historyTime >= 365) {
+                bookShortInfoResponse.setHistoryTime(historyTime / 365 + " năm trước");
+            }
+
+            return bookShortInfoResponse;
+        }).collect(Collectors.toList());
+
+        PagingResponse<BookShortInfoResponse> pagingResponse = PagingResponse
+                .<BookShortInfoResponse>builder()
+                .page(books.getPageable().getPageNumber() + 1)
+                .size(books.getSize())
+                .totalPage(books.getTotalPages())
+                .totalItem(books.getTotalElements())
+                .contends(listBookShortInfoResponse)
+                .build();
+
+        return pagingResponse;
     }
 
 }
