@@ -121,9 +121,6 @@ public class Account extends Base {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    private List<Review> reviews = new ArrayList<>();
-
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private DrivingLicense drivingLicense;
@@ -132,6 +129,6 @@ public class Account extends Base {
 
     @PreRemove
     private void preRemove() {
-        reviews.forEach(r -> r.setAccount(null));
+
     }
 }

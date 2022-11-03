@@ -116,9 +116,6 @@ public class Car extends Base {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<Book>();
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
-    private List<Review> reviews = new ArrayList<Review>();
-
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> carImages = new ArrayList<CarImage>();
 

@@ -140,14 +140,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void reviewBookCar(@RequestBody ReviewCarRequest reviewCarRequest) {
+    public void reviewBookCar(ReviewCarRequest reviewCarRequest) {
         Book book = bookRepository.findById(reviewCarRequest.getBook().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
         Review review = modelMapper.map(reviewCarRequest, Review.class);
         review.setStatus(ReviewStatus.ACTIVE);
-        review.setAccount(book.getAccount());
-        review.setCar(book.getCar());
+        review.setBook(book);
         reviewRepository.save(review);
 
     }

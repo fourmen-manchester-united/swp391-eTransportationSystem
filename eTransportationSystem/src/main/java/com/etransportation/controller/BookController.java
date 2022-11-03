@@ -55,7 +55,7 @@ public class BookController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<?> reviewCar(ReviewCarRequest reviewCarRequest) {
+    public ResponseEntity<?> reviewCar(@RequestBody ReviewCarRequest reviewCarRequest) {
         bookService.reviewBookCar(reviewCarRequest);
         return ResponseEntity.ok("Review car successfully");
     }
