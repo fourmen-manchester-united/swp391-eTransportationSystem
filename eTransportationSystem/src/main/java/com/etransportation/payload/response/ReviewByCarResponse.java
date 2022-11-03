@@ -1,8 +1,5 @@
 package com.etransportation.payload.response;
 
-import java.util.Date;
-
-import com.etransportation.payload.dto.AccountDTO;
 import com.etransportation.payload.dto.BookReviewDTO;
 
 import lombok.Data;

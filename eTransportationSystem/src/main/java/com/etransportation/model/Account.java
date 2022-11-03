@@ -108,6 +108,11 @@ public class Account extends Base {
 
     // relationship
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "like_table", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "car_id"), uniqueConstraints = {
+            @UniqueConstraint(columnNames = { "account_id", "car_id" }) })
+    private List<Car> like_Cars = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "account_role", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();

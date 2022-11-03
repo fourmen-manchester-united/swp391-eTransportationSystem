@@ -100,6 +100,9 @@ public class Car extends Base {
 
     // relationship
 
+    @ManyToMany(mappedBy = "like_Cars", fetch = FetchType.LAZY)
+    private List<Account> like_Accounts = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_supplier_id", nullable = false)
     private Account account;
