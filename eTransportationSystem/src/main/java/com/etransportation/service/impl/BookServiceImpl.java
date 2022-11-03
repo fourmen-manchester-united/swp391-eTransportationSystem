@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.etransportation.enums.BookStatus;
 import com.etransportation.enums.ReviewStatus;
@@ -139,7 +140,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void reviewBookCar(ReviewCarRequest reviewCarRequest) {
+    public void reviewBookCar(@RequestBody ReviewCarRequest reviewCarRequest) {
         Book book = bookRepository.findById(reviewCarRequest.getBook().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Book not found"));
 
