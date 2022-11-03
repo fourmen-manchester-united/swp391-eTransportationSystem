@@ -121,4 +121,11 @@ public class BookServiceImpl implements BookService {
         return pagingResponse;
     }
 
+    @Override
+    public void cancelBookCar(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        book.setStatus(BookStatus.CANCEL);
+        bookRepository.save(book);
+    }
+
 }

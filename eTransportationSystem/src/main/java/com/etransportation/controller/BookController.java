@@ -12,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,12 @@ public class BookController {
     public ResponseEntity<?> findAllBookCarByAccountId(@PathVariable(name = "account-id") Long accountId,
             PagingRequest pagingRequest) {
         return ResponseEntity.ok(bookService.findAllBookCarByAccountId(accountId, pagingRequest));
+    }
+
+    @PutMapping("/cancel/{book-id}")
+    public ResponseEntity<?> cancelBookCar(@PathVariable(name = "book-id") Long bookId) {
+        bookService.cancelBookCar(bookId);
+        return ResponseEntity.ok("Cancel book car successfully");
     }
 
 }
