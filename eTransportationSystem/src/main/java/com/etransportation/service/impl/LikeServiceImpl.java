@@ -1,8 +1,15 @@
 package com.etransportation.service.impl;
 
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +21,9 @@ import com.etransportation.model.Role;
 import com.etransportation.payload.dto.IdDTO;
 import com.etransportation.payload.request.LikeCarRequest;
 import com.etransportation.payload.request.PagingRequest;
+import com.etransportation.payload.response.CarShortInfoResponse;
 import com.etransportation.payload.response.LikeCarResponse;
+import com.etransportation.payload.response.PagingResponse;
 import com.etransportation.repository.AccountRepository;
 import com.etransportation.repository.CarRepository;
 import com.etransportation.repository.RoleRepository;
@@ -74,8 +83,32 @@ public class LikeServiceImpl implements LikeService {
 
         @Override
         public Object findAllLikeCarByAccountId(Long id, PagingRequest pagingRequest) {
-                // TODO Auto-generated method stub
-                return null;
+                Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
+
+                Page<Car> cars = carRepository.findAllByLikeAccounts_Id(id, pageable);
+
+                List<CarShortInfoResponse> listCarShortInfoResponse = cars.getContent().stream().map(c -> {
+                        CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
+                        carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
+                                        + c.getAddress().getCity().getName());
+                        carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
+                        carShortInfoResponse.setCarImage(c.getCarImages()
+                                        .get(new Random().nextInt(c.getCarImages().size()))
+                                        .getImage());
+
+                        return carShortInfoResponse;
+                }).collect(Collectors.toList());
+
+                PagingResponse<CarShortInfoResponse> pagingResponse = PagingResponse
+                                .<CarShortInfoResponse>builder()
+                                .page(cars.getPageable().getPageNumber() + 1)
+                                .size(cars.getSize())
+                                .totalPage(cars.getTotalPages())
+                                .totalItem(cars.getTotalElements())
+                                .contends(listCarShortInfoResponse)
+                                .build();
+
+                return pagingResponse;
         }
 
         @Override

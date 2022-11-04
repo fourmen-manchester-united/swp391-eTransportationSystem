@@ -43,4 +43,6 @@ public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificatio
                         String transmission, String fuel, Integer[] seats, int minyear, int maxyear,
                         Long brand_Id);
 
+        Page<Car> findAllByLikeAccounts_Id(Long accountId, Pageable pageable);
+
 }
