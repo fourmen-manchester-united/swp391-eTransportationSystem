@@ -165,7 +165,7 @@ public class CarSpecification {
                     case "Xăng":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
-                    case "Dầu":
+                    case "Dầu diesel":
                         predicates.add(cb.equal(root.get(Car_.FUEL), filter.getFuel()));
                         break;
                     default:
@@ -228,6 +228,11 @@ public class CarSpecification {
                 predicates.add(
                         cb.in(carFeature.get(Feature_.ID))
                                 .value(Arrays.asList(filter.getFeature_Id_in())));
+            }
+
+            if (filter.getCity() != null && filter.getCity().getId() != null && filter.getCity().getId() != 0) {
+                predicates.add(
+                        cb.equal(root.get(Car_.ADDRESS).get(Address_.CITY).get(City_.ID), filter.getCity().getId()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

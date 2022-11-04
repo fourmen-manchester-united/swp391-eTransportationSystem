@@ -3,6 +3,7 @@ package com.etransportation.service;
 import java.util.List;
 
 import com.etransportation.payload.request.CarBrowsingRequest;
+import com.etransportation.payload.request.CarUpdateInfoRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.filterSearchCar;
@@ -29,5 +30,11 @@ public interface CarService {
     public void carBrowsing(CarBrowsingRequest carBrowsingRequest);
 
     public Object filterCar(filterSearchCar filter, PagingRequest pagingRequest);
+
+    public void updateCar(CarUpdateInfoRequest carInfo);
+
+    public void deleteCar(Long id);
+
+    public Object getAllReviewByCarId(Long id, PagingRequest pagingRequest);
 
 }

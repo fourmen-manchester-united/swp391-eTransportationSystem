@@ -100,6 +100,9 @@ public class Car extends Base {
 
     // relationship
 
+    @ManyToMany(mappedBy = "likeCars", fetch = FetchType.LAZY)
+    private List<Account> likeAccounts = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_supplier_id", nullable = false)
     private Account account;
@@ -108,7 +111,7 @@ public class Car extends Base {
     @JoinColumn(name = "model_id", nullable = false)
     private CarModel model;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private Address address;
@@ -116,10 +119,7 @@ public class Car extends Base {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<Book>();
 
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
-    private List<Review> reviews = new ArrayList<Review>();
-
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarImage> carImages = new ArrayList<CarImage>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -131,6 +131,7 @@ public class Car extends Base {
     @PrePersist
     private void prePersist() {
         this.carImages.forEach(ig -> ig.setCar(this));
+
     }
 
     @PreRemove

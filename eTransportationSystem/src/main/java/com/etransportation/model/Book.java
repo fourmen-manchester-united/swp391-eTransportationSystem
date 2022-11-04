@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,6 +59,10 @@ public class Book extends Base {
     private String createdBy;
 
     // relationship
+
+    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Review review;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voucher_id")
