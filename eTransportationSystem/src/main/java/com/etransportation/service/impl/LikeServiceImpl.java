@@ -93,8 +93,7 @@ public class LikeServiceImpl implements LikeService {
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         if (c.getCarImages().size() == 0) {
-                                carShortInfoResponse.setCarImage(
-                                                "https://n1-pstg.mioto.vn/cho_thue_xe_o_to_tu_lai_thue_xe_du_lich_hochiminh/honda_crv-l_2018/p/g/2020/00/09/12/a4wiuxUoXQ4KTRSsH4mzkA.jpg");
+                                carShortInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
                         } else {
                                 carShortInfoResponse.setCarImage(c.getCarImages()
                                                 .get(new Random().nextInt(c.getCarImages().size()))
