@@ -161,9 +161,14 @@ public class CarServiceImpl implements CarService {
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carInfoResponse.setCarImage(
+                                                "https://n1-pstg.mioto.vn/cho_thue_xe_o_to_tu_lai_thue_xe_du_lich_hochiminh/honda_crv-l_2018/p/g/2020/00/09/12/a4wiuxUoXQ4KTRSsH4mzkA.jpg");
+                        } else {
+                                carInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -182,9 +187,14 @@ public class CarServiceImpl implements CarService {
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carShortInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carShortInfoResponse.setCarImage(
+                                                "https://n1-pstg.mioto.vn/cho_thue_xe_o_to_tu_lai_thue_xe_du_lich_hochiminh/honda_crv-l_2018/p/g/2020/00/09/12/a4wiuxUoXQ4KTRSsH4mzkA.jpg");
+                        } else {
+                                carShortInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
@@ -211,8 +221,14 @@ public class CarServiceImpl implements CarService {
                         carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size())).getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carInfoResponse.setCarImage(
+                                                "https://n1-pstg.mioto.vn/cho_thue_xe_o_to_tu_lai_thue_xe_du_lich_hochiminh/honda_crv-l_2018/p/g/2020/00/09/12/a4wiuxUoXQ4KTRSsH4mzkA.jpg");
+                        } else {
+                                carInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -295,9 +311,15 @@ public class CarServiceImpl implements CarService {
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carShortInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+
+                        if (c.getCarImages().size() == 0) {
+                                carShortInfoResponse.setCarImage(
+                                                "https://n1-pstg.mioto.vn/cho_thue_xe_o_to_tu_lai_thue_xe_du_lich_hochiminh/honda_crv-l_2018/p/g/2020/00/09/12/a4wiuxUoXQ4KTRSsH4mzkA.jpg");
+                        } else {
+                                carShortInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
