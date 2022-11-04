@@ -116,6 +116,8 @@ public class BookServiceImpl implements BookService {
             } else if (historyTime >= 365) {
                 bookShortInfoResponse.setHistoryTime(historyTime / 365 + " năm trước");
             }
+            bookShortInfoResponse.setBook_Id(b.getId());
+            bookShortInfoResponse.setCar_Id(b.getCar().getId());
 
             return bookShortInfoResponse;
         }).collect(Collectors.toList());

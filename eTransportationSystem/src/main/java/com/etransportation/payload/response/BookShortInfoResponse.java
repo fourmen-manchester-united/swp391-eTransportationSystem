@@ -10,7 +10,8 @@ import lombok.Data;
 @Data
 public class BookShortInfoResponse {
 
-    private Long id;
+    private Long book_Id;
+    private Long car_Id;
     private String carName;
     private double totalPrice;
     private Date startDate;
