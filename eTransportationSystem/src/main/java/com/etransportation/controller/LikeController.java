@@ -47,7 +47,7 @@ public class LikeController {
         return ResponseEntity.ok(likeService.findAllLikeCarByAccountId(id, pagingRequest));
     }
 
-    @GetMapping("/check")
+    @PostMapping("/check")
     public ResponseEntity<?> checkLikeCar(@RequestBody LikeCarRequest likeCarRequest) {
         return ResponseEntity.ok(likeService.checkLikeCar(likeCarRequest));
     }

@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.etransportation.enums.LikeStatus;
 import com.etransportation.model.Account;
 import com.etransportation.model.Car;
 import com.etransportation.model.Role;
+import com.etransportation.payload.dto.IdDTO;
 import com.etransportation.payload.request.LikeCarRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.response.LikeCarResponse;
@@ -52,7 +54,22 @@ public class LikeServiceImpl implements LikeService {
                                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
                 Car car = carRepository.findById(likeCarRequest.getCar().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
-                return null;
+                boolean check = accountRepository.existsByIdAndLikeCars_Id(account.getId(), car.getId());
+                LikeCarResponse likeCarResponse = new LikeCarResponse();
+                IdDTO carid = new IdDTO();
+                carid.setId(car.getId());
+                likeCarResponse.setCar(carid);
+
+                IdDTO accountid = new IdDTO();
+                accountid.setId(account.getId());
+                likeCarResponse.setAccount(accountid);
+
+                if (check) {
+                        likeCarResponse.setStatus(LikeStatus.LIKED);
+                } else {
+                        likeCarResponse.setStatus(LikeStatus.NOT_LIKED);
+                }
+                return likeCarResponse;
         }
 
         @Override
@@ -64,10 +81,10 @@ public class LikeServiceImpl implements LikeService {
         @Override
         @Transactional
         public void likeCar(LikeCarRequest likeCarRequest) {
+                // check account
                 Account account = accountRepository.findById(likeCarRequest.getAccount().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
-                System.out.println(likeCarRequest.getCar().getId());
-                Car car = carRepository.findById(12L)
+                Car car = carRepository.findById(likeCarRequest.getCar().getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Car not found"));
                 account.getLikeCars().add(car);
                 accountRepository.save(account);
