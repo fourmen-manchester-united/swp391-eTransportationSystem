@@ -7,13 +7,16 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.etransportation.payload.request.CarUpdateInfoRequest;
 import com.etransportation.payload.request.CarRegisterRequest;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.filterSearchCar;
@@ -74,5 +77,25 @@ public class CarController {
     @PostMapping("/search")
     public ResponseEntity<?> filterCar(@RequestBody filterSearchCar filter, PagingRequest pagingRequest) {
         return ResponseEntity.ok(carService.filterCar(filter, pagingRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateCar(@Valid @RequestBody CarUpdateInfoRequest carInfoRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            throw new RuntimeException("feature " + errors.getFieldError().getDefaultMessage());
+        }
+        carService.updateCar(carInfoRequest);
+        return ResponseEntity.ok("Update car successfully");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
+        carService.deleteCar(id);
+        return ResponseEntity.ok("delete car successfully");
+    }
+
+    @GetMapping("/review/{id}")
+    public ResponseEntity<?> getAllReviewByCarId(@PathVariable Long id, PagingRequest pagingRequest) {
+        return ResponseEntity.ok(carService.getAllReviewByCarId(id, pagingRequest));
     }
 }

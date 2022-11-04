@@ -1,6 +1,8 @@
 package com.etransportation.test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -101,32 +103,46 @@ public class CheckController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/Account")
-    public ResponseEntity<?> getAllAccounts() {
+    @GetMapping("/test")
+    public ResponseEntity<?> checkTest() {
+        Map<String, String[]> map = new HashMap<>();
+        map.put("paypal", new String[] { "sb-kk6pm22027434@business.example.com", "3o9^RD7}" });
+        map.put("receive", new String[] { "sb-z47src21290005@business.example.com", "0FCkuV<u" });
+        map.put("link", new String[] { "https://www.sandbox.paypal.com/mep/dashboard" });
 
-        Account account = accountRepository.findById(12L).orElseGet(() -> null);
-        Address address = addressRepository.findById(113L).orElseGet(() -> null);
-        Book book = bookRepository.findById(31L).orElseGet(() -> null);
-        Car car = carRepository.findById(113L).orElseGet(() -> null);
-        DrivingLicense dr = drivingLicenseRepository.findById(12L).orElseGet(() -> null);
-        CarBrand drr = carBrandRepository.findById(12L).orElseGet(() -> null);
-        CarModel drrr = carModelRepository.findById(12L).orElseGet(() -> null);
-
-        return ResponseEntity.ok(modelMapper.map(accountRepository.findAll(), new TypeToken<List<AccountCheck>>() {
-        }.getType()));
+        return ResponseEntity.ok(map);
     }
 
-    @GetMapping("/Address")
-    public ResponseEntity<?> getAllAddress() {
-        return ResponseEntity.ok(modelMapper.map(addressRepository.findAll(), new TypeToken<List<AddressCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/Account")
+    // public ResponseEntity<?> getAllAccounts() {
 
-    @GetMapping("/Book")
-    public ResponseEntity<?> getAllBook() {
-        return ResponseEntity.ok(modelMapper.map(bookRepository.findAll(), new TypeToken<List<BookCheck>>() {
-        }.getType()));
-    }
+    // Account account = accountRepository.findById(12L).orElseGet(() -> null);
+    // Address address = addressRepository.findById(113L).orElseGet(() -> null);
+    // Book book = bookRepository.findById(31L).orElseGet(() -> null);
+    // Car car = carRepository.findById(113L).orElseGet(() -> null);
+    // DrivingLicense dr = drivingLicenseRepository.findById(12L).orElseGet(() ->
+    // null);
+    // CarBrand drr = carBrandRepository.findById(12L).orElseGet(() -> null);
+    // CarModel drrr = carModelRepository.findById(12L).orElseGet(() -> null);
+
+    // return ResponseEntity.ok(modelMapper.map(accountRepository.findAll(), new
+    // TypeToken<List<AccountCheck>>() {
+    // }.getType()));
+    // }
+
+    // @GetMapping("/Address")
+    // public ResponseEntity<?> getAllAddress() {
+    // return ResponseEntity.ok(modelMapper.map(addressRepository.findAll(), new
+    // TypeToken<List<AddressCheck>>() {
+    // }.getType()));
+    // }
+
+    // @GetMapping("/Book")
+    // public ResponseEntity<?> getAllBook() {
+    // return ResponseEntity.ok(modelMapper.map(bookRepository.findAll(), new
+    // TypeToken<List<BookCheck>>() {
+    // }.getType()));
+    // }
 
     // @GetMapping("/CarBrand")
     // public ResponseEntity<?> getAllCarBrand() {
@@ -135,11 +151,12 @@ public class CheckController {
     // }.getType()));
     // }
 
-    @GetMapping("/CarImage")
-    public ResponseEntity<?> getAllCarImage() {
-        return ResponseEntity.ok(modelMapper.map(carImageRepository.findAll(), new TypeToken<List<CarImageCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/CarImage")
+    // public ResponseEntity<?> getAllCarImage() {
+    // return ResponseEntity.ok(modelMapper.map(carImageRepository.findAll(), new
+    // TypeToken<List<CarImageCheck>>() {
+    // }.getType()));
+    // }
 
     // @GetMapping("/CarModel")
     // public ResponseEntity<?> getAllCarModel() {
@@ -148,11 +165,12 @@ public class CheckController {
     // }.getType()));
     // }
 
-    @GetMapping("/Car")
-    public ResponseEntity<?> getAllCar() {
-        return ResponseEntity.ok(modelMapper.map(carRepository.findAll(), new TypeToken<List<CarCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/Car")
+    // public ResponseEntity<?> getAllCar() {
+    // return ResponseEntity.ok(modelMapper.map(carRepository.findAll(), new
+    // TypeToken<List<CarCheck>>() {
+    // }.getType()));
+    // }
 
     // @GetMapping("/City")
     // public ResponseEntity<?> getAllCity() {
@@ -168,12 +186,13 @@ public class CheckController {
     // }.getType()));
     // }
 
-    @GetMapping("/DrivingLicense")
-    public ResponseEntity<?> getAllDrivingLicense() {
-        return ResponseEntity
-                .ok(modelMapper.map(drivingLicenseRepository.findAll(), new TypeToken<List<DrivingLicenseCheck>>() {
-                }.getType()));
-    }
+    // @GetMapping("/DrivingLicense")
+    // public ResponseEntity<?> getAllDrivingLicense() {
+    // return ResponseEntity
+    // .ok(modelMapper.map(drivingLicenseRepository.findAll(), new
+    // TypeToken<List<DrivingLicenseCheck>>() {
+    // }.getType()));
+    // }
 
     // @GetMapping("/Feature")
     // public ResponseEntity<?> getAllFeature() {
@@ -182,30 +201,34 @@ public class CheckController {
     // }.getType()));
     // }
 
-    @GetMapping("/Notification")
-    public ResponseEntity<?> getAllNotification() {
-        return ResponseEntity
-                .ok(modelMapper.map(notificationRepository.findAll(), new TypeToken<List<NotificationCheck>>() {
-                }.getType()));
-    }
+    // @GetMapping("/Notification")
+    // public ResponseEntity<?> getAllNotification() {
+    // return ResponseEntity
+    // .ok(modelMapper.map(notificationRepository.findAll(), new
+    // TypeToken<List<NotificationCheck>>() {
+    // }.getType()));
+    // }
 
-    @GetMapping("/Review")
-    public ResponseEntity<?> getAllReview() {
-        return ResponseEntity.ok(modelMapper.map(reviewRepository.findAll(), new TypeToken<List<ReviewCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/Review")
+    // public ResponseEntity<?> getAllReview() {
+    // return ResponseEntity.ok(modelMapper.map(reviewRepository.findAll(), new
+    // TypeToken<List<ReviewCheck>>() {
+    // }.getType()));
+    // }
 
-    @GetMapping("/Role")
-    public ResponseEntity<?> getAllRole() {
-        return ResponseEntity.ok(modelMapper.map(roleRepository.findAll(), new TypeToken<List<RoleCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/Role")
+    // public ResponseEntity<?> getAllRole() {
+    // return ResponseEntity.ok(modelMapper.map(roleRepository.findAll(), new
+    // TypeToken<List<RoleCheck>>() {
+    // }.getType()));
+    // }
 
-    @GetMapping("/Voucher")
-    public ResponseEntity<?> getAllVoucher() {
-        return ResponseEntity.ok(modelMapper.map(voucherRepository.findAll(), new TypeToken<List<VoucherCheck>>() {
-        }.getType()));
-    }
+    // @GetMapping("/Voucher")
+    // public ResponseEntity<?> getAllVoucher() {
+    // return ResponseEntity.ok(modelMapper.map(voucherRepository.findAll(), new
+    // TypeToken<List<VoucherCheck>>() {
+    // }.getType()));
+    // }
 
     // @GetMapping("/Ward")
     // public ResponseEntity<?> getAllWard() {
@@ -214,10 +237,10 @@ public class CheckController {
     // }.getType()));
     // }
 
-    @GetMapping("/EnumStatus")
-    public ResponseEntity<?> getAllEnumStatus() {
-        ListStatus listStatus = new ListStatus();
-        return ResponseEntity.ok(listStatus);
-    }
+    // @GetMapping("/EnumStatus")
+    // public ResponseEntity<?> getAllEnumStatus() {
+    // ListStatus listStatus = new ListStatus();
+    // return ResponseEntity.ok(listStatus);
+    // }
 
 }

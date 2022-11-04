@@ -23,4 +23,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Page<Account> findByUsernameContains(String username, Pageable pageable);
 
+    Boolean existsByIdAndLikeCars_Id(Long accountId, Long carId);
+
 }

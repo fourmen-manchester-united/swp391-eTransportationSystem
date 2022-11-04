@@ -92,6 +92,7 @@ public class SecurityConfig {
                 // .antMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/api/voucher/**").permitAll()
                 .antMatchers("/api/feature/**").permitAll()
+                .antMatchers("/api/like/**").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

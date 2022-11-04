@@ -14,6 +14,7 @@ export const storeImageToFireBase = async (uploadedImage) => {
   try {
     const response = await uploadBytes(imageRef, uploadedImage);
     const url = await getDownloadURL(response.ref);
+
     return {
       isSuccess: true,
       imageUrl: url,
