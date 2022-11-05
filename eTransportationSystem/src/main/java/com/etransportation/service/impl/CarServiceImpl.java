@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -238,8 +239,13 @@ public class CarServiceImpl implements CarService {
         public List<CarShortInfoResponse> findAllCarsByCity(String code, PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                List<Car> listCar = carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code, pageable);
-                List<CarShortInfoResponse> listCarInfoResponse = listCar.stream().map(c -> {
+                // List<Car> listCar =
+                // carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code,
+                // pageable);
+                Page<Car> listCar = carRepository.findCarByCityCodeSortByCountBookOfCar(CarStatus.ACTIVE.toString(),
+                                code,
+                                pageable);
+                List<CarShortInfoResponse> listCarInfoResponse = listCar.getContent().stream().map(c -> {
                         CarShortInfoResponse carInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
@@ -300,7 +306,7 @@ public class CarServiceImpl implements CarService {
         public Object findAllCarByGuest(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                Page<Car> cars = carRepository.findCarByFamous(CarStatus.ACTIVE, pageable);
+                Page<Car> cars = carRepository.findCarByFamous(CarStatus.ACTIVE.toString(), pageable);
                 // Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
 
                 List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
