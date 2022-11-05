@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Car;
+import com.etransportation.mybean.CarBean;
 import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
 
@@ -22,6 +23,9 @@ public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificatio
         List<Car> findAllByAccount_Id(Long id);
 
         Page<Car> findAllByStatus(CarStatus status, Pageable pageable);
+
+        @Query(nativeQuery = true, value = "SELECT * FROM Car c1 WHERE c1.id in (SELECT c.id FROM Car c inner JOIN  book b on b.car_id = c.id WHERE c.status = 'ACTIVE' GROUP BY c.id HAVING count(c.id) >= 1 ORDER BY count(c.id) DESC OFFSET 0 ROWS )")
+        Page<Car> findCarByFamous(CarStatus status, Pageable pageable);
 
         @Query("SELECT new com.etransportation.payload.dto.CarBrandDTO(br.id, br.name, count(br.id))"
                         + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br"

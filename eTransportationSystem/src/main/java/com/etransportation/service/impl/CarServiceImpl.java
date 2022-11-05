@@ -40,6 +40,7 @@ import com.etransportation.model.CarImage;
 import com.etransportation.model.Feature;
 import com.etransportation.model.Review;
 import com.etransportation.model.Ward;
+import com.etransportation.mybean.CarBean;
 import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.dto.IdDTO;
@@ -299,7 +300,8 @@ public class CarServiceImpl implements CarService {
         public Object findAllCarByGuest(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
+                Page<Car> cars = carRepository.findCarByFamous(CarStatus.ACTIVE, pageable);
+                // Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
 
                 List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
