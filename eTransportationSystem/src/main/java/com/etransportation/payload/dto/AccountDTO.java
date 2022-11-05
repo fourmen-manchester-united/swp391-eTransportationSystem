@@ -8,5 +8,6 @@ public class AccountDTO {
     private Long id;
     private String name;
     private String avatar;
+    private String phone;
 
 }

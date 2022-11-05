@@ -1,5 +1,5 @@
 package com.etransportation.enums;
 
 public enum BookStatus {
-    CANCEL, SUCCESS;
+    CANCEL, SUCCESS, EXPIRED;
 }

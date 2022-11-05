@@ -146,8 +146,16 @@ public class CarServiceImpl implements CarService {
 
                 carDetailInfoResponse.getBooks().forEach(book -> {
                         book.setDates(DateConverter.getDatesBetween(book.getStartDate(), book.getEndDate()));
-                });
 
+                });
+                carDetailInfoResponse.setTotalBook(car.getBooks().size());
+
+                List<Review> review = reviewRepository.findAllByBook_Car_Id(car.getId());
+
+                carDetailInfoResponse.setTotalRating(Double.valueOf(
+                                new DecimalFormat("#0.0").format(review.stream()
+                                                .mapToInt(r -> r.getStarReview()).average()
+                                                .orElse(0.0))));
                 return carDetailInfoResponse;
 
         }
@@ -168,6 +176,14 @@ public class CarServiceImpl implements CarService {
                                                 .get(new Random().nextInt(c.getCarImages().size()))
                                                 .getImage());
                         }
+
+                        carInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -193,6 +209,14 @@ public class CarServiceImpl implements CarService {
                                                 .get(new Random().nextInt(c.getCarImages().size()))
                                                 .getImage());
                         }
+
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
@@ -226,6 +250,15 @@ public class CarServiceImpl implements CarService {
                                                 .get(new Random().nextInt(c.getCarImages().size()))
                                                 .getImage());
                         }
+
+                        carInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
+
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -280,6 +313,13 @@ public class CarServiceImpl implements CarService {
                                                 .get(new Random().nextInt(c.getCarImages().size()))
                                                 .getImage());
                         }
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
@@ -316,6 +356,13 @@ public class CarServiceImpl implements CarService {
                                                 .getImage());
                         }
 
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
 

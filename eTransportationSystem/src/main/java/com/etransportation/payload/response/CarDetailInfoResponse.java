@@ -33,6 +33,8 @@ public class CarDetailInfoResponse {
     private AccountDTO account;
 
     // private List<Review> reviews;
+    private int totalBook;
+    private Double totalRating;
     private List<CarImageDTO> carImages;
     private List<FeatureDTO> features;
     private List<BookDto> books;
