@@ -14,6 +14,12 @@ function CarRegisterMode() {
       <div label="Danh sách xe" Icon={FaCar}>
         <MyCar />
       </div>
+      {/* <div label="Xe đã đặt" Icon={FaCarSide}>
+        <CarBook />
+      </div>
+      <div label="Xe yêu thích" Icon={FaRegHeart}>
+        <CarLike />
+      </div> */}
     </Tabs>
   );
 }

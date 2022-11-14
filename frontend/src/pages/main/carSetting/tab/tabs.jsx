@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Tab from "./tab";
-import styles from "./Tabs.module.css";
-
 class Tabs extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Array).isRequired,
@@ -29,13 +27,12 @@ class Tabs extends Component {
     } = this;
 
     return (
-      <div
-        style={{
-          paddingTop: "60px",
-        }}
-      >
-        <nav className={styles.tabs}>
+      <>
+        <div className="sidebar sidebar-settings hide-on-med-and-down">
           <ul>
+            <li className="heading">
+              <p>THÔNG TIN CHUNG</p>
+            </li>
             {children.map((child) => {
               const { label, Icon } = child.props;
               return (
@@ -49,16 +46,16 @@ class Tabs extends Component {
               );
             })}
           </ul>
-        </nav>
-        <section className={styles.dashboard_part}>
-          <div className={styles.main_content}>
+        </div>
+        <section className="content">
+          <div className="content-container">
             {children.map((child) => {
               if (child.props.label !== activeTab) return undefined;
               return child.props.children;
             })}
           </div>
         </section>
-      </div>
+      </>
     );
   }
 }

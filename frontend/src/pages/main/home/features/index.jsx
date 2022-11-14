@@ -5,7 +5,7 @@ function Features() {
     const { onClick } = props;
     return (
       <div className="swiper-button-next next-ft" onClick={onClick}>
-        <i class="i-arr"></i>
+        <i className="i-arr"></i>
       </div>
     );
   }
@@ -14,7 +14,7 @@ function Features() {
     const { onClick } = props;
     return (
       <div className="swiper-button-prev prev-ft" onClick={onClick}>
-        <i class="i-arr"></i>
+        <i className="i-arr"></i>
       </div>
     );
   }
@@ -37,51 +37,33 @@ function Features() {
             style={{ transform: "translate3d(0px, 0px, 0px)" }}
           >
             <Slider {...settings}>
-              <div
-                className="swiper-slide feature-img swiper-slide-active"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img swiper-slide-active">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-2.2113160d.jpg" alt="" />
                 </div>
               </div>
-              <div
-                className="swiper-slide feature-img swiper-slide-next"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img swiper-slide-next">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-5.96a02632.jpg" alt="" />
                 </div>
               </div>
-              <div
-                className="swiper-slide feature-img"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-6.8892dedd.jpg" alt="" />
                 </div>
               </div>
-              <div
-                className="swiper-slide feature-img"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-3.81ed6d57.jpg" alt="" />
                 </div>
               </div>
-              <div
-                className="swiper-slide feature-img"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-4.38a67502.jpg" alt="" />
                 </div>
               </div>
-              <div
-                className="swiper-slide feature-img"
-                style={{ width: 220, marginRight: 15 }}
-              >
-                <div className="fix-img">
+              <div className="swiper-slide feature-img">
+                <div className="fix-img" style={{ margin: "0 5px" }}>
                   <img src="assets/images/features-1.49135d20.jpg" alt="" />
                 </div>
               </div>

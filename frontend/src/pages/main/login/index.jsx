@@ -1,23 +1,25 @@
 import React from "react";
 import { NotificationContainer } from "react-notifications";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Load from "../../../components/Load";
 import Validate from "../../../components/validateInput";
 import { validateLogin } from "../../../components/validateInput/validateInput";
 import useForm from "../../../hooks/useForm";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { postLogin } from "../../../store/actions/user.action";
+import LoginGoogle from "./loginGoogle";
 
 function Login() {
   const dispatch = useDispatch();
+  let history = useHistory();
   const { loading } = useIsLogin();
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validateLogin
   );
   function login() {
-    dispatch(postLogin(values.username, values.password));
+    dispatch(postLogin(values.username, values.password, history));
   }
   return (
     <div>
@@ -32,7 +34,7 @@ function Login() {
                   <input
                     type="text"
                     name="username"
-                    placeholder="Fill your email Or UserName address"
+                    placeholder="Tên Đăng Nhập"
                     onChange={handleChange}
                     value={values.username || ""}
                     required
@@ -46,7 +48,7 @@ function Login() {
                   <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="Mật Khẩu"
                     onChange={handleChange}
                     value={values.password || ""}
                     required
@@ -79,7 +81,7 @@ function Login() {
                   <Link to="/register">Hãy đăng kí ngay!</Link>
                 </p>
                 <div className="wr-btn-share">
-                  <div className="wr-btn">
+                  {/* <div className="wr-btn">
                     <Link
                       to="#"
                       className="btn btn-facebook btn--m"
@@ -87,16 +89,8 @@ function Login() {
                     >
                       <i className="ic ic-facebook" /> Facebook
                     </Link>
-                  </div>
-                  <div className="wr-btn">
-                    <Link
-                      to="#"
-                      className="btn btn-google btn--m"
-                      type="button"
-                    >
-                      <i className="ic ic-google" /> Google
-                    </Link>
-                  </div>
+                  </div> */}
+                  <LoginGoogle />
                 </div>
               </div>
             </div>
