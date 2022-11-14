@@ -7,10 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.etransportation.enums.CarStatus;
 import com.etransportation.model.Car;
+import com.etransportation.mybean.CarBean;
 import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
 
@@ -19,9 +21,15 @@ public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificatio
 
         List<Car> findAllByStatusAndAddress_City_Code(CarStatus status, String code, Pageable pageable);
 
+        @Query(nativeQuery = true, value = "SELECT * FROM Car WHERE id in (SELECT c.id FROM Car c INNER JOIN address a on a.id = c.id INNER JOIN city ci on ci.id = a.city_id LEFT JOIN book b on b.car_id = c.id  WHERE c.status = ?1 AND ci.code = ?2 GROUP BY c.id ORDER BY COUNT(c.id) DESC OFFSET 0 ROWS)", countQuery = "SELECT count(*) FROM Car WHERE id in (SELECT c.id FROM Car c INNER JOIN address a on a.id = c.id INNER JOIN city ci on ci.id = a.city_id LEFT JOIN book b on b.car_id = c.id  WHERE c.status = ?1 AND ci.code = ?2 GROUP BY c.id ORDER BY COUNT(c.id) DESC OFFSET 0 ROWS)")
+        Page<Car> findCarByCityCodeSortByCountBookOfCar(String CarStatus, String code, Pageable pageable);
+
         List<Car> findAllByAccount_Id(Long id);
 
         Page<Car> findAllByStatus(CarStatus status, Pageable pageable);
+
+        @Query(nativeQuery = true, value = "SELECT * FROM Car WHERE id in (SELECT c.id FROM Car c INNER JOIN  book b on b.car_id = c.id WHERE c.status = :status GROUP BY c.id HAVING count(c.id) >= 1 ORDER BY count(c.id) DESC OFFSET 0 ROWS )", countQuery = "SELECT count(*) FROM Car WHERE id in (SELECT c.id FROM Car c INNER JOIN  book b on b.car_id = c.id WHERE c.status = :status GROUP BY c.id HAVING count(c.id) >= 1 ORDER BY count(c.id) DESC OFFSET 0 ROWS )")
+        Page<Car> findCarByFamous(@Param("status") String statusCar, Pageable pageable);
 
         @Query("SELECT new com.etransportation.payload.dto.CarBrandDTO(br.id, br.name, count(br.id))"
                         + " FROM Car c JOIN c.address a JOIN a.city ci JOIN c.model mo JOIN mo.brand br"

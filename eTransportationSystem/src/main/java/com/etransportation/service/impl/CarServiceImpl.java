@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ import com.etransportation.model.CarImage;
 import com.etransportation.model.Feature;
 import com.etransportation.model.Review;
 import com.etransportation.model.Ward;
+import com.etransportation.mybean.CarBean;
 import com.etransportation.payload.dto.CarBrandDTO;
 import com.etransportation.payload.dto.CarModelDTO;
 import com.etransportation.payload.dto.IdDTO;
@@ -146,8 +148,16 @@ public class CarServiceImpl implements CarService {
 
                 carDetailInfoResponse.getBooks().forEach(book -> {
                         book.setDates(DateConverter.getDatesBetween(book.getStartDate(), book.getEndDate()));
-                });
 
+                });
+                carDetailInfoResponse.setTotalBook(car.getBooks().size());
+
+                List<Review> review = reviewRepository.findAllByBook_Car_Id(car.getId());
+
+                carDetailInfoResponse.setTotalRating(Double.valueOf(
+                                new DecimalFormat("#0.0").format(review.stream()
+                                                .mapToInt(r -> r.getStarReview()).average()
+                                                .orElse(0.0))));
                 return carDetailInfoResponse;
 
         }
@@ -161,9 +171,21 @@ public class CarServiceImpl implements CarService {
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+                        } else {
+                                carInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
+
+                        carInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -182,9 +204,21 @@ public class CarServiceImpl implements CarService {
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carShortInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carShortInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+                        } else {
+                                carShortInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
+
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
@@ -205,14 +239,33 @@ public class CarServiceImpl implements CarService {
         public List<CarShortInfoResponse> findAllCarsByCity(String code, PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                List<Car> listCar = carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code, pageable);
-                List<CarShortInfoResponse> listCarInfoResponse = listCar.stream().map(c -> {
+                // List<Car> listCar =
+                // carRepository.findAllByStatusAndAddress_City_Code(CarStatus.ACTIVE, code,
+                // pageable);
+                Page<Car> listCar = carRepository.findCarByCityCodeSortByCountBookOfCar(CarStatus.ACTIVE.toString(),
+                                code,
+                                pageable);
+                List<CarShortInfoResponse> listCarInfoResponse = listCar.getContent().stream().map(c -> {
                         CarShortInfoResponse carInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
                         carInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
-                        carInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size())).getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+                        } else {
+                                carInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
+
+                        carInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
+
                         return carInfoResponse;
                 }).collect(Collectors.toList());
 
@@ -253,16 +306,28 @@ public class CarServiceImpl implements CarService {
         public Object findAllCarByGuest(PagingRequest pagingRequest) {
 
                 Pageable pageable = PageRequest.of(pagingRequest.getPage() - 1, pagingRequest.getSize());
-                Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
+                Page<Car> cars = carRepository.findCarByFamous(CarStatus.ACTIVE.toString(), pageable);
+                // Page<Car> cars = carRepository.findAllByStatus(CarStatus.ACTIVE, pageable);
 
                 List<CarShortInfoResponse> listCarInfoResponse = cars.getContent().stream().map(c -> {
                         CarShortInfoResponse carShortInfoResponse = modelMapper.map(c, CarShortInfoResponse.class);
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carShortInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
+                        if (c.getCarImages().size() == 0) {
+                                carShortInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+                        } else {
+                                carShortInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
 
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
@@ -290,10 +355,22 @@ public class CarServiceImpl implements CarService {
                         carShortInfoResponse.setAddressInfo(c.getAddress().getDistrict().getName() + ", "
                                         + c.getAddress().getCity().getName());
                         carShortInfoResponse.setName(c.getModel().getName() + " " + c.getYearOfManufacture());
-                        carShortInfoResponse.setCarImage(c.getCarImages()
-                                        .get(new Random().nextInt(c.getCarImages().size()))
-                                        .getImage());
 
+                        if (c.getCarImages().size() == 0) {
+                                carShortInfoResponse.setCarImage("https://n1-cstg.mioto.vn/g/2018/03/17/16/52.jpg");
+                        } else {
+                                carShortInfoResponse.setCarImage(c.getCarImages()
+                                                .get(new Random().nextInt(c.getCarImages().size()))
+                                                .getImage());
+                        }
+
+                        carShortInfoResponse.setTotalBook(c.getBooks().size());
+                        List<Review> review = reviewRepository.findAllByBook_Car_Id(c.getId());
+
+                        carShortInfoResponse.setTotalRating(Double.valueOf(
+                                        new DecimalFormat("#0.0").format(review.stream()
+                                                        .mapToInt(r -> r.getStarReview()).average()
+                                                        .orElse(0.0))));
                         return carShortInfoResponse;
                 }).collect(Collectors.toList());
 

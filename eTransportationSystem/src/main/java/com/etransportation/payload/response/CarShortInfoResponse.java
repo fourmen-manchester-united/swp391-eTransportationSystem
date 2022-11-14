@@ -13,5 +13,7 @@ public class CarShortInfoResponse {
     private String addressInfo;
     private String carImage;
     private CarStatus status;
+    private int totalBook;
+    private Double totalRating;
 
 }

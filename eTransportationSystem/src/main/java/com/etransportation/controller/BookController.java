@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etransportation.payload.request.BookRequest;
+import com.etransportation.payload.request.ExtendBookCar;
 import com.etransportation.payload.request.PagingRequest;
 import com.etransportation.payload.request.ReviewCarRequest;
 import com.etransportation.payload.response.BookShortInfoResponse;
@@ -58,6 +59,17 @@ public class BookController {
     public ResponseEntity<?> reviewCar(@RequestBody ReviewCarRequest reviewCarRequest) {
         bookService.reviewBookCar(reviewCarRequest);
         return ResponseEntity.ok("Review car successfully");
+    }
+
+    @GetMapping("/details/{book-id}")
+    public ResponseEntity<?> findBookDetails(@PathVariable(name = "book-id") Long id) {
+        return ResponseEntity.ok(bookService.findBookDetails(id));
+    }
+
+    @PutMapping("/extend")
+    public ResponseEntity<?> extendBookCar(@RequestBody ExtendBookCar extendBookCar) {
+        bookService.extendBookCar(extendBookCar);
+        return ResponseEntity.ok("extend book car successfully");
     }
 
 }

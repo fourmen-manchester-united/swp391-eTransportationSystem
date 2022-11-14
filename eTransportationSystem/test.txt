@@ -7,6 +7,18 @@
 -email 
 -gia han book 
 -validate phone
+-
+
+
+- create sql server amazon
+- deploy backend to amazon
+- create my sql amazon
+- install mysql
+- config mysql spring boot
+- deploy backend to docker
+- deploy backend to docker to amazon
+- prn211 pe
+- xin viec
 
 
 
