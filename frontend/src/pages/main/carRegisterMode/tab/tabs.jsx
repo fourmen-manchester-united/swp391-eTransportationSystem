@@ -29,11 +29,7 @@ class Tabs extends Component {
     } = this;
 
     return (
-      <div
-        style={{
-          paddingTop: "60px",
-        }}
-      >
+      <>
         <nav className={styles.tabs}>
           <ul>
             {children.map((child) => {
@@ -58,7 +54,7 @@ class Tabs extends Component {
             })}
           </div>
         </section>
-      </div>
+      </>
     );
   }
 }

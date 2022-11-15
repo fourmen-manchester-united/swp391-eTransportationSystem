@@ -3,7 +3,7 @@ import Tabs from "./tab/tabs";
 import SelfDriveBa from "./selfdrive/selfDriveBa";
 import SelfDriveMot from "./selfdrive/selfDriveMot";
 import SelfDriveHai from "./selfdrive/selfDriveHai";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { saveCar } from "../../../../store/actions/car.action";
 import { useDispatch, useSelector } from "react-redux";
 import Load from "../../../../components/Load";
@@ -11,13 +11,12 @@ import { NotificationContainer } from "react-notifications";
 
 function CarRegister() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const [carImages, setCarImage] = useState([]);
   const [features, setFeatures] = useState([]);
   const { car } = useSelector((state) => state.car);
   const { loading } = useSelector((state) => state.common);
   const onSaveCar = () => {
-    dispatch(saveCar(car, history));
+    dispatch(saveCar(car));
   };
 
   return (

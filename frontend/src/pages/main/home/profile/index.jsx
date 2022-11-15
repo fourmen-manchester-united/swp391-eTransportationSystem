@@ -77,9 +77,9 @@ function Profile() {
   return (
     <>
       {loading || !users ? (
-        <div style={{ textAlign: "center" }}>
+        <>
           <Load />
-        </div>
+        </>
       ) : (
         <>
           <section className="body">
@@ -125,25 +125,21 @@ function Profile() {
                       <div className="item-content">
                         <div className="item-title">
                           <p>{users.name}</p>
-                          {isLogin && (
-                            <>
-                              {isLogin.id === parseInt(id) ? (
-                                <Link
-                                  to="#"
-                                  className="func-edit"
-                                  title="Chỉnh sửa"
-                                  onClick={() => onUpdateProfile()}
-                                >
-                                  <i className="ic ic-edit" />
-                                </Link>
-                              ) : (
-                                <></>
-                              )}
-                            </>
+                          {`${isLogin.id}` === id ? (
+                            <Link
+                              to="#"
+                              className="func-edit"
+                              title="Chỉnh sửa"
+                              onClick={() => onUpdateProfile()}
+                            >
+                              <i className="ic ic-edit" />
+                            </Link>
+                          ) : (
+                            <></>
                           )}
                         </div>
                       </div>
-                      {/* <div className="item-points">
+                      <div className="item-points">
                         <svg
                           className="icsvg icsvg-mipoint"
                           viewBox="0 0 24 24"
@@ -167,20 +163,17 @@ function Profile() {
                             Điểm thưởng dùng để đổi quà trong mục Quà tặng
                           </div>
                         </div>
-                      </div> */}
+                      </div>
                     </div>
                     <div className="line-info">
                       <div className="d-flex">
-                        <div
-                          className="infop"
-                          style={{ width: "120px", marginRight: "10px" }}
-                        >
+                        <div className="info">
                           <span className="label">Ngày sinh </span>
-                          <strong className="ctn">{users.birthDate}</strong>
+                          <span className="ctn" />
                         </div>
-                        <div className="infop">
+                        <div className="info">
                           <span className="label">Giới tính </span>
-                          <strong className="ctn">{users.gender}</strong>
+                          <span className="ctn">{users.gender}</span>
                         </div>
                       </div>
                     </div>
@@ -197,13 +190,13 @@ function Profile() {
                             <Link to="#" className="func-edit" title="Edit">
                               <i className="ic ic-edit" />
                             </Link>
-                            {users.phone}
+                            {users.username}
                           </span>
                         </li>
                         <li>
                           <span className="label">GPLX</span>
                           <span className="ctn">
-                            {driver && driver.status === "PENDING" ? (
+                            {driver ? (
                               <>
                                 <span>
                                   <i className="ic ic-verifying" />
@@ -217,31 +210,15 @@ function Profile() {
                               </>
                             ) : (
                               <>
-                                {driver && driver.status === "VERIFIED" ? (
-                                  <>
-                                    <span>
-                                      <i className="ic ic-verify" />
-                                    </span>
-                                    <Link
-                                      to="#"
-                                      className="verify btn btn--s prevent-click"
-                                    >
-                                      Đã xác thực GPLX
-                                    </Link>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      <i className="ic ic-error" />
-                                    </span>
-                                    <Link
-                                      to="#"
-                                      className="verify btn btn--s prevent-click"
-                                    >
-                                      Chưa xác thực GPLX
-                                    </Link>
-                                  </>
-                                )}
+                                <span>
+                                  <i className="ic ic-error" />
+                                </span>
+                                <Link
+                                  to="#"
+                                  className="verify btn btn--s prevent-click"
+                                >
+                                  Chưa xác thực GPLX
+                                </Link>
                               </>
                             )}
                             <Link
@@ -265,14 +242,14 @@ function Profile() {
                             {users.email}
                           </span>
                         </li>
-                        {/* <li>
+                        <li>
                           <span className="label">Facebook</span>
                           <span className="ctn">
                             <Link to="#" className="func-edit">
                               <i className="ic ic-link" />
                             </Link>
                           </span>
-                        </li> */}
+                        </li>
                         <li>
                           <span className="label">Google</span>
                           <span className="ctn">

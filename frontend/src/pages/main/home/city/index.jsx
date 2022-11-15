@@ -24,7 +24,7 @@ function City() {
     const { onClick } = props;
     return (
       <div className="swiper-button-next next-ft" onClick={onClick}>
-        <i className="i-arr"></i>
+        <i class="i-arr"></i>
       </div>
     );
   }
@@ -33,7 +33,7 @@ function City() {
     const { onClick } = props;
     return (
       <div className="swiper-button-prev prev-ft" onClick={onClick}>
-        <i className="i-arr"></i>
+        <i class="i-arr"></i>
       </div>
     );
   }
@@ -49,7 +49,7 @@ function City() {
   return (
     <div className="destination__sect ">
       <div className="m-container">
-        <h3 className="title-car"> Địa điểm nổi bật</h3>
+        <h3 className="title-car"> Địa điểm nổi bật - Xe tự lái</h3>
         <div className="swiper-container swiper-destination swiper-container-horizontal">
           <div
             className="swiper-wrapper dest-item"
@@ -72,7 +72,7 @@ function City() {
                         />
                         <h3>
                           {city.name}
-                          <span>{city.count}+ xe</span>
+                          <span>2000+ xe</span>
                         </h3>
                       </div>
                     </Link>

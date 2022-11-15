@@ -5,7 +5,7 @@ import CarByCity from "./carByCity";
 
 function CityCode() {
   return (
-    <section className="body">
+    <section class="body">
       <BannerHome />
       <City />
       <CarByCity />
