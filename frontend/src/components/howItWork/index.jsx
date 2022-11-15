@@ -1,6 +1,14 @@
 import React from "react";
+import { useEffect } from "react";
 
 function HowItWork() {
+  useEffect(
+    () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    // eslint-disable-next-line
+    []
+  );
   return (
     <section className="body">
       <div className="section-tutorial__title">

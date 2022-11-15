@@ -6,7 +6,7 @@ import "./styles.css";
 
 function GetDate(props) {
   const [dates, setDates] = useState({});
-
+  // const test = [new Date(), new Date("2022-11-01")];
   useEffect(() => {
     setDates({
       startDate: new Date(),
@@ -24,11 +24,11 @@ function GetDate(props) {
     <DateRange
       dateDisplayFormat={"dd/MM/yyyy"}
       onChange={handleDateChange}
-      minDate={new Date()}
       moveRangeOnFirstSelection={false}
       ranges={[dates]}
+      // disabledDates={test}
       locale={locales["vi"]}
-      rangeColors={["#00e1d6"]}
+      rangeColors={["#00a550"]}
       {...props}
     />
   );

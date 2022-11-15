@@ -1,0 +1,79 @@
+.input-range__slider {
+  border-radius: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1rem;
+  width: 1rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  outline: none;
+  position: absolute;
+  top: -1px;
+  transition: left 200ms ease-out;
+  will-change: left;
+}
+
+.input-range__slider ::before {
+  background: #ffffff;
+  border-radius: 100%;
+  display: block;
+  content: "";
+  height: 1rem;
+  width: 1rem;
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.09);
+  will-change: transform, box-shadow;
+  border: 2px solid #00a550;
+}
+
+.input-range__slider :active::before {
+  transform: scale(1.15);
+}
+
+.input-range__slider :focus::before {
+  box-shadow: 0 0 0 5px rgba(#00a550, 0.2);
+}
+
+.input-range--disabled ::before {
+  background: #cccccc;
+  border: none;
+  box-shadow: none;
+  transform: none;
+}
+.input-range__label-container {
+  display: none;
+}
+.input-range__label--min,
+.input-range__label--max {
+  display: none;
+}
+.input-range__track {
+  background: #e6e9ea;
+  border-radius: 3px;
+  cursor: pointer;
+  display: block;
+  height: 10px;
+  position: relative;
+  transition: left 200ms ease-out, width 200ms ease-out;
+  will-change: left, width;
+}
+
+.input-range__track--background {
+  margin-top: 3px;
+  top: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.input-range__track--active {
+  background: #00a550;
+}
+
+.input-range {
+  height: 1rem;
+  position: relative;
+  width: 100%;
+}

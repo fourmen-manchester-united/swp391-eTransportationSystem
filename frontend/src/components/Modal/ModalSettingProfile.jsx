@@ -1,9 +1,11 @@
+import moment from "moment";
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useIsLogin } from "../../hooks/useIsLogin";
 import { putUpdateProfile } from "../../store/actions/user.action";
 import { CLOSE_MODAL } from "../../store/constants/modal.const";
+import GetDate from "../DateRange";
 import Load from "../Load";
 
 export function ModalSettingProfile({ users, reload, setReload }) {
@@ -22,6 +24,12 @@ export function ModalSettingProfile({ users, reload, setReload }) {
     setUsers({
       ...user,
       [name]: value,
+    });
+  };
+  const handleDateChange = (dates) => {
+    setUsers({
+      ...user,
+      birthDate: moment(dates.startDate).format("YYYY-MM-DD"),
     });
   };
   const closeModal = () => {
@@ -52,9 +60,16 @@ export function ModalSettingProfile({ users, reload, setReload }) {
             <div className="line-form">
               <div className="wrap-input has-ico">
                 <i className="ic ic-calendar-fill" />
-                <input name="ip_dob" defaultValue="01-01-1950" />
+                <input name="ip_dob" value={user.birthDate} />
               </div>
             </div>
+            <GetDate
+              onDateChange={handleDateChange}
+              focusedRange={[0, 0]}
+              maxDate={new Date()}
+              // editableDateInputs={true}
+              showDateDisplay={false}
+            />
             <div className="line-form">
               <div className="wrap-select">
                 <select

@@ -1,74 +1,92 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { OPEN_MODAL } from "../../store/constants/modal.const";
+import CarModal from "../Modal/CarModal";
+import DeleteCar from "../Modal/DeleteCar";
 
-function CarItem({ listCar }) {
+function CarItem({ listCar, setHandleGrant }) {
+  const dispatch = useDispatch();
+  const onCar = (id, status) => {
+    dispatch({
+      type: OPEN_MODAL,
+      payload: (
+        <CarModal id={id} status={status} setHandleGrant={setHandleGrant} />
+      ),
+    });
+  };
+  const onDeleteCar = (id) => {
+    dispatch({
+      type: OPEN_MODAL,
+      payload: <DeleteCar id={id} setHandleGrant={setHandleGrant} />,
+    });
+  };
   return (
-    <div
-      className="swiper-slide box-car__item"
-      style={{ width: 210, marginRight: 30 }}
-    >
-      <Link to={`/car-detail/${listCar.id}`}>
-        <div className="img-car">
-          <div className="fix-img">
-            <img src={listCar.carImage} alt="Cho thuê xe" />
+    <div className="trip-box">
+      <Link
+        to="#"
+        className="func-remove"
+        onClick={() => onDeleteCar(listCar.id)}
+      >
+        <i className="ic ic-remove" />
+      </Link>
+      <div className="box-wrap">
+        <div className="item-car status-trips">
+          {listCar.status === "ACTIVE" ? (
+            <p className="status">
+              <span className="status green-dot" />
+              {listCar.status}
+            </p>
+          ) : (
+            <>
+              {listCar.status === "PENDING_APPROVAL" ? (
+                <p className="status">
+                  <span className="status orange-dot" />
+                  PENDING
+                </p>
+              ) : (
+                <p className="status">
+                  <span className="status red-dot" />
+                  {listCar.status}
+                </p>
+              )}
+            </>
+          )}
+          <div className="car-img">
+            <div className="fix-img">
+              <Link to={`/car-detail/${listCar.id}`}>
+                <img src={listCar.carImage} alt={listCar.name} />
+              </Link>
+            </div>
           </div>
-          <div className="price-car">{listCar.price}</div>
-          <span className="label-pos" />
         </div>
         <div className="desc-car">
           <h2>{listCar.name}</h2>
-          <div className="group-line n-rating">
-            <span className="star">
-              <span className="star_rate-num">5.0</span>
-              <div
-                className="star-ratings"
-                title="1 Star"
-                style={{
-                  position: "relative",
-                  boxSizing: "border-box",
-                  display: "inline-block",
-                }}
-              >
-                <div
-                  className="star-container"
-                  style={{
-                    position: "relative",
-                    display: "inline-block",
-                    verticalAlign: "middle",
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 51 48"
-                    className="widget-svg"
-                    style={{
-                      width: 17,
-                      height: 17,
-                      transition: "transform 0.2s ease-in-out 0s",
-                    }}
-                  >
-                    <path
-                      className="star"
-                      d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"
-                      style={{
-                        fill: "rgb(0, 165, 80)",
-                        transition: "fill 0.2s ease-in-out 0s",
-                      }}
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </span>
-            <span className="dot-car">•</span>
-            <span>3 chuyến</span>
-          </div>
-          <div className="location">
-            <p>
-              <i className="ic ic-sm-car-location" />
-              {listCar.addressInfo}
-            </p>
+          <p className="cost">
+            Giá tự lái: <span className="price">{listCar.price}K</span>
+          </p>
+          <p className="marginTop-xs">
+            <i className="ic ic-sm-car-location" />
+            {listCar.addressInfo}
+          </p>
+          <hr className="line-m" />
+          <div style={{ display: "flex" }}>
+            <Link
+              to={`/car-detail/${listCar.id}`}
+              className="btn btn-secondary btn--m"
+            >
+              Chi tiết
+            </Link>
+            <Link
+              to="#"
+              className="btn btn-primary btn--m"
+              onClick={() => onCar(listCar.id, listCar.status)}
+            >
+              Cấp Quyền
+            </Link>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

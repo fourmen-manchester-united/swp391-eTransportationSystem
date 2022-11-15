@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -6,6 +7,7 @@ import { useIsLogin } from "../../hooks/useIsLogin";
 import { putUpdateDriver } from "../../store/actions/user.action";
 import { CLOSE_MODAL } from "../../store/constants/modal.const";
 import { storeImageToFireBase } from "../../utils/storeImageToFirebase.";
+import GetDate from "../DateRange";
 import Load from "../Load";
 
 export function ModalDriver({ driver, reload, setReload }) {
@@ -48,6 +50,12 @@ export function ModalDriver({ driver, reload, setReload }) {
       return;
     }
     setSelectedFile(e.target.files[0]);
+  };
+  const handleDateChange = (dates) => {
+    setUsers({
+      ...user,
+      birthDate: moment(dates.startDate).format("YYYY-MM-DD"),
+    });
   };
   const onUpdateUser = (e) => {
     e.preventDefault();
@@ -113,17 +121,18 @@ export function ModalDriver({ driver, reload, setReload }) {
               </div>
             </div>
             <div className="line-form">
-              <label className="label">Ngày sinh</label>
-              <div className="wrap-input ">
-                <input
-                  type="text"
-                  name="birthDate"
-                  placeholder="Nhập đầy đủ ngày sinh"
-                  value={user.birthDate}
-                  onChange={handleChange}
-                />
+              <div className="wrap-input has-ico">
+                <i className="ic ic-calendar-fill" />
+                <input name="ip_dob" value={user.birthDate} />
               </div>
             </div>
+            <GetDate
+              onDateChange={handleDateChange}
+              focusedRange={[0, 0]}
+              maxDate={new Date()}
+              // editableDateInputs={true}
+              showDateDisplay={false}
+            />
             <div className="line-form">
               <label className="label">Ảnh bằng lái xe</label>
               <div className="list-photos">

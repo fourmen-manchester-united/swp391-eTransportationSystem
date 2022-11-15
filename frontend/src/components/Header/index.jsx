@@ -14,23 +14,22 @@ function Header() {
   const { user, isLoginToAdmin } = useIsLogin();
   useEffect(
     () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       dispatch(getUser(user.id));
     },
     // eslint-disable-next-line
-    [user.id]
+    []
   );
   const { users } = useSelector((state) => state.user);
   return (
     <section className="header">
       <Navbar>
-        <li className="has-magr">
-          <Link to="/carRegisterMode" className="become-owner-main">
-            Trở thành chủ xe
-          </Link>
-        </li>
         {user && users !== null ? (
           <>
+            <li className="has-magr">
+              <Link to="/carRegisterMode" className="become-owner">
+                Trở thành chủ xe
+              </Link>
+            </li>
             <li
               className="has-magr"
               style={{
@@ -51,7 +50,7 @@ function Header() {
                   }}
                 />
               </div>
-              <Link to={`/profile/${user.id}`} className="become-owner-light">
+              <Link to={`/profile/${user.id}`} className="become-owner">
                 {user.username}
               </Link>
             </li>
@@ -70,7 +69,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link className="btn btn-transparent btn--m" title to="/registerPage">
+              <Link className="btn btn-transparent btn--m" title to="/register">
                 Đăng kí
               </Link>
             </li>

@@ -25,7 +25,7 @@
 }
 
 .rdrDateDisplayItemActive {
-  border: 2px solid #00e1d6;
+  border: 2px solid #00a550;
 }
 
 .rdrDateDisplayItemActive input {
@@ -101,7 +101,7 @@
 }
 
 .rdrSelected {
-  background-color: #00e1d6;
+  background-color: #00a550;
 }
 
 .rdrDayToday .rdrDayNumber span:after {
@@ -113,7 +113,7 @@
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: #00e1d6;
+  background: #00a550;
 }
 
 .rdrDateInput {
@@ -122,28 +122,30 @@
 
 .rdrDayInPreview {
   border: none;
-  background-color: #00e1d6;
+  background-color: #00a550;
   opacity: 0.3;
 }
 
 .rdrDayStartPreview {
   border: none;
-  background-color: #00e1d6;
+  background-color: #00a550;
   opacity: 0.3;
 }
 
 .rdrDayEndPreview {
   border: none;
-  background-color: #00e1d6;
+  background-color: #00a550;
   opacity: 0.3;
 }
 
 .rdrDayEndPreview {
   border: none;
-  background-color: #00e1d6;
+  background-color: #00a550;
   opacity: 0.3;
 }
-
+/* .rdrDayDisabled {
+  background-color: red !important;
+} */
 /* span.rdrStartEdge.rdrEndEdge {
     color: #00e1d6 !important;
 }

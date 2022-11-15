@@ -58,7 +58,7 @@ export function ModalAddCar() {
   return (
     <>
       <div className="modal-header" style={{ padding: "0px 20px 40px" }}>
-        <h4 className="modal-title">Cập nhật thông tin</h4>
+        <h4 className="modal-title">Thông tin địa chỉ xe</h4>
       </div>
       <div className="modal-body">
         <div className="edit-address__box form-default">
@@ -81,7 +81,7 @@ export function ModalAddCar() {
                   ))}
               </select>
             </div>
-            <label className="sublabel">Quận/Huyện</label>
+            <label className="sublabel">Quận/ Huyện</label>
             <div className="wrap-select">
               <select
                 name="districtId"
@@ -130,7 +130,7 @@ export function ModalAddCar() {
             style={{ width: "calc(50% - 0.5rem)", marginRight: "1rem" }}
             onClick={close}
           >
-            Hủy bỏ  
+            Hủy bỏ
           </Link>
           <Link
             to="#"
@@ -138,7 +138,7 @@ export function ModalAddCar() {
             style={{ width: "calc(50% - 0.5rem)" }}
             onClick={close}
           >
-            Áp dụng   
+            Áp dụng
           </Link>
         </div>
       </div>

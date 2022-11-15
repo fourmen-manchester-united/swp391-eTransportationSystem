@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import DropdownItem from "./DropdownItem";
 import {
-  HiOutlineCog,
   HiOutlineUserCircle,
   HiOutlineLogout,
   HiOutlineShieldCheck,
+  HiOutlineStar,
+  HiOutlineViewGridAdd,
+  HiOutlineTicket,
 } from "react-icons/hi";
 import { AiFillCaretLeft, AiOutlineThunderbolt } from "react-icons/ai";
 import { CSSTransition } from "react-transition-group";
@@ -39,8 +41,8 @@ const DropdownMenu = ({ user, isLoginToAdmin }) => {
         onEnter={calcHeight}
       >
         <div className="menu">
-          {isLoginToAdmin === 1 && (
-            <Link to="/admin" className="menu-item">
+          {isLoginToAdmin === 2 && (
+            <Link to="/dashboard" className="menu-item">
               <span className="icon-button">
                 <HiOutlineShieldCheck />
               </span>
@@ -53,13 +55,24 @@ const DropdownMenu = ({ user, isLoginToAdmin }) => {
             </span>
             <span> My Profile</span>
           </Link>
-          <DropdownItem
-            leftIcon={<HiOutlineCog />}
-            goToMenu={"settings"}
-            setActive={setActive}
-          >
-            Settings
-          </DropdownItem>
+          <Link to={`/car-book`} className="menu-item">
+            <span className="icon-button">
+              <HiOutlineViewGridAdd />
+            </span>
+            <span> Xe đã đặt</span>
+          </Link>
+          <Link to={`/car-like`} className="menu-item">
+            <span className="icon-button">
+              <HiOutlineStar />
+            </span>
+            <span> Xe yêu thích</span>
+          </Link>
+          <Link to={`/voucher`} className="menu-item">
+            <span className="icon-button">
+              <HiOutlineTicket />
+            </span>
+            <span> Khuyến mãi</span>
+          </Link>
           <Link to="/" onClick={handleLogout} className="menu-item">
             <span className="icon-button">
               <HiOutlineLogout />

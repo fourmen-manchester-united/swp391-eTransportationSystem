@@ -45,7 +45,7 @@ const SearchBox = ({ onChangeStreet, onChangeLongitude, onChangeLatitude }) => {
       type: SET_LOCATION,
       payload: address,
     });
-    setSearchText("");
+    // setSearchText("");
     setListAddress([]);
   };
   useEffect(() => {
