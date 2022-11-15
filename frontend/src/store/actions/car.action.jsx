@@ -6,6 +6,8 @@ import {
   FEATURE_SUCCESS,
   BRAND_FAILED,
   BRAND_SUCCESS,
+  SET_UPDATE_FEATURES,
+  SET_UPDATE_CAR_IMAGE,
 } from "../constants/car.const";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -30,8 +32,92 @@ export const saveCar = (car, history) => {
     })
       .then((res) => {
         dispatch(stopLoading());
-        history.push("/");
-        NotificationManager.success("Car was add successfully");
+        history.push("/myCarRegisterMode");
+        NotificationManager.success("Xe đã được thêm thành công");
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
+
+export const updateCarAct = (updateCar, carDetail) => {
+  carDetail.features.map((features) => delete features["name"]);
+  carDetail.features.map((features) => delete features["icon"]);
+  // console.log(
+  //   "==",
+  //   JSON.stringify({
+  //     id: carDetail.id,
+  //     price: carDetail.price,
+  //     fuel: carDetail.fuel,
+  //     description: carDetail.description,
+  //     transmission: carDetail.transmission,
+  //     saleWeek: carDetail.saleWeek,
+  //     saleMonth: carDetail.saleMonth,
+  //     longitude: carDetail.longitude,
+  //     latitude: carDetail.latitude,
+  //     ward: {
+  //       id: 145,
+  //     },
+  //     street: "",
+  //     carImagesUpdate:
+  //       updateCar.carImagesUpdate.length > 0
+  //         ? updateCar.carImagesUpdate
+  //         : carDetail.carImages,
+  //     featuresUpdate:
+  //       updateCar.featuresUpdate.length > 0
+  //         ? updateCar.featuresUpdate
+  //         : carDetail.features,
+  //   })
+  // );
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "PUT",
+      url: `${API_URL}/car`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        id: carDetail.id,
+        price: updateCar.price > 0 ? updateCar.price : carDetail.price,
+        fuel: carDetail.fuel,
+        description: updateCar.description
+          ? updateCar.description
+          : carDetail.description,
+        transmission: carDetail.transmission,
+        saleWeek:
+          updateCar.saleWeek > 0 ? updateCar.saleWeek : carDetail.saleWeek,
+        saleMonth:
+          updateCar.saleMonth > 0 ? updateCar.saleMonth : carDetail.saleMonth,
+        longitude: carDetail.longitude,
+        latitude: carDetail.latitude,
+        ward: {
+          id: 145,
+        },
+        street: "",
+        carImagesUpdate:
+          updateCar.carImagesUpdate.length > 0
+            ? updateCar.carImagesUpdate
+            : carDetail.carImages,
+        featuresUpdate:
+          updateCar.featuresUpdate.length > 0
+            ? updateCar.featuresUpdate
+            : carDetail.features,
+      }),
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch({
+          type: SET_UPDATE_CAR_IMAGE,
+          payload: [],
+        });
+        dispatch({
+          type: SET_UPDATE_FEATURES,
+          payload: [],
+        });
+        NotificationManager.success("Cập nhật xe thành công");
       })
       .catch((err) => {
         dispatch(stopLoading());
@@ -158,7 +244,7 @@ const getBrandFailed = (err) => {
   };
 };
 
-export const getListCar = (
+export const getListCarActive = (
   page,
   userList,
   setUserList,
@@ -169,7 +255,7 @@ export const getListCar = (
     dispatch(startLoading());
     axios({
       method: "GET",
-      url: `${API_URL}/admin/car?page=${page}&size=8`,
+      url: `${API_URL}/car?page=${page}&size=8`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -276,12 +362,40 @@ export const putDriver = (id, status, setHandleGrant) => {
       });
   };
 };
+export const deleteLike = (id, setHandleGrant) => {
+  const userLogin = localStorage.getItem("userLogin");
+  const userId = userLogin ? JSON.parse(userLogin).id : 0;
+  return () => {
+    axios({
+      method: "DELETE",
+      url: `${API_URL}/like`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        account: {
+          id: userId,
+        },
+        car: {
+          id,
+        },
+      },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
 
 export const postDriver = (
   code,
   percentage,
   maxDiscount,
-  discription,
   startDate,
   endDate
 ) => {
@@ -294,7 +408,7 @@ export const postDriver = (
         code,
         percentage,
         maxDiscount,
-        discription,
+        discription: "",
         startDate,
         endDate,
       },
@@ -304,9 +418,138 @@ export const postDriver = (
         dispatch(stopLoading());
       })
       .catch((err) => {
-        console.log("🚀 ~ file: car.action.jsx ~ line 307 ~ return ~ err", err);
-        NotificationManager.error(err.response.data.message);
+        NotificationManager.error("chưa nhập mã code khuyến mãi");
         dispatch(stopLoading());
+      });
+  };
+};
+export const getListCar = (page, setUserList, setTotalPages, setLoading) => {
+  return (dispatch) => {
+    setLoading(true);
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: `${API_URL}/admin/car?page=${page}&size=8`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: null,
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        setUserList(res.data.contends);
+        setLoading(false);
+        setTotalPages(res.data.totalPage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+export const putCar = (id, status, setHandleGrant) => {
+  return () => {
+    axios({
+      method: "PUT",
+      url: `${API_URL}/admin/browsing/car`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { id, status },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
+export const deleteCar = (id, setHandleGrant) => {
+  return () => {
+    axios({
+      method: "DELETE",
+      url: `${API_URL}/car/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
+export const cancelCar = (id, setHandleGrant) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: `${API_URL}/book/cancel/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
+export const extendCar = (id, endDate, setHandleGrant) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: `${API_URL}/book/extend`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        id,
+        endDate,
+      },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
+      });
+  };
+};
+export const review = (id, content, starReview, setHandleGrant) => {
+  return (dispatch) => {
+    axios({
+      method: "POST",
+      url: `${API_URL}/book/review`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        book: {
+          id,
+        },
+        content,
+        starReview,
+      },
+    })
+      .then((res) => {
+        setHandleGrant(id);
+        NotificationManager.success(res.data);
+        setHandleGrant(null);
+      })
+      .catch((err) => {
+        NotificationManager.error(err.response.data.message);
       });
   };
 };

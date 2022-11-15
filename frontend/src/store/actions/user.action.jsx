@@ -16,7 +16,7 @@ import { startLoading, stopLoading } from "../actions/common.action";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const postLogin = (username, password) => {
+export const postLogin = (username, password, history) => {
   return (dispatch) => {
     dispatch(startLoading());
     axios({
@@ -33,6 +33,7 @@ export const postLogin = (username, password) => {
       .then((res) => {
         dispatch(stopLoading());
         dispatch(postLoginSuccess(res.data));
+        history.push("/");
         localStorage.setItem("userLogin", JSON.stringify(res.data));
       })
       .catch((err) => {
@@ -286,15 +287,53 @@ const getListCarByUserFailed = (err) => {
   };
 };
 
+export const getListCarBookByUser = (id, setList, page, setTotalPages) => {
+  return (dispatch) => {
+    axios({
+      method: "GET",
+      url: `${API_URL}/book/${id}?page=${page}&size=6`,
+      data: null,
+    })
+      .then((res) => {
+        setList(res.data.contends);
+        setTotalPages(res.data.totalPage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const getListCarLikeByUser = (id, setList, page, setTotalPages) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: `${API_URL}/like/account/${id}?page=${page}&size=6`,
+      data: null,
+    })
+      .then((res) => {
+        setList(res.data.contends);
+        setTotalPages(res.data.totalPage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 export const postBookCar = (
   price,
   totalPrice,
   startDate,
   endDate,
-  account,
+  voucher,
   car,
-  history
+  setLoad,
+  load
 ) => {
+  const userLogin = localStorage.getItem("userLogin");
+  const id = userLogin ? JSON.parse(userLogin).id : 0;
   return (dispatch) => {
     dispatch(startLoading());
     axios({
@@ -309,10 +348,10 @@ export const postBookCar = (
         startDate,
         endDate,
         voucher: {
-          id: 30,
+          id: voucher,
         },
         account: {
-          id: account,
+          id,
         },
         car: {
           id: car,
@@ -321,7 +360,7 @@ export const postBookCar = (
     })
       .then((res) => {
         dispatch(stopLoading());
-        history.goBack("/");
+        setLoad(!load);
         NotificationManager.success(res.data);
       })
       .catch((err) => {

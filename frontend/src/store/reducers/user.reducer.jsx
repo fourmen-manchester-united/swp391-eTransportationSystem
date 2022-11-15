@@ -9,6 +9,11 @@ import {
   ADMIN_SUCCESS,
   CAR_BY_USER_SUCCESS,
   CAR_BY_USER_FAILED,
+  CAR_BOOK_BY_USER_SUCCESS,
+  CAR_BOOK_BY_USER_FAILED,
+  CAR_LIKE_BY_USER_SUCCESS,
+  CAR_LIKE_BY_USER_FAILED,
+  CITY_ID,
 } from "../constants/user.const";
 
 const initialState = {
@@ -21,13 +26,19 @@ const initialState = {
   users: null,
   driver: null,
   carByUser: null,
+  carBookByUser: null,
+  carLike: null,
   admin: null,
+  cityId: 0,
   errors: {},
 };
 
 const userReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case CITY_ID: {
+      return { ...state, cityId: payload };
+    }
     case LOGIN_SUCCESS: {
       return { ...state, user: payload };
     }
@@ -50,6 +61,18 @@ const userReducer = (state = initialState, action) => {
       return { ...state, carByUser: payload };
     }
     case CAR_BY_USER_FAILED: {
+      return { ...state, errors: payload };
+    }
+    case CAR_BOOK_BY_USER_SUCCESS: {
+      return { ...state, carBookByUser: payload };
+    }
+    case CAR_BOOK_BY_USER_FAILED: {
+      return { ...state, errors: payload };
+    }
+    case CAR_LIKE_BY_USER_SUCCESS: {
+      return { ...state, carLike: payload };
+    }
+    case CAR_LIKE_BY_USER_FAILED: {
       return { ...state, errors: payload };
     }
     case ADMIN_SUCCESS: {

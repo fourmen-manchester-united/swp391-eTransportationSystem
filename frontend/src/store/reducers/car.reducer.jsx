@@ -19,6 +19,18 @@ import {
   SET_CAR_IMAGE,
   SET_FEATURES,
   SET_STREET,
+  SET_UPDATE_PRICE,
+  SET_UPDATE_FUEL,
+  SET_UPDATE_DESCRIPTION,
+  SET_UPDATE_TRANSMISSION,
+  SET_UPDATE_SALE_WEEK,
+  SET_UPDATE_SALE_MONTH,
+  SET_UPDATE_LONGITUDE,
+  SET_UPDATE_LATITUDE,
+  SET_UPDATE_STREET,
+  SET_UPDATE_WARD,
+  SET_UPDATE_FEATURES,
+  SET_UPDATE_CAR_IMAGE,
 } from "../constants/car.const";
 const initialState = {
   car: {
@@ -47,6 +59,22 @@ const initialState = {
     ],
     features: [],
   },
+  updateCar: {
+    price: 0,
+    fuel: "Xăng",
+    description: null,
+    transmission: "Số tự động",
+    saleWeek: 0,
+    saleMonth: 0,
+    longitude: null,
+    latitude: null,
+    ward: {
+      id: 145,
+    },
+    street: "",
+    carImagesUpdate: [],
+    featuresUpdate: [],
+  },
   feature: null,
   brand: [],
   errors: {},
@@ -55,6 +83,97 @@ const initialState = {
 const carReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case SET_UPDATE_PRICE: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          price: payload,
+        },
+      };
+      return newTripSate;
+    }
+
+    case SET_UPDATE_FUEL: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          fuel: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_DESCRIPTION: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          description: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_TRANSMISSION: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          transmission: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_SALE_WEEK: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          saleWeek: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_SALE_MONTH: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          saleMonth: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_LONGITUDE: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          longitude: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_LATITUDE: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          latitude: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_STREET: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          street: payload,
+        },
+      };
+      return newTripSate;
+    }
     case SET_SEATS: {
       const newTripSate = {
         ...state,
@@ -191,6 +310,36 @@ const carReducer = (state = initialState, action) => {
         car: {
           ...state.car,
           ward: { id: payload },
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_WARD: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          ward: { id: payload },
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_CAR_IMAGE: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          carImagesUpdate: payload,
+        },
+      };
+      return newTripSate;
+    }
+    case SET_UPDATE_FEATURES: {
+      const newTripSate = {
+        ...state,
+        updateCar: {
+          ...state.updateCar,
+          featuresUpdate: payload,
         },
       };
       return newTripSate;
