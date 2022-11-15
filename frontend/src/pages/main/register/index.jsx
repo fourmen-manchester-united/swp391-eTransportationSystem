@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { NotificationContainer } from "react-notifications";
 import Load from "../../../components/Load";
 import Validate from "../../../components/validateInput";
@@ -8,20 +8,16 @@ import { validateRegister } from "../../../components/validateInput/validateInpu
 import useForm from "../../../hooks/useForm";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { postRegister } from "../../../store/actions/user.action";
-import LoginGoogle from "../login/loginGoogle";
 
 function Register() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { loading } = useIsLogin();
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validateRegister
   );
   function login() {
-    dispatch(
-      postRegister(values.username, values.name, values.password, history)
-    );
+    dispatch(postRegister(values.username, values.name, values.password));
   }
   return (
     <div>
@@ -107,10 +103,10 @@ function Register() {
                 <div className="space" />
                 <span className="line" />
                 <p className="textAlign-center">
-                  Hoặc đăng nhập bằng ?<Link to="/login">Tài Khoản!</Link>
+                  Hoặc đăng nhập bằng tài khoản
                 </p>
                 <div className="wr-btn-share">
-                  {/* <div className="wr-btn">
+                  <div className="wr-btn">
                     <Link
                       to="#"
                       className="btn btn-facebook btn--m"
@@ -118,8 +114,16 @@ function Register() {
                     >
                       <i className="ic ic-facebook" /> Facebook
                     </Link>
-                  </div> */}
-                  <LoginGoogle />
+                  </div>
+                  <div className="wr-btn">
+                    <Link
+                      to="#"
+                      className="btn btn-google btn--m"
+                      type="button"
+                    >
+                      <i className="ic ic-google" /> Google
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
